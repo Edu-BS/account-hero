@@ -3,7 +3,22 @@
     <NavComponent />
     <div class="container ">
       <form action="/api/signin" method="post" class="form justify-content-center col-9 col-md-5 m-auto mt-5">
-        <label for="email_input" class="form-label">Email</label>
+
+        <div class="row">
+          <div class="col-6">
+            <label for="name_input" class="form-label">Nombre</label>
+            <input type="text" name="name" id="name_input" class="form-control" required>
+          </div>
+          <div class="col-6">
+            <label for="surname_input" class="form-label">Apellido</label>
+            <input type="text" name="name" id="surname_input" class="form-control" required>
+          </div>
+        </div>
+
+        <label for="username_input" class="form-label mt-3">Nombre de usuario</label>
+        <input type="text" name="name" id="username_input" class="form-control" required>
+        
+        <label for="email_input" class="form-label mt-3">Email</label>
         <input type="email" name="email" id="email_input" class="form-control" required>
 
         <div class="row">
@@ -22,13 +37,12 @@
         </div>
       </form>   
       <div class="text-center m-auto mt-5">
-        <p class="d-lg-none">¿Aún no tienes una cuenta? <router-link to="/register" class="text-decoration-none">Registrate</router-link></p>
-        <p class="d-none">¿Has olvidado la contraseña?<router-link to="/login" class="text-decoration-none">Cambiar contraseña</router-link></p>
+        <p class="d-lg-none">¿Ya tienes una cuenta? <router-link to="/register" class="text-decoration-none">Inicia sessión</router-link></p>
+        <p class="d-none">¿Has olvidado la contraseña?<a href="" class="text-decoration-none">Cambiar contraseña</a></p>
       </div>   
     </div>
   </main>
 </template>
-
 <script>
 export default {
   data() {
@@ -69,9 +83,8 @@ export default {
   },
   methods: {
     submit(e) {
-      e.preventDefault();      
+      e.preventDefault();
     },
-
   }
-};
+}
 </script>
