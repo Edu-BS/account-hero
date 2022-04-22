@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const authStore = defineStore({
+export const authStore = defineStore({  
   id: 'auth',
   state: () => {
 
@@ -12,18 +12,19 @@ export const authStore = defineStore({
 
     return {
         token: null,
-        isAuthenticated : false
-
+        isAuthenticated : false,
+        userName: null
     }
 },
   getters: {
     getToken: (state) => state.token
   },
   actions: {
-    // funcion para login
+    // Funcion para login
     async login(email, password) {
-      // enviar al servidor las crendeciales para pedir el token
-      const url = import.meta.env.VITE_APP_URL_API + "/signin"
+      // Enviar al servidor las crendeciales para pedir el token
+      const url = import.meta.env.VITE_APP_URL_API + "/login"
+      
       const response = await fetch(
         url, {
         method: "POST",
@@ -35,20 +36,20 @@ export const authStore = defineStore({
       })
       const data = await response.json();
       console.log(data);
-      // verifico si el token existe o es diferente a null
+      // Verifico si el token existe o es diferente a null
       if (data.token && data.token !== null) {
         this.token = data.token;
         localStorage.setItem('token', JSON.stringify({
            token: this.token,
             isAuthenticated : true 
         }));
-      }
+      } 
     },
 
-    // funcion para registrar un nuevo usuario 
-    async registrer(username,email, password) {
-      // enviar al servidor las crendeciales para pedir el token
-      const url = import.meta.env.VITE_APP_URL_API + "/signup"
+    // Funcion para registrar un nuevo usuario 
+    async register(username,email, password) {
+      // Enviar al servidor las crendeciales para pedir el token
+      const url = import.meta.env.VITE_APP_URL_API + "/register"
       const res = await fetch(
         url, {
         method: "POST",
@@ -60,7 +61,7 @@ export const authStore = defineStore({
       })
       console.log("entra");
       const data = await res.json();
-      // verifico si el token existe o es diferente a null
+      // Verifico si el token existe o es diferente a null
       if (data.token && data.token !== null) {
         this.token = data.token;
         localStorage.setItem('token', JSON.stringify({ 
@@ -70,7 +71,7 @@ export const authStore = defineStore({
       }
     },
 
-    // funcion para eliminar el token
+    // Funcion para eliminar el token
     logout() {
       this.token = null,
       localStorage.removeItem('token');
