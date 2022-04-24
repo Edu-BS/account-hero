@@ -27,10 +27,6 @@ const ExpenseSchema = new Schema({
       type: Date,
       required: true,
    },
-   createdAt: {
-      type: Date,
-      default: Date.now,
-   },
    fractions: [{
       type: Schema.Types.ObjectId,
       ref: 'Fraction',
@@ -40,4 +36,6 @@ const ExpenseSchema = new Schema({
       ref: 'Payment',
    }]
 
+},{
+   timestamps: true
 })
