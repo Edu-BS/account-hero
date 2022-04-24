@@ -1,6 +1,6 @@
 <template>
   <main>
-    <NavComponent />
+    <NavComponent view="Register" />
     <div class="container ">
       <form action="/api/signin" method="post" class="form justify-content-center col-9 col-md-5 m-auto mt-5">
 

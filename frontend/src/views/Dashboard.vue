@@ -1,6 +1,6 @@
 <template>
   <main>
-    <NavComponent />
+    <NavComponent view="Dashboard" />
     <div class="container">
       <div class="border border-1 rounded-3 m-4 d-lg-none">
         <div class="d-flex">
@@ -49,6 +49,18 @@ export default {
         },
         {
           name: "Group 2",
+          description: "Group description",
+        },
+        {
+          name: "Group 3",
+          description: "Group description",
+        },
+        {
+          name: "Group 3",
+          description: "Group description",
+        },
+        {
+          name: "Group 3",
           description: "Group description",
         },
         {
