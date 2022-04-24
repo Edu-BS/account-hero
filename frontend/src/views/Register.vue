@@ -15,13 +15,19 @@
         </div>
 
         <label for="username_input" class="form-label mt-3">Nombre de usuario</label>
-        <input v-model="formData.username" type="text" name="username" id="username_input" class="form-control" required>
-
+        <input v-model="formData.username" :class="{ 'is-invalid': formFeedback.username }" type="text" name="username" id="username_input" class="form-control" required>
+        <div id="email_input_feedbak" class="invalid-feedback">
+          {{formFeedback.username}}
+        </div>
+        
         <label for="birthday_input" class="form-label mt-3">Fecha de nacimiento</label>
         <input v-model="formData.birthday" type="date" name="birthday" id="birthday_input" class="form-control" required>
 
         <label for="email_input" class="form-label mt-3">Email</label>
-        <input v-model="formData.email" type="email" name="email" id="email_input" class="form-control" required>
+        <input v-model="formData.email" :class="{ 'is-invalid': formFeedback.email }" type="email" name="email" id="email_input" class="form-control" aria-describedby="email_input_feedbak" required>
+        <div id="email_input_feedbak" class="invalid-feedback">
+          {{formFeedback.email}}
+        </div>
 
 
         <div class="row">
@@ -33,6 +39,8 @@
             <label for="passwordRepeat_input" class="form-label mt-3">Repetir contraseña</label>
             <input v-model="formData.passwordRepeat" :class="borderColor" type="password" name="passwordRepeat"
               id="passwordRepeat_input" class="form-control" required>
+            <div class="valid-feedback">
+            </div>
           </div>
         </div>
 
@@ -41,6 +49,7 @@
             :class="{ disabled: !passwordsMatch }">Verificar</button>
         </div>
       </form>
+      
       <div class="text-center m-auto mt-5">
         <p class="d-lg-none">¿Ya tienes una cuenta? <router-link to="/login" class="text-decoration-none">Inicia sessión
           </router-link>
@@ -48,6 +57,7 @@
         <p class="d-none">¿Has olvidado la contraseña?<a href="" class="text-decoration-none">Cambiar contraseña</a></p>
       </div>
     </div>
+  {{formFeedback.email}}
   </main>
 </template>
 <script>
@@ -58,10 +68,14 @@ export default {
         name: 'Edu',
         surname: 'Borrego',
         username: 'edubs',
-        birthday: '15/10/1996',
+        birthday: '1995-01-01',
         email: 'edu@gmail.com',
         password: '1',
         passwordRepeat: '',
+      },
+      formFeedback: {
+        email: '',
+        username: '',
       },
       borderColor: '',
       passwordsMatch: false
@@ -80,8 +94,25 @@ export default {
     submit(form) {
       this.register(this.formData)
     },
-    register({name, surname, username, birthday, email, password}) {
-      this.$auth.register(name, surname, username, birthday, email, password);
+    async register({name, surname, username, birthday, email, password}) {
+      
+      for (const [key, value] of Object.entries(this.formFeedback)) {
+        this.formFeedback[key] = '';
+      }
+
+      const res = await this.$auth.register(name, surname, username, birthday, email, password);
+      
+      if (res.errors) {
+        for (let index = 0; index < res.errors.length; index++) {
+          if (res.errors[index].message == "correo ya existe") {
+            this.formFeedback.email = 'El email ya está en uso'
+          } else if (res.errors[index].message == "username ya existe") {
+            this.formFeedback.username = 'El nombre de usuario ya está en uso'
+          }
+        }
+      } else  {
+        this.$router.push('/login');
+      }
     }
   }
 }

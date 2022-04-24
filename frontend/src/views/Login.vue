@@ -39,8 +39,12 @@ export default {
     submit(form) {
       this.login(this.formData);
     },
-    login({email, password}) {
-      this.$auth.login(email, password);
+    async login({email, password}) {
+      const res = await this.$auth.login(email, password);
+
+      if (this.$auth.isAuthenticated && res.errors) {
+        this.$router.push('/dashboard');
+      }
     },
   }
 };

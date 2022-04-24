@@ -2,7 +2,7 @@ version: "3.8"
 services:
   mongodb:
     image: mongo
-    container_name: mongodb
+    container_name: ah-mongodb
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_EXPRESS_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_EXPRESS_ROOT_PASSWORD}
@@ -15,7 +15,7 @@ services:
 
   mongo-express:
     image: mongo-express
-    container_name: mongo-express
+    container_name: ah-mongo-express
     environment:
       - ME_CONFIG_MONGODB_SERVER=${MONGO_EXPRESS_MONGODB_SERVER}
       - ME_CONFIG_MONGODB_ENABLE_ADMIN=${MONGO_EXPRESS_MONGODB_ENABLE_ADMIN}
