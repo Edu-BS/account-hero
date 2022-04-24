@@ -1,22 +1,31 @@
 const routes = require('express').Router()
 const UserController = require('../controller/userController')
 const AuthController = require('../controller/authController')
+const {loginValidator} = require('../validator/loginValidator');
+const {registerValidator} = require('../validator/registerValidator')
 
-// 1 validar los campos del formulario    
-// 2 verificar si el usuario existe, si existe no seguir *  
-// 3 crear un nuevo usuario *
-// 4 crear el token del usuario *
-// 5 devolver el token 
-routes.post('/register',[
+
+/**
+ * peticion post para registrar nuevo usuario
+ */
+routes.post('/register',
+    // 1 validar los campos del formulario
+    registerValidator,
+    // 2 crear nuevo usuario  
     UserController.createUser,
-    AuthController.createToken
+);
 
-],(req,res)=>{
-    const user = req.user
-    const token = req.token
-    console.log(user.username);
-    return res.json({token: token, username: user.username})
-});
+
+
+/**
+ * peticion post para logear a usuario 
+ */
+routes.post('/login',
+    // 1 validarlos campos del formulario
+    loginValidator,
+    // 2 logear a usuario  
+    AuthController.login
+)
 
 
 module.exports = routes;

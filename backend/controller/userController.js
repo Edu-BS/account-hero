@@ -1,5 +1,6 @@
-const UserModels = require('../models/User')
-
+const UserServices = require('../services/userServices')
+const {handleError} = require('../helpers/handleError')
+const helperToken = require('../helpers/helperToken')
 
 /**
  * Controller donde estas todos los metodos de las operaciones con los usuarios  
@@ -13,32 +14,17 @@ class UserController {
      * @param {*} next 
      */
     static async createUser(req, res, next) {
-
-        // recupero los datos del body 
-        const { name, surname, birthday, username, email, password } = req.body
-
-        // verifico si existe ya el usuario 
-        const userFound =  await UserModels.findOne({email: email})
-
-        // si el usuario no existe regreso el error 
-        if (userFound) return res.status(403).json({error: "Usuario ya existe"})
-        
-        // creo el nuevo usuario 
-        const user = new UserModels({
-            name: name,
-            surname: surname,
-            birthday: birthday,
-            username: username,
-            email: email,
-            password: await UserModels.encryptPassword(password)
-        })
-
-        // guardo el nuevo usuario en la base de datos 
-        const newUser = await user.save()
-        console.log(newUser.username);
-        req.user = newUser
-        return next()
+        try {
+            let user = await UserServices.createUser(req.body)
+            let token = helperToken.createToken(user)
+            res.json({token: token, username: user.username})
+        } catch (error) {
+            handleError(res,error,400)
+        }   
     }
+
+
+
 }
 
 
