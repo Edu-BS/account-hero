@@ -11,8 +11,8 @@ import "bootstrap/dist/js/bootstrap.js"
 
 const app = createApp(App)
 
-app.use(createPinia())
 app.component('NavComponent', NavComponent)
-app.use(router)
+app.use(createPinia())
 app.config.globalProperties.$auth = authStore()
+app.use(router)
 app.mount('#app')

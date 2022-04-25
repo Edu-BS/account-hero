@@ -12,8 +12,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                <router-link to="/register" class="btn btn-outline-primary rounded-pill text-black me-4">Registrarse</router-link>
-                <router-link to="/login" class="btn btn-primary rounded-pill ">Iniciar sessión</router-link>
+                <router-link to="register" class="btn btn-outline-primary rounded-pill text-black me-4">Registrarse</router-link>
+                <router-link to="login" class="btn btn-primary rounded-pill ">Iniciar sessión</router-link>
             </div>
         </div>
         
@@ -25,8 +25,8 @@
             </div>
             <div class="offcanvas-body">
                 <ul class="list-group">
-                    <router-link to="/register" class="btn btn-outline-primary rounded-pill text-black">Registrarse</router-link>
-                    <router-link to="/login"  class="btn btn-primary rounded-pill mt-2">Iniciar sessión</router-link>
+                    <router-link to="register" class="btn btn-outline-primary rounded-pill text-black">Registrarse</router-link>
+                    <router-link to="login"  class="btn btn-primary rounded-pill mt-2">Iniciar sessión</router-link>
                 </ul>
             </div> 
         </div>

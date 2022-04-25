@@ -17,7 +17,8 @@ export const authStore = defineStore({
     }
   },
   getters: {
-    getToken: (state) => state.token
+    getToken: (state) => state.token,
+    // isAuthenticated: (state) => state.isAuthenticated
   },
   actions: {
     // Funcion para login
@@ -35,16 +36,18 @@ export const authStore = defineStore({
         body: JSON.stringify({ email, password })
       })
       const data = await response.json();
-      console.log(data);
+
       // Verifico si el token existe o es diferente a null
       if (data.token && data.token !== null) {
         this.token = data.token;
         this.isAuthenticated = true;
-        localStorage.setItem('token', JSON.stringify({
+        localStorage.setItem('auth', JSON.stringify({
           token: this.token,
           isAuthenticated: true
         }));
       }
+
+      return data
     },
 
     // Funcion para registrar un nuevo usuario 
@@ -67,7 +70,7 @@ export const authStore = defineStore({
       // Verifico si el token existe o es diferente a null
       if (data.token && data.token !== null) {
         this.token = data.token;
-        localStorage.setItem('token', JSON.stringify({
+        localStorage.setItem('auth', JSON.stringify({
           token: this.token,
           isAuthenticated: true
         }));
@@ -78,7 +81,7 @@ export const authStore = defineStore({
     // Funcion para eliminar el token
     logout() {
       this.token = null,
-        localStorage.removeItem('token');
+        localStorage.removeItem('auth');
     }
   }
 })

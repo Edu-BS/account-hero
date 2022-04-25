@@ -2,7 +2,7 @@
   <main>
     <NavComponent />
     <div class="container ">
-      <form @submit.prevent="submit" action="/api/signin" method="post" class="form justify-content-center col-9 col-md-5 m-auto mt-5">
+      <form @submit.prevent="submit" class="form justify-content-center col-9 col-md-5 m-auto mt-5">
         <label for="email_input" class="form-label">Email</label>
         <input v-model="formData.email" type="email" name="email" id="email_input" class="form-control" required>
 
@@ -14,10 +14,10 @@
         </div>
       </form>
       <div class="text-center m-auto mt-5">
-        <p class="d-lg-none">¿Aún no tienes una cuenta? <router-link to="/register" class="text-decoration-none">
+        <p class="d-lg-none">¿Aún no tienes una cuenta? <router-link to="register" class="text-decoration-none">
             Registrate</router-link>
         </p>
-        <p class="d-none">¿Has olvidado la contraseña?<router-link to="/login" class="text-decoration-none">Cambiar
+        <p class="d-none">¿Has olvidado la contraseña?<router-link to="login" class="text-decoration-none">Cambiar
             contraseña</router-link>
         </p>
       </div>
@@ -41,11 +41,11 @@ export default {
     },
     async login({email, password}) {
       const res = await this.$auth.login(email, password);
-
-      if (this.$auth.isAuthenticated && res.errors) {
-        this.$router.push('/dashboard');
+      console.log(this.$auth.isAuthenticated);
+      if (this.$auth.isAuthenticated && "errors" in res === false) {
+        this.$router.push('dashboard');
       }
-    },
+    }
   }
 };
 </script>
