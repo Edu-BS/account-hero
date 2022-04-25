@@ -65,9 +65,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(to , from);
+  // requiresAuth: true
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    console.log("aa");
     if (localStorage.getItem('auth')) {
       const auth = JSON.parse(localStorage.getItem('auth'))
       if (auth.token && auth.token !== null) {
@@ -76,8 +75,14 @@ router.beforeEach((to, from, next) => {
     } else {
       next('login')
     }
+  // requiresAuth: false
   } else if (!to.matched.some(record => record.meta.requiresAuth)) {
-    next('dashboard')
+    if (localStorage.getItem('auth')) {
+      const auth = JSON.parse(localStorage.getItem('auth'))
+      if (auth.token && auth.token !== null) {
+        next('dashboard')
+      }
+    }
   }
   
   next()
