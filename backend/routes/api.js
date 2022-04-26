@@ -1,8 +1,11 @@
 const routes = require('express').Router()
 const UserController = require('../controller/userController')
 const AuthController = require('../controller/authController')
+const GroupController = require('../controller/groupController')
+const GroupMiddleware = require('../middleware/groupMiddleware')
 const {loginValidator} = require('../validator/loginValidator');
 const {registerValidator} = require('../validator/registerValidator')
+const AuthMiddleware = require('../middleware/authMiddleware')
 
 
 /**
@@ -26,6 +29,16 @@ routes.post('/login',
     // 2 logear a usuario  
     AuthController.login
 )
+
+routes.route("/groups")
+    .all(AuthMiddleware.validateToken)
+    .get(UserController.getGroups)
+    .post(GroupController.createGroup)
+
+routes.route("/group/:groupId")
+    .all(AuthMiddleware.validateToken)
+    .get(GroupMiddleware.userInGroup, GroupController.getGroup)
+    .put(GroupMiddleware.userIsAdmin, GroupController.updateGroup)
 
 
 module.exports = routes;
