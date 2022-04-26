@@ -44,8 +44,8 @@
             </div>
             <div v-if="view == 'Login' || view == 'Register'" class="offcanvas-body">
                 <ul class="list-group">
-                    <router-link to="/register" class="btn btn-outline-primary rounded-pill text-black">Registrarse</router-link>
-                    <router-link to="/login"  class="btn btn-primary rounded-pill mt-2">Iniciar sessión</router-link>
+                    <router-link to="register" class="btn btn-outline-primary rounded-pill text-black">Registrarse</router-link>
+                    <router-link to="login"  class="btn btn-primary rounded-pill mt-2">Iniciar sessión</router-link>
                 </ul>
             </div> 
         </div>

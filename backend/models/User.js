@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const UserSchema = new Schema({
    name: {
@@ -29,16 +29,33 @@ const UserSchema = new Schema({
       type: String,
       required: true,
    },
-   salt: {
-      type: String,
-      required: true,
-   },
    groups: [{
       type: Schema.Types.ObjectId,
       ref: 'Group',
    }]
 }) 
 
+/**
+ * @description Funcion para encriptar una contraseña
+ * @param {string} password Contraseña a encriptar
+ * @returns {string} La contraseña encriptada
+ */
+UserSchema.statics.encryptPassword = async (password) => {
+   const salt = await bcrypt.genSalt(10);
+   const hash = await bcrypt.hash(password,salt); 
+   return  hash;
+}
+
+
+/**
+ * @description Funcion para validar una contraseña sin encriptar con otra encriptada
+ * @param {string} password Contraseña sin encriptar
+ * @param {string} recivedPassword  Contraseña encriptada
+ * @returns {boolean} true si la contraseña es la misma, false si no es la misma
+ */
+UserSchema.statics.comparePassword = async (password, recivedPassword) => {
+   return await bcrypt.compare(password,recivedPassword);
+}
 
 
 module.exports = mongoose.model('User', UserSchema);
