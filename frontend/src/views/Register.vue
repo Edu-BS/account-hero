@@ -4,12 +4,12 @@
     <div class="container ">
       <form @submit.prevent="submit" class="form justify-content-center col-9 col-md-5 m-auto mt-5">
         <div class="row">
-          <div class="col-6">
-            <label for="name_input" class="form-label">Nombre</label>
+          <div class="col-md-6 ">
+            <label for="name_input" class="form-label mt-3">Nombre</label>
             <input v-model="formData.name" type="text" name="name" id="name_input" class="form-control" required>
           </div>
-          <div class="col-6">
-            <label for="surname_input" class="form-label">Apellido</label>
+          <div class="col-md-6">
+            <label for="surname_input" class="form-label mt-3">Apellido</label>
             <input v-model="formData.surname" type="text" name="surname" id="surname_input" class="form-control" required>
           </div>
         </div>
@@ -31,12 +31,12 @@
 
 
         <div class="row">
-          <div class="col-6">
+          <div class="col-lg-6 col-sm">
             <label for="password_input" class="form-label mt-3">Contraseña</label>
             <input v-model="formData.password" type="password" name="password" id="password_input" class="form-control" required>
           </div>
-          <div class="col-6">
-            <label for="passwordRepeat_input" class="form-label mt-3">Repetir contraseña</label>
+          <div class="col-lg-6 col-sm">
+            <label for="passwordRepeat_input" class="form-label mt-3 text-nowrap">Repetir contraseña</label>
             <input v-model="formData.passwordRepeat" :class="borderColor" type="password" name="passwordRepeat"
               id="passwordRepeat_input" class="form-control" required>
             <div class="valid-feedback">
@@ -57,7 +57,6 @@
         <p class="d-none">¿Has olvidado la contraseña?<a href="" class="text-decoration-none">Cambiar contraseña</a></p>
       </div>
     </div>
-  {{formFeedback.email}}
   </main>
 </template>
 <script>
@@ -101,7 +100,7 @@ export default {
       }
 
       const res = await this.$auth.register(name, surname, username, birthday, email, password);
-      
+
       if (res.errors) {
         for (let index = 0; index < res.errors.length; index++) {
           if (res.errors[index].message == "correo ya existe") {
@@ -111,7 +110,7 @@ export default {
           }
         }
       } else  {
-        this.$router.push('/login');
+        this.$router.push('login');
       }
     }
   }
