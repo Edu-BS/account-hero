@@ -9,7 +9,7 @@
             <img class="img-fluid" src="profile_icon.png" alt="" />
           </div>
           <div class="col-auto ms-3 m-3">
-            <p class="fw-bold fs-4">Username</p>
+            <p class="fw-bold fs-4">{{ this.$auth.userName }}</p>
           </div>
           <div class="col-1 col-md-1 ms-auto m-3">
             <router-link to="">
@@ -19,7 +19,7 @@
         </div>
         <div class="row justify-content-center fs-4">
           <div class="col-3 text-center fw-bold">
-            <p class="mb-0 text-secondary">10</p>
+            <p class="mb-0 text-secondary">{{ this.groups.length }}</p>
             <p>Groups</p>
           </div>
         </div>
@@ -27,17 +27,27 @@
 
       <div class="text-center justify-content-center d-lg-none">
         <!-- Increase button size -->
-          <button class="btn btn-primary btn-circle align-middle fw-bold fs-1">+</button>
+        <button class="btn btn-primary btn-circle align-middle fw-bold fs-1">
+          +
+        </button>
       </div>
-      
+
       <!-- Groups container -->
       <div class="row justify-content-center mt-4 mx-auto">
-        <div v-for="group in groups" :key="group._id" class="col-lg-4 col-sm my-3">
-          <GroupCard :name="group.name" :description="group.description" />
+        <div
+          v-for="group in groups"
+          :key="group._id"
+          class="col-lg-4 col-sm my-3"
+        >
+          <GroupCard
+            :name="group.name"
+            :description="group.description"
+            :users="group.users"
+          />
         </div>
       </div>
     </div>
-    <footer class="footer d-sm-none fixed-bottom py-3 bg-light text-center">
+    <footer class="footer d-xs-none fixed-bottom py-3 bg-light text-center">
       <button class="btn btn-primary rounded-pill">Crear Grupo</button>
     </footer>
   </main>
@@ -54,67 +64,58 @@ export default {
       username: "",
       groups: [
         {
-          name: "Group 1",
-          description: "Group description",
+          _id: "1",
+          admin: "1",
+          name: "grupo",
+          description: "desc",
+          users: [
+            {
+              username: "edu",
+              _id: "2",
+            },
+            {
+              username : "santy",
+              _id: "1"
+            }
+          ],
         },
-        {
-          name: "Group 2",
-          description: "Group description",
-        },
-        {
-          name: "Group 3",
-          description: "Group description",
-        },
-        {
-          name: "Group 3",
-          description: "Group description",
-        },
-        {
-          name: "Group 3",
-          description: "Group description",
-        },
-        {
-          name: "Group 3",
-          description: "Group description",
-        },
-        {
-          name: "Group 1",
-          description: "Group description",
-        },
-        {
-          name: "Group 2",
-          description: "Group description",
-        },
-        {
-          name: "Group 3",
-          description: "Group description",
-        },
-        {
-          name: "Group 3",
-          description: "Group description",
-        },
-        {
-          name: "Group 3",
-          description: "Group description",
-        },
-        {
-          name: "Group 3",
-          description: "Group description",
-        },
-        
       ],
-    }
-  }
+    };
+  },
+
+  created() {
+    //this.getGroups()
+  },
+
+  methods: {
+    async getGroups() {
+      const respuesta = await fetch(
+        import.meta.env.VITE_APP_URL_API + "groups",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + this.$auth.token,
+          },
+        }
+      );
+
+      const data = await respuesta.json();
+
+      this.groups = data;
+    },
+  },
 };
 </script>
 
 <style>
 .btn-circle {
-    width: 60px;
-    height: 60px;
-    padding: 10px 16px;
-    border-radius: 35px;
-    font-size: 24px;
-    line-height: 1.33;
+  width: 60px;
+  height: 60px;
+  padding: 10px 16px;
+  border-radius: 35px;
+  font-size: 24px;
+  line-height: 1.33;
 }
 </style>

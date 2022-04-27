@@ -41,9 +41,11 @@ export const authStore = defineStore({
       if (data.token && data.token !== null) {
         this.token = data.token;
         this.isAuthenticated = true;
+        this.userName = data.username
         localStorage.setItem('auth', JSON.stringify({
           token: this.token,
-          isAuthenticated: true
+          isAuthenticated: true,
+          userName: this.userName
         }));
       }
 
