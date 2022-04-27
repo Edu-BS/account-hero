@@ -25,7 +25,7 @@ class UserController {
     }
 
     static async getGroups(req, res, next) {
-        await UserModel.findById(req.user.id).populate('groups')
+        await UserModel.findById(req.userId).populate('groups')
             .then(user => {
                 res.json(user.groups)
             })

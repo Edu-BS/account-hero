@@ -2,8 +2,8 @@ const GroupModel = require('../models/Group');
 
 class GroupMiddleware {
    static async userInGroup (req, res, next) {
-      const { groupId } = req.params;
-      const user = req.user;
+      const { groupId } = req.body;
+      const userId = req.userId;
       const group = await GroupModel.findById(groupId)
          .then((group) => {
             return group;
@@ -13,15 +13,15 @@ class GroupMiddleware {
       
       if (!group) 
          res.status(404).json({ errors: [{ message: "group not found" }] });
-      if (!group.users.includes(user.id) && group.admin != user.id) 
-         res.status(401).json({ errors: [{ message: "user not in group" }] });
+      if (!group.users.includes(userId.id) && group.admin != userId) 
+         res.status(403).json({ errors: [{ message: "user not in group" }] });
       
       next();
    }
 
    static async userIsAdmin (req, res, next) {
-      const { groupId } = req.params;
-      const user = req.user;
+      const { groupId } = req.body;
+      const user = req.userId;
       const group = await GroupModel.findById(groupId);
       
 
@@ -29,7 +29,7 @@ class GroupMiddleware {
       if (!group) 
          res.status(404).json({ errors: [{ message: "group not found" }] });
       if (!group.admin.equals(user.id)) 
-         res.status(401).json({ errors: [{ message: "user not admin" }] });
+         res.status(403).json({ errors: [{ message: "user not admin" }] });
       
       next();
    }
