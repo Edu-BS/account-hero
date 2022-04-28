@@ -5,16 +5,27 @@
     "default": true,
     "sortNum": 10000,
     "created": "2022-04-26T18:29:00.300Z",
-    "modified": "2022-04-26T18:32:50.914Z",
+    "modified": "2022-04-28T16:54:31.989Z",
     "data": [
       {
         "name": "host",
-        "value": "10.200.242.202"
+        "value": "localhost"
       },
       {
         "name": "port",
         "value": "3001"
       }
     ]
+  },
+  {
+    "_id": "0d896019-beb4-4753-9ef6-1d3f5b8b31e0",
+    "name": "(Local Env)",
+    "default": false,
+    "global": true,
+    "local": true,
+    "sortNum": -2,
+    "created": "2022-04-28T16:49:52.915Z",
+    "modified": "2022-04-28T16:49:52.915Z",
+    "data": []
   }
 ]
