@@ -6,7 +6,7 @@
       <div class="row justify-content-center">
         <div class="col-3 text-center fw-bold">
           <p class="mb-0 text-secondary">10</p>
-          <p class="mb-0">Groups</p>
+          <p class="mb-0  ">Groups</p>
         </div>
       </div>
     </div>

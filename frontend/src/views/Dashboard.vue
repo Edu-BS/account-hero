@@ -25,19 +25,19 @@
         </div>
       </div>
 
+      <!-- Add groups button -->
       <div class="text-center justify-content-center d-lg-none">
-        <!-- Increase button size -->
-          <button class="btn btn-primary btn-circle align-middle fw-bold fs-1">+</button>
+          <button class="btn btn-primary rounded-pill btn-circle align-middle fw-bold fs-1">+</button>
       </div>
       
       <!-- Groups container -->
       <div class="row justify-content-center mt-4 mx-auto">
-        <div v-for="group in groups" :key="group._id" class="col-lg-4 col-sm my-3">
+        <div v-for="group in groups" :key="group._id" class="col-lg-4 col-xs col-md-6 col-sm-6 my-3">
           <GroupCard :name="group.name" :description="group.description" />
         </div>
       </div>
     </div>
-    <footer class="footer d-sm-none fixed-bottom py-3 bg-light text-center">
+    <footer class="footer d-none d-lg-block fixed-bottom py-3 bg-light text-center">
       <button class="btn btn-primary rounded-pill">Crear Grupo</button>
     </footer>
   </main>
