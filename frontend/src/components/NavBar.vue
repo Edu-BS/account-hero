@@ -22,10 +22,10 @@
             <!-- Dashboard -->
             <div v-if="view == 'Dashboard'" class="collapse navbar-collapse justify-content-end">
                 <div class="row align-items-center">
-                    <div class="col-1 ms-auto">
+                    <div class="col-2 ms-auto text-end">
                         <router-link to="" class="btn btn-outline-primary rounded-pill">{{username}}</router-link>
                     </div>
-                    <div class="col-1 ms-4">
+                    <div class="col-1 ms-3 me-3 px-2">
                         <!-- <div class="col-6"> -->
                             <img class="img-fluid" src="profile_icon.png" alt="" />
                         <!-- </div> -->
