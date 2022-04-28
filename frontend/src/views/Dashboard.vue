@@ -25,11 +25,9 @@
         </div>
       </div>
 
+      <!-- Add groups button -->
       <div class="text-center justify-content-center d-lg-none">
-        <!-- Increase button size -->
-        <button class="btn btn-primary btn-circle align-middle fw-bold fs-1">
-          +
-        </button>
+          <button class="btn btn-primary rounded-pill btn-circle align-middle fw-bold fs-1">+</button>
       </div>
 
       <!-- Groups container -->

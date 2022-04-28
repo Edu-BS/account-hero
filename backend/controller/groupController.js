@@ -6,26 +6,24 @@ class GroupController {
 
    static async createGroup(req, res, next) {
       let groupData = {
-         admin: req.user.id,
+         admin: req.userId,
          name: req.body.name,
          description: req.body.description,
+         users: req.body.users
       }
 
-      const group = await GroupModel.create(groupData)
+      GroupService.createGroup(groupData)
          .then(group => {
-            return group
+            res.status(201).json({
+               group
+            });
          })
          .catch(err => {
-            res.json(err);
-         })
-
-      await UserModel.findByIdAndUpdate(req.user.id, { $push: { groups: group._id } })
-         .then(user => {
-            res.status(200);
-         })
-         .catch(err => {
-            res.json(err);
-         })
+            console.log(err);
+            res.status(500).json({
+               errors: [{ message: "group error" }]
+            });
+         });
    }
 
    static async getGroup(req, res, next) {
@@ -34,7 +32,8 @@ class GroupController {
             res.json(group);
          })
          .catch(err => {
-            res.json(err);
+            console.log(err);
+            res.status(500);
          })
    }
 
@@ -44,10 +43,26 @@ class GroupController {
             res.json(group);
          })
          .catch(err => {
-            res.json(err);
+            console.log(err);
+            res.status(500);
          })
    }
-   
+
+   static async deleteGroup(req, res, next) {
+      await GroupModel.findByIdAndDelete(req.params.groupId)
+         .then(group => {
+            res.json(group);
+         })
+         .catch(err => {
+            console.log(err);
+            res.status(500);
+         })
+   }
+
+   static async addUser(req, res, next) {
+
+   }
+
 }
 
 module.exports = GroupController;

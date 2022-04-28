@@ -30,7 +30,7 @@ class AuthMiddleware {
 
         try {
             const user = await jwt.verify(token, process.env.SECRET)
-            req.user = user
+            req.userId = user.id
             return next()
         } catch (error) {
             return res.status(401).json({ errors: [{ message: "token invalido" }] })

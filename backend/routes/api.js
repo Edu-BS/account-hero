@@ -3,8 +3,8 @@ const UserController = require('../controller/userController')
 const AuthController = require('../controller/authController')
 const GroupController = require('../controller/groupController')
 const GroupMiddleware = require('../middleware/groupMiddleware')
-const {loginValidator} = require('../validator/loginValidator');
-const {registerValidator} = require('../validator/registerValidator')
+const { loginValidator } = require('../validator/loginValidator');
+const { registerValidator } = require('../validator/registerValidator')
 const AuthMiddleware = require('../middleware/authMiddleware')
 
 
@@ -18,8 +18,6 @@ routes.post('/register',
     UserController.createUser,
 );
 
-
-
 /**
  * peticion post para logear a usuario 
  */
@@ -30,15 +28,20 @@ routes.post('/login',
     AuthController.login
 )
 
-routes.route("/groups")
+routes.route("/user/groups")
     .all(AuthMiddleware.validateToken)
     .get(UserController.getGroups)
+    
+
+routes.route("/group")
+    .all(AuthMiddleware.validateToken)
     .post(GroupController.createGroup)
 
 routes.route("/group/:groupId")
     .all(AuthMiddleware.validateToken)
     .get(GroupMiddleware.userInGroup, GroupController.getGroup)
     .put(GroupMiddleware.userIsAdmin, GroupController.updateGroup)
+    .delete(GroupMiddleware.userIsAdmin, GroupController.deleteGroup)
 
 
 module.exports = routes;

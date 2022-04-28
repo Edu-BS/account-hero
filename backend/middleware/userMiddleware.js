@@ -23,7 +23,7 @@ class UserMiddleware {
             ]
         })
 
-        req.user = userFound
+        req.userId = userFound
 
         return next()
     }
