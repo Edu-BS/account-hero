@@ -1,5 +1,6 @@
 const UserServices = require('../services/userServices')
-const {handleError} = require('../helpers/handleError')
+const UserModel = require('../models/User')
+const { handleError } = require('../helpers/handleError')
 const helperToken = require('../helpers/helperToken')
 
 /**
@@ -17,13 +18,21 @@ class UserController {
         try {
             let user = await UserServices.createUser(req.body)
             let token = helperToken.createToken(user)
-            res.json({token: token, username: user.username})
+            res.json({ token: token, username: user.username })
         } catch (error) {
-            handleError(res,error,400)
-        }   
+            handleError(res, error, 400)
+        }
     }
 
-
+    static async getGroups(req, res, next) {
+        await UserModel.findById(req.userId).populate('groups')
+            .then(user => {
+                res.json(user.groups)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
 
 }
 

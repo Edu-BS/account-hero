@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+// const GroupsModel = mongoose.model('Groups', GroupSchema);
 const bcrypt = require('bcryptjs');
 
 const UserSchema = new Schema({

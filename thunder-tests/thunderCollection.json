@@ -1,0 +1,18 @@
+[
+  {
+    "_id": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "colName": "Account-Hero",
+    "created": "2022-04-26T18:27:43.923Z",
+    "sortNum": 10000,
+    "folders": [],
+    "settings": {
+      "headers": [],
+      "auth": {
+        "type": "bearer",
+        "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNmFjNmQ1NmYxMGEzZTk1ZDVkNWY1MiIsImlhdCI6MTY1MTE2NDg4NSwiZXhwIjoxNjUxMjUxMjg1fQ.02E_idIVO3FCJXXKZvJw_asa6aqn-1toN0ax8pOhPRM"
+      },
+      "tests": [],
+      "envId": "985427ba-5af2-4ba4-bfeb-a4a35704bfec"
+    }
+  }
+]

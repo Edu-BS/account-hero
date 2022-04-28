@@ -22,6 +22,22 @@ class AuthMiddleware {
         return next()
     }
 
+    static async validateToken(req, res, next) {
+        let token = req.headers.authorization
+        token = token.replace('Bearer ', '')
+
+        if (!token) return res.status(401).json({ errors: [{ message: "no hay token" }] })
+
+        try {
+            const user = await jwt.verify(token, process.env.SECRET)
+            req.userId = user.id
+            return next()
+        } catch (error) {
+            return res.status(401).json({ errors: [{ message: "token invalido" }] })
+        }
+    }
+
+
 }
 
 module.exports =  AuthMiddleware 

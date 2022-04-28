@@ -1,0 +1,31 @@
+[
+  {
+    "_id": "985427ba-5af2-4ba4-bfeb-a4a35704bfec",
+    "name": "Server",
+    "default": true,
+    "sortNum": 10000,
+    "created": "2022-04-26T18:29:00.300Z",
+    "modified": "2022-04-28T16:54:31.989Z",
+    "data": [
+      {
+        "name": "host",
+        "value": "localhost"
+      },
+      {
+        "name": "port",
+        "value": "3001"
+      }
+    ]
+  },
+  {
+    "_id": "0d896019-beb4-4753-9ef6-1d3f5b8b31e0",
+    "name": "(Local Env)",
+    "default": false,
+    "global": true,
+    "local": true,
+    "sortNum": -2,
+    "created": "2022-04-28T16:49:52.915Z",
+    "modified": "2022-04-28T16:49:52.915Z",
+    "data": []
+  }
+]

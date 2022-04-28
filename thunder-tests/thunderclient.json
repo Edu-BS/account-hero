@@ -1,0 +1,131 @@
+[
+  {
+    "_id": "b6da4757-aada-4708-b74c-8f83b2846670",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Login",
+    "url": "http://{{host}}:{{port}}/api/login",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2022-04-26T18:28:07.661Z",
+    "modified": "2022-04-27T15:20:25.612Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"email\": \"user2@gmail.com\",\n    \"password\": \"1\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "9c650031-c225-4d23-9b6a-6c54c36e733b",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "List groups",
+    "url": "http://{{host}}:{{port}}/api/user/groups",
+    "method": "GET",
+    "sortNum": 20000,
+    "created": "2022-04-26T18:34:06.924Z",
+    "modified": "2022-04-27T15:46:29.757Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "ec1129e7-7e00-4221-affe-e7b5fe8cf949",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Get group",
+    "url": "http://{{host}}:{{port}}/api/group/626820af6569fef095c01cdc",
+    "method": "GET",
+    "sortNum": 30000,
+    "created": "2022-04-26T18:38:12.295Z",
+    "modified": "2022-04-27T16:25:49.510Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"groupId\": \"626820af6569fef095c01cdc\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "3df0232e-b027-44bd-8a45-71d91d3df4bb",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Update group",
+    "url": "http://{{host}}:{{port}}/api/group",
+    "method": "PUT",
+    "sortNum": 40000,
+    "created": "2022-04-26T18:41:33.946Z",
+    "modified": "2022-04-27T16:04:47.377Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"groupId\": \"626820af6569fef095c01cdc\",\n    \"name\": \"RenameGroup\",\n    \"description\": \"New desc\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "27df5490-36ab-4cb0-8da7-c37bc4413055",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Delete group",
+    "url": "http://{{host}}:{{port}}/api/group/{groupId}",
+    "method": "GET",
+    "sortNum": 50000,
+    "created": "2022-04-27T14:38:18.355Z",
+    "modified": "2022-04-27T14:40:32.719Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "groupId",
+        "value": "62682cc21ab1d28561b58ecf",
+        "isPath": true
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "b2969d72-e7bd-427d-a383-e4bd1c059369",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Register",
+    "url": "http://{{host}}:{{port}}/api/register",
+    "method": "POST",
+    "sortNum": 80000,
+    "created": "2022-04-27T15:04:43.906Z",
+    "modified": "2022-04-28T16:56:05.747Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"name\": \"Edu\",    \n    \"surname\": \"Borrego\",\n    \"username\": \"user1\",\n    \"birthday\": \"1995-01-01\",\n    \"email\": \"user1@gmail.com\",\n    \"password\": \"1\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "aab1a763-373d-40c8-a53f-2dcebcd2e9de",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Create group",
+    "url": "http://{{host}}:{{port}}/api/group",
+    "method": "POST",
+    "sortNum": 90000,
+    "created": "2022-04-27T15:07:51.269Z",
+    "modified": "2022-04-28T16:59:40.689Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"name\": \"Groupooo\",\n    \"Description\": \"Desc\",\n    \"users\": [\n        \"626ac769620a8e408ee6d0f3\",\n        \"62659176ae1f55911129cde0\"\n    ]\n}",
+      "form": []
+    },
+    "tests": []
+  }
+]
