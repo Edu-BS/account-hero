@@ -23,18 +23,28 @@ class AuthMiddleware {
         return next()
     }
 
-    static async validateToken(req, res, next) {
+    static validateToken(req, res, next) {
         try {
             let token = req.headers.authorization
             token = token.replace('Bearer ', '')
 
             if (!token) return res.status(401).json({ errors: [{ message: "no hay token" }] })
 
-            const decoded = await jwt.verify(token, process.env.JWT_SECRET)
+            const decoded = jwt.verify(token, process.env.JWT_SECRET)
             req.userId = decoded.id
 
             return next()
         } catch (error) {
+            if (error.name == 'TokenExpiredError') {
+                // let token = req.headers.authorization
+                // token = token.replace('Bearer ', '')
+
+                // jwt.sign(
+                //     { 'id': jwt.decode(token).id }, 
+                //     process.env.JWT_SECRET, 
+                //     { expiresIn: 3600 })
+                return res.status(401).json({ errors: [{ message: "token expirado" }] })
+            }
             return res.status(401).json({ errors: [{ message: "token invalido" }] })
         }
     }

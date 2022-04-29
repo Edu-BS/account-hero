@@ -1,6 +1,8 @@
 const GroupModel = require("../models/Group");
 const GroupService = require("../services/groupService");
 const UserModel = require("../models/User");
+const mongoose = require("mongoose");
+
 
 class GroupController {
 
@@ -9,8 +11,39 @@ class GroupController {
          admin: req.userId,
          name: req.body.name,
          description: req.body.description,
-         users: req.body.users
+         users: Array.from(new Set(req.body.users)),
       }
+
+      if (!groupData.name)
+         return res.status(400).json({ message: "Group name is required" })
+
+      for(let index = 0; index < groupData.users.length; index++) {
+         let user = groupData.users[index]
+         if (!mongoose.Types.ObjectId.isValid(user)) {
+            user = await UserModel.findOne({ 'username': user })
+               .then(res => {
+                  if (res)
+                     return res._id
+               })
+               .catch(err => {
+                  return null
+               })
+
+            if (!user) {
+               return res.status(400).json({ 'message': 'User not found' })
+            } else {
+               groupData.users[index] = user.toString()
+            }
+         }
+      }
+               
+
+      groupData.users.forEach(async (user, index) => {
+         if (!mongoose.Types.ObjectId.isValid(user)) {
+            res = await UserModel.findOne({ 'username': user }).then(res => res._id)
+            groupData.users[index] = res
+         }
+      });
 
       GroupService.createGroup(groupData)
          .then(group => {
@@ -19,7 +52,7 @@ class GroupController {
             });
          })
          .catch(err => {
-            console.log(err);
+            console.log("Controlled error", err);
             res.status(500).json({
                errors: [{ message: "group error" }]
             });

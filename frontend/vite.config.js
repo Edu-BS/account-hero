@@ -8,8 +8,8 @@ dotenv.config()
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    port:  process.env.VITE_APP_PORT,
-    host:  process.env.VITE_APP_HOST,
+    port: process.env.VITE_APP_PORT,
+    host: process.env.VITE_APP_HOST,
   },
 
   // base: 'http://10.200.242.202:3000/',
@@ -18,5 +18,8 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  configureWebpack: {
+    devtool: 'source-map'
   }
 })

@@ -4,31 +4,35 @@ const UserModel = require('../models/User');
 class GroupService {
 
    static async createGroup({ admin, name, description, users }) {
+      try {
+         const groupData = { admin, name, description, users }
 
-      const groupData = { admin, name, description, users }
+         const group = await GroupModel.create(groupData)
+            .then(group => {
+               return group
+            })
+            .catch(err => {
+               throw err;
+            })
 
-      const group = await GroupModel.create(groupData)
-         .then(group => {
-            return group.save()
-         })
-         .catch(err => {
-            console.log(err);
-         })
-      const user = await UserModel.findByIdAndUpdate(admin, {
-         $push: {
-            groups: group._id,
-         },
-      });
-
-      users.forEach(async user => {
-         await UserModel.findByIdAndUpdate(user, {
+         const user = await UserModel.findByIdAndUpdate(admin, {
             $push: {
                groups: group._id,
             },
+         })
+   
+         users.forEach(async user => {
+            await UserModel.findByIdAndUpdate(user, {
+               $push: {
+                  groups: group._id,
+               },
+            });
          });
-      });
-
-      return group;
+   
+         return group;  
+      } catch (error) {
+         throw error;
+      }
    }
 
    static async addUser({ groupId, userId }) {
