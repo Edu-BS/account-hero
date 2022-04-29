@@ -1,6 +1,8 @@
 const GroupModel = require("../models/Group");
 const GroupService = require("../services/groupService");
 const UserModel = require("../models/User");
+const mongoose = require("mongoose");
+
 
 class GroupController {
 
@@ -12,6 +14,19 @@ class GroupController {
          users: req.body.users
       }
 
+      if (!groupData.name)
+         return res.status(400).json({ message: "Group name is required" })
+
+      for (const user of groupData.users) {
+         if (!mongoose.Types.ObjectId.isValid(user))
+            return res.status(400).json({ message: "Invalid user id" })
+
+         UserModel.findById(user).catch(err => {
+            return res.status(400).json({ message: "User not found" })
+         })
+      }
+
+
       GroupService.createGroup(groupData)
          .then(group => {
             res.status(201).json({
@@ -19,7 +34,7 @@ class GroupController {
             });
          })
          .catch(err => {
-            console.log(err);
+            console.log("Controlled error", err);
             res.status(500).json({
                errors: [{ message: "group error" }]
             });

@@ -118,12 +118,12 @@
     "method": "POST",
     "sortNum": 90000,
     "created": "2022-04-27T15:07:51.269Z",
-    "modified": "2022-04-28T16:59:40.689Z",
+    "modified": "2022-04-29T18:52:45.089Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"name\": \"Groupooo\",\n    \"Description\": \"Desc\",\n    \"users\": [\n        \"626ac769620a8e408ee6d0f3\",\n        \"62659176ae1f55911129cde0\"\n    ]\n}",
+      "raw": "{\n    \"name\": \"Group\",\n    \"Description\": \"\",\n    \"users\": [\n    \"fdsfd\"\n    ]\n}",
       "form": []
     },
     "tests": []

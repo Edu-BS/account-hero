@@ -13,6 +13,7 @@
           <button v-on:click="submit" type="submit" class="btn btn-primary rounded-pill ms-auto mt-4">Verificar</button>
         </div>
       </form>
+      
       <div class="text-center m-auto mt-5">
         <p class="d-lg-none">¿Aún no tienes una cuenta? <router-link to="register" class="text-decoration-none">
             Registrate</router-link>

@@ -27,7 +27,7 @@
 
       <!-- Add groups button -->
       <div class="text-center justify-content-center d-lg-none">
-          <button class="btn btn-primary rounded-pill btn-circle align-middle fw-bold fs-1">+</button>
+          <router-link to="/group/create" class="btn btn-primary rounded-pill btn-circle align-middle fw-bold fs-1">+</router-link>
       </div>
 
       <!-- Groups container -->
@@ -46,7 +46,7 @@
       </div>
     </div>
     <footer class="footer d-none d-lg-block fixed-bottom py-3 bg-light text-center">
-      <button class="btn btn-primary rounded-pill">Crear Grupo</button>
+      <router-link to="/group/create" class="btn btn-primary rounded-pill">Crear Grupo</router-link>
     </footer>
   </main>
 </template>
@@ -87,7 +87,6 @@ export default {
 
   methods: {
     async getGroups() {
-      console.log(this.$auth.token);
       const res = await fetch(
         import.meta.env.VITE_APP_URL_API + "/user/groups",
         {

@@ -27,7 +27,7 @@
                     </div>
                     <div class="col-1 ms-3 me-3 px-2">
                         <!-- <div class="col-6"> -->
-                            <img class="img-fluid" src="profile_icon.png" alt="" />
+                            <img class="img-fluid" src="/public/profile_icon.png" alt="" />
                         <!-- </div> -->
                     </div>
                 </div>

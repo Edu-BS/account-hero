@@ -45,6 +45,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/group/create',
+      name : 'create-group',
+      component : ()=>import('../views/CreateGroup.vue'),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path : '/expense/:id',
       name: 'expense',
       component : ()=>import('../views/Expense.vue'),
@@ -73,14 +81,14 @@ router.beforeEach((to, from, next) => {
         next()
       }
     } else {
-      next('login')
+      next('/login')
     }
   // requiresAuth: false
   } else if (!to.matched.some(record => record.meta.requiresAuth)) {
     if (localStorage.getItem('auth')) {
       const auth = JSON.parse(localStorage.getItem('auth'))
       if (auth.token && auth.token !== null) {
-        next('dashboard')
+        next('/dashboard')
       }
     }
   }
