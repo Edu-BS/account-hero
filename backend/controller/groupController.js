@@ -11,21 +11,39 @@ class GroupController {
          admin: req.userId,
          name: req.body.name,
          description: req.body.description,
-         users: req.body.users
+         users: Array.from(new Set(req.body.users)),
       }
 
       if (!groupData.name)
          return res.status(400).json({ message: "Group name is required" })
 
-      for (const user of groupData.users) {
-         if (!mongoose.Types.ObjectId.isValid(user))
-            return res.status(400).json({ message: "Invalid user id" })
+      for(let index = 0; index < groupData.users.length; index++) {
+         let user = groupData.users[index]
+         if (!mongoose.Types.ObjectId.isValid(user)) {
+            user = await UserModel.findOne({ 'username': user })
+               .then(res => {
+                  if (res)
+                     return res._id
+               })
+               .catch(err => {
+                  return null
+               })
 
-         UserModel.findById(user).catch(err => {
-            return res.status(400).json({ message: "User not found" })
-         })
+            if (!user) {
+               return res.status(400).json({ 'message': 'User not found' })
+            } else {
+               groupData.users[index] = user.toString()
+            }
+         }
       }
+               
 
+      groupData.users.forEach(async (user, index) => {
+         if (!mongoose.Types.ObjectId.isValid(user)) {
+            res = await UserModel.findOne({ 'username': user }).then(res => res._id)
+            groupData.users[index] = res
+         }
+      });
 
       GroupService.createGroup(groupData)
          .then(group => {

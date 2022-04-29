@@ -12,7 +12,7 @@
       <textarea v-model="group.description" name="description" id="description_input" class="form-control" rows="4"></textarea>
 
       <label for="usuarios_input" class="form-label mt-3">Usuarios</label>
-      <input v-model="group.usuarios" type="usuarios" name="usuarios" id="usuarios_input" class="form-control" required>
+      <input v-model="group.users" type="usuarios" name="usuarios" id="usuarios_input" class="form-control" required>
 
       <div class="d-flex">
         <button @click="submit" ref="formButton" type="submit" class="btn btn-primary rounded-pill mx-auto mt-4">Crear</button>
