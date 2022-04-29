@@ -1,7 +1,7 @@
 <template>
   <main>
     <NavComponent view="Dashboard" />
-    <div class="container">
+    <div class="container mb-5">
       <!-- User info -->
       <div class="border border-1 rounded-3 m-4 d-lg-none">
         <div class="d-flex">
@@ -64,7 +64,7 @@ export default {
         {
           _id: "1",
           admin: "1",
-          name: "grupo",
+          name: "grupooo",
           description: "desc",
           users: [
             {
@@ -82,25 +82,25 @@ export default {
   },
 
   created() {
-    //this.getGroups()
+    this.getGroups()
   },
 
   methods: {
     async getGroups() {
-      const respuesta = await fetch(
-        import.meta.env.VITE_APP_URL_API + "groups",
+      console.log(this.$auth.token);
+      const res = await fetch(
+        import.meta.env.VITE_APP_URL_API + "/user/groups",
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: "Bearer " + this.$auth.token,
+            'Accept': "application/json",
+            'Authorization': "Bearer " + this.$auth.token,
           },
         }
       );
 
-      const data = await respuesta.json();
-
+      const data = await res.json();
       this.groups = data;
     },
   },

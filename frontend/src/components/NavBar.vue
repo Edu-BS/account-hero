@@ -59,7 +59,7 @@ export default {
     },
     data () {
         return {    
-            username: "Username",
+            username: this.$auth.userName,
         }
     },
     

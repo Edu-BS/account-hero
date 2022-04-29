@@ -2,6 +2,7 @@ const UserModels = require('../models/User')
 const jwt = require('jsonwebtoken')
 
 
+
 class AuthMiddleware {
 
     /**
@@ -23,14 +24,15 @@ class AuthMiddleware {
     }
 
     static async validateToken(req, res, next) {
-        let token = req.headers.authorization
-        token = token.replace('Bearer ', '')
-
-        if (!token) return res.status(401).json({ errors: [{ message: "no hay token" }] })
-
         try {
-            const user = await jwt.verify(token, process.env.SECRET)
-            req.userId = user.id
+            let token = req.headers.authorization
+            token = token.replace('Bearer ', '')
+
+            if (!token) return res.status(401).json({ errors: [{ message: "no hay token" }] })
+
+            const decoded = await jwt.verify(token, process.env.JWT_SECRET)
+            req.userId = decoded.id
+
             return next()
         } catch (error) {
             return res.status(401).json({ errors: [{ message: "token invalido" }] })
@@ -40,4 +42,4 @@ class AuthMiddleware {
 
 }
 
-module.exports =  AuthMiddleware 
+module.exports = AuthMiddleware 

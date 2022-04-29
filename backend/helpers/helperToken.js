@@ -12,7 +12,7 @@ class HelperToken {
         // se crea el token 
         const token = jwt.sign({
             id: user._id
-        }, process.env.SECRET, {
+        }, process.env.JWT_SECRET, {
             expiresIn: 86400
         })
         return token
