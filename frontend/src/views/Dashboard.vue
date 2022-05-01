@@ -100,7 +100,13 @@ export default {
       );
 
       const data = await res.json();
-      this.groups = data;
+      if (data.errors?.token) {
+        this.$auth.logout()
+        this.$router.push('login');
+      } else {
+         this.groups = data;
+      }
+     
     },
   },
 };

@@ -1,5 +1,6 @@
-const handleError = (res,err,status) => {
-    return res.status(status).json({errors : [{message: err}]})
+const handleError = (res,err,status,tipo) => {
+    let type = JSON.parse(`{"${tipo}" :{ "message" : "${err}"}}`)
+    return res.status(status).json({ errors: type })
 }
 
 

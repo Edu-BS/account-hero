@@ -41,7 +41,7 @@ class AuthController {
 
         } catch (error) {
             console.log(error)
-            handleError(res,error,400)
+            handleError(res,error,400,'login')
         }
     }
 
