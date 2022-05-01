@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { computed } from '@vue/runtime-core';
+
 export default {
   data() {
     return {

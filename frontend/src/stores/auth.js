@@ -92,6 +92,7 @@ export const authStore = defineStore({
       this.token = null 
       this.isAuthenticated = false 
       this.username = null
+      this.error = null
       localStorage.removeItem('auth')
     }
   }
