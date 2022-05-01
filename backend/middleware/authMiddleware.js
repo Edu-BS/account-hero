@@ -28,7 +28,7 @@ class AuthMiddleware {
             let token = req.headers.authorization
             token = token.replace('Bearer ', '')
 
-            if (!token) return res.status(401).json({ errors: [{ message: "no hay token" }] })
+            if (!token) return res.status(401).handleHerror
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET)
             req.userId = decoded.id
@@ -43,9 +43,9 @@ class AuthMiddleware {
                 //     { 'id': jwt.decode(token).id }, 
                 //     process.env.JWT_SECRET, 
                 //     { expiresIn: 3600 })
-                return res.status(401).json({ errors: [{ message: "token expirado" }] })
+                return res.status(401).json({ errors:  {token : { message: "token expirado" }} })
             }
-            return res.status(401).json({ errors: [{ message: "token invalido" }] })
+            return res.status(401).json({ errors: {token :{ message: "token invalido" }}})
         }
     }
 

@@ -20,7 +20,7 @@ class UserController {
             let token = helperToken.createToken(user)
             res.json({ token: token, username: user.username })
         } catch (error) {
-            handleError(res, error, 400)
+            handleError(res, error, 400,"user")
         }
     }
 

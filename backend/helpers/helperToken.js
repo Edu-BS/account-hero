@@ -17,7 +17,6 @@ class HelperToken {
         })
         return token
     }
-
 }
 
 

@@ -2,6 +2,11 @@
   <main>
     <NavComponent view="Register" />
     <div class="container ">
+        <div v-if="this.$auth.error !== null" class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ this.$auth.error }}
+        <button @click="deleteError" type="button" class="btn-close" data-bs-dismiss="alert"
+          aria-label="Close"></button>
+      </div>
       <form @submit.prevent="submit" class="form justify-content-center col-9 col-md-5 m-auto mt-5">
         <div class="row">
           <div class="col-md-6 ">
@@ -99,19 +104,14 @@ export default {
         this.formFeedback[key] = '';
       }
 
-      const res = await this.$auth.register(name, surname, username, birthday, email, password);
-
-      if (res.errors) {
-        for (let index = 0; index < res.errors.length; index++) {
-          if (res.errors[index].message == "correo ya existe") {
-            this.formFeedback.email = 'El email ya está en uso'
-          } else if (res.errors[index].message == "username ya existe") {
-            this.formFeedback.username = 'El nombre de usuario ya está en uso'
-          }
+      await this.$auth.register(name, surname, username, birthday, email, password);
+      if (this.$auth.isAuthenticated) {
+          this.$router.push('dashboard');
         }
-      } else  {
-        this.$router.push('login');
-      }
+    },
+
+    deleteError() {
+      this.$auth.error = null;
     }
   }
 }
