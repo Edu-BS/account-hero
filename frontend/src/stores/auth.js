@@ -14,7 +14,7 @@ export const authStore = defineStore({
       token: null,
       isAuthenticated: false,
       userName: null,
-      error : null
+      error: null
     }
   },
   getters: {
@@ -38,7 +38,7 @@ export const authStore = defineStore({
         body: JSON.stringify({ email, password })
       })
       const data = await response.json();
- 
+
       // Verifico si el token existe o es diferente a null
       if (data.token && data.token !== null) {
         this.token = data.token;
@@ -50,7 +50,10 @@ export const authStore = defineStore({
           userName: this.userName
         }));
       } else if (data.errors) {
-        this.error = data.errors.login.message
+        if (data.errors.login === "undefined")
+          this.error = data.errors.login.message
+        else if (data.errors.form === "undefined")
+          this.error = data.errors.form[0].message
       }
 
       return data
@@ -73,7 +76,7 @@ export const authStore = defineStore({
       })
 
       const data = await res.json();
-      
+
       // Verifico si el token existe o es diferente a null
       if (data.token && data.token !== null) {
         this.token = data.token;
@@ -81,17 +84,21 @@ export const authStore = defineStore({
           token: this.token,
           isAuthenticated: true
         }));
-      }else if (data.errors) {
-        this.error = data.errors.user.message
+      } else if (data.errors) {
+        if (data.errors.login === "undefined")
+          this.error = data.errors.login.message
+        else if (data.errors.form === "undefined")
+          this.error = data.errors.form[0].message
       }
       return data
     },
 
     // Funcion para eliminar el token
     logout() {
-      this.token = null 
-      this.isAuthenticated = false 
+      this.token = null
+      this.isAuthenticated = false
       this.username = null
+      this.error = null
       localStorage.removeItem('auth')
     }
   }

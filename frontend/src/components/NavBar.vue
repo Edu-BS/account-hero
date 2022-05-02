@@ -22,8 +22,17 @@
             <!-- Dashboard -->
             <div v-if="view == 'Dashboard'" class="collapse navbar-collapse justify-content-end">
                 <div class="row align-items-center">
+
+                    
                     <div class="col-2 ms-auto text-end">
-                        <router-link to="" class="btn btn-outline-primary rounded-pill">{{username}}</router-link>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary rounded-pill dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{username}}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><button @click="logout" class="dropdown-item">logout</button></li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="col-1 ms-3 me-3 px-2">
                         <!-- <div class="col-6"> -->
@@ -47,6 +56,9 @@
                     <router-link to="register" class="btn btn-outline-primary rounded-pill text-black">Registrarse</router-link>
                     <router-link to="login"  class="btn btn-primary rounded-pill mt-2">Iniciar sessión</router-link>
                 </ul>
+            </div>
+            <div v-else class="offcanvas-body">
+                    <button class="btn btn-primary rounded-pill mt-2">Logout</button>
             </div> 
         </div>
 </nav>
@@ -60,6 +72,13 @@ export default {
     data () {
         return {    
             username: this.$auth.userName,
+        }
+    },
+
+    methods: {
+        logout() {
+            this.$auth.logout()
+             this.$router.push('login');
         }
     },
     
