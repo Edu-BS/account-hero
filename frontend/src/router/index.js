@@ -62,6 +62,15 @@ const router = createRouter({
     },
 
     {
+      path : '/group/:idGroup/expense/create',
+      name: 'create-expense',
+      component : ()=>import('../views/CreateExpense.vue'),
+      meta: {
+        requiresAuth: true
+      }
+    },
+
+    {
       path : '/prueba',
       name: 'prueba',
       component : ()=>import('../views/Prueba.vue'),
