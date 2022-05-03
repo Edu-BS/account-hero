@@ -4,7 +4,7 @@
 
 // dotenv.config()
 
-let endpoint = 'http://localhost:4000/api/group'
+let endpoint = 'http://localhost:3000/api/group'
 
 export default  class GroupController {
 

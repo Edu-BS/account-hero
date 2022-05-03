@@ -27,6 +27,7 @@ class UserController {
     static async getGroups(req, res, next) {
         await UserModel.findById(req.userId).populate('groups')
             .then(user => {
+                console.log("entra")
                 res.json(user.groups)
             })
             .catch(err => {

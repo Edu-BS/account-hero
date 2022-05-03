@@ -7,13 +7,17 @@ const mongoose = require("mongoose");
 class GroupController {
 
    static async createGroup(req, res, next) {
+     
+      let allUsers = new Array(req.body.users)
+      
+      allUsers.push(req.userId)
+      
       let groupData = {
          admin: req.userId,
          name: req.body.name,
          description: req.body.description,
-         users: Array.from(new Set(req.body.users)),
+         users: Array.from(new Set(allUsers)),
       }
-
       if (!groupData.name)
          return res.status(400).json({ message: "Group name is required" })
 
@@ -60,7 +64,7 @@ class GroupController {
    }
 
    static async getGroup(req, res, next) {
-      await GroupModel.findById(req.params.groupId)
+      await GroupModel.findById(req.params.groupId).populate('users')
          .then(group => {
             res.json(group);
          })
