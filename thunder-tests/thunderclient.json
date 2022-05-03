@@ -113,12 +113,12 @@
     "method": "POST",
     "sortNum": 90000,
     "created": "2022-04-27T15:07:51.269Z",
-    "modified": "2022-04-27T16:13:52.165Z",
+    "modified": "2022-05-03T18:19:27.194Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"name\": \"Groupooo\",\n    \"Description\": \"Desc\"\n}",
+      "raw": "{\n    \"name\": \"Groupooo\",\n    \"Description\": \"Desc\",\n    \"users\": [\n        {\"_id\":\"62695c0fdc14b2adada2f576\"}    \n    ]\n}",
       "form": []
     },
     "tests": []

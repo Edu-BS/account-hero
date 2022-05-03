@@ -20,7 +20,7 @@ class UserController {
             let token = helperToken.createToken(user)
             res.json({ token: token, username: user.username })
         } catch (error) {
-            handleError(res, error, 400,"user")
+            handleError(res, error, 400, "user")
         }
     }
 
@@ -41,6 +41,28 @@ class UserController {
             })
             .catch(err => {
                 return res.status(500)
+            })
+    }
+
+    static async getInvitations(req, res, next) {
+        await UserServices.getInvitations(req.userId)
+            .then(invitations => {
+                return res.json(invitations)
+            })
+            .catch(err => {
+                console.log(err);
+                return res.status(500)
+            })
+    }
+
+    static async acceptInvitation(req, res, next) {
+        await UserServices.acceptInvitation(req.body.invitationId, req.userId)
+            .then(invitation => {
+                return res.json(invitation)
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500)
             })
     }
 

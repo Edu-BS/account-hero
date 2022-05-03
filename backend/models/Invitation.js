@@ -21,10 +21,12 @@ const InvitationSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
+    rejected: {
+        type: Boolean,
+        default: false,
+    }
+}, {
+    timestamps: true,
 });
 
 module.exports = mongoose.model('Invitation', InvitationSchema);

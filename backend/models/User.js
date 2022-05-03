@@ -34,7 +34,12 @@ const UserSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Group',
       unique: true
-   }]
+   }],
+   invitations: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Invitation',
+      unique: true
+   }],
 }) 
 
 /**

@@ -1,29 +1,33 @@
 const GroupModel = require('../models/Group');
 const UserModel = require('../models/User');
-
+const InvitationService = require('../services/invitationService');
 class GroupService {
 
    static async createGroup({ admin, name, description, users }) {
       try {
-         const groupData = { admin, name, description, users }
+         const groupData = { admin, name, description }
+
+         members = users.filter(user => user !== admin);
 
          const group = await GroupModel.create(groupData)
-            .then(group => {
-               return group
+            .then(groupRes => {
+               return groupRes
             })
             .catch(err => {
+               console.log(err);
                throw err;
             })
-   
-         users.forEach(async user => {
-            await UserModel.findByIdAndUpdate(user, {
-               $push: {
-                  groups: group._id,
-               },
-            });
+
+
+         members.forEach(async user => {
+            await InvitationService.createInvitation({ hostId: admin, guestId: user, groupId: group._id })
+               .catch(err => {
+                  console.log(err);
+                  throw err;
+               })
          });
-   
-         return group;  
+
+         return group;
       } catch (error) {
          throw error;
       }
@@ -41,6 +45,16 @@ class GroupService {
          },
       });
       return group;
+   }
+
+   static async inviteUser({ hostId, guestId, groupId }) {
+      await InvitationModel.create({ hostId, guestId, groupId })
+         .then(invitation => {
+            return invitation;
+         })
+         .catch(err => {
+            throw err;
+         })
    }
 
 }
