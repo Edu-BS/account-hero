@@ -1,15 +1,7 @@
-// import process from 'process';
-// import dotenv from 'dotenv'
-// const dotenv = require('dotenv')
+export default class GroupController {
 
-// dotenv.config()
+    static async createGroup(endpoint, token, { name, description, users }) {
 
-let endpoint = 'http://localhost:4000/api/group'
-
-export default  class GroupController {
-
-    static async createGroup  (token, { name, description, users }) {
-        console.log(endpoint);
         const res = await fetch(endpoint, {
             method: "POST",
             headers: {
@@ -32,5 +24,5 @@ export default  class GroupController {
             })
         return res
     }
-        
+
 }

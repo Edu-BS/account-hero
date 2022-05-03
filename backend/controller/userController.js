@@ -34,6 +34,16 @@ class UserController {
             })
     }
 
+    static async getByUsernameLike(req, res, next) {
+        await UserServices.getByUsernameLike(req.body.user.username)
+            .then(users => {
+                return res.json(users)
+            })
+            .catch(err => {
+                return res.status(500)
+            })
+    }
+
 }
 
 

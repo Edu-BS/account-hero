@@ -69,8 +69,13 @@ class UserServices {
      * @returns {object} usuario de la base de datos 
      */
     static async getUser(_id) {
-        const user =  UserModels.findById(_id)
+        const user = UserModels.findById(_id)
         return user
+    }
+
+    static async getByUsernameLike(username) {
+        const users = await UserModels.find({'username': {$regex: username, $options: 'i'}}).select('username name _id').limit(5)
+        return users
     }
 }
 

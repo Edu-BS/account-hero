@@ -8,12 +8,12 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2022-04-26T18:28:07.661Z",
-    "modified": "2022-04-27T15:20:25.612Z",
+    "modified": "2022-05-03T15:47:24.811Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"user2@gmail.com\",\n    \"password\": \"1\"\n}",
+      "raw": "{\n    \"email\": \"edu@gmail.com\",\n    \"password\": \"1\"\n}",
       "form": []
     },
     "tests": []
@@ -41,14 +41,9 @@
     "method": "GET",
     "sortNum": 30000,
     "created": "2022-04-26T18:38:12.295Z",
-    "modified": "2022-04-27T16:25:49.510Z",
+    "modified": "2022-05-03T15:49:53.146Z",
     "headers": [],
     "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n    \"groupId\": \"626820af6569fef095c01cdc\"\n}",
-      "form": []
-    },
     "tests": []
   },
   {
@@ -99,12 +94,12 @@
     "method": "POST",
     "sortNum": 80000,
     "created": "2022-04-27T15:04:43.906Z",
-    "modified": "2022-04-28T16:56:05.747Z",
+    "modified": "2022-04-27T15:20:16.648Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"name\": \"Edu\",    \n    \"surname\": \"Borrego\",\n    \"username\": \"user1\",\n    \"birthday\": \"1995-01-01\",\n    \"email\": \"user1@gmail.com\",\n    \"password\": \"1\"\n}",
+      "raw": "{\n    \"name\": \"Edu\",    \n    \"surname\": \"Borrego\",\n    \"username\": \"user2\",\n    \"birthday\": \"1995-01-01\",\n    \"email\": \"user2@gmail.com\",\n    \"password\": \"1\"\n}",
       "form": []
     },
     "tests": []
@@ -118,12 +113,12 @@
     "method": "POST",
     "sortNum": 90000,
     "created": "2022-04-27T15:07:51.269Z",
-    "modified": "2022-04-29T19:51:44.158Z",
+    "modified": "2022-04-27T16:13:52.165Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"name\": \"Group\",\n    \"Description\": \"\",\n    \"users\": [\n    \"user1\",\n    \"user2\",\n    \"user2\"\n    ]\n}",
+      "raw": "{\n    \"name\": \"Groupooo\",\n    \"Description\": \"Desc\"\n}",
       "form": []
     },
     "tests": []
