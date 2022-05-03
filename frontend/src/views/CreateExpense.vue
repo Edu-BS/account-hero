@@ -21,10 +21,11 @@
 
                 <div v-for="user in expense.fractions" :key="user._id" class="mt-3">
                     <div class="form-check form-check-inline">
-                        <label class="form-check-label" for="flexCheckDefault"> {{user.username}} </label>
+                        <label class="form-check-label" for="flexCheckDefault"> {{user.username}}</label>
                         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"  v-model="user.checked">
-                        <p>{{user.amount}}</p>
+                        <div> {{user.amount}}</div>
                     </div>
+                    
                 </div>
                 <div class="d-flex">
                     <button @click="submit" ref="formButton" type="submit"
@@ -32,7 +33,6 @@
                 </div>
             </form>
         </div>
-        <p>{{this.$auth.token}}</p>
     </main>
 </template>
 <script>
@@ -41,6 +41,7 @@
 export default {
     data() {
         return {
+            infoGroup : null,
             expense: {
                 idGroup : '',
                 name: '',
@@ -53,36 +54,17 @@ export default {
     },
 
     created() {
-        let user1 = {
-            _id: 1,
-            username: "santy",
-            amount: Number.parseFloat(0).toFixed(2),
-            checked : true
-        }
-        let user2 = {
-            _id: 2,
-            username: "edu",
-            amount: Number.parseFloat(0).toFixed(2),
-             checked : false
-        }
-
-        let user3 = {
-            _id: 3,
-            username: "mario",
-            amount: Number.parseFloat(0).toFixed(2),
-             checked : true
-        }
-        this.expense.fractions.push(user1)
-        this.expense.fractions.push(user2)
-        this.expense.fractions.push(user3)
-        
+    
         // guardo el id del grupo donde se encuentra el gasto nuevo 
         this.expense.idGroup = this.$route.params.idGroup
         
-        this.getGroup()
+        this.getUserGroup()
+
+     
 
        // cuando cambie el monto de la factura fracciono por igual entre todos los integrantes
         this.$watch('expense.amount',(newAmount) => {
+             console.log("entra")
           let amount = newAmount
           let userActive = this.expense.fractions.filter(user => user.checked )
           let fraccion = amount / userActive.length
@@ -91,7 +73,7 @@ export default {
           this.expense.fractions.forEach(user => {
               user.amount = Number.parseFloat(0).toFixed(2)
               if (user.checked) {
-                  user.amount = Number.parseFloat(0).toFixed(2)
+                  user.amount = Number.parseFloat(fraccion).toFixed(2)
               }
           });
       })
@@ -100,7 +82,7 @@ export default {
       this.$watch('expense.fractions', ()=> {
           let users = this.expense.fractions
           let amount = this.expense.amount
-          
+         
           // filtro por usuarios que estan activos 
           let userActive = this.expense.fractions.filter(user => user.checked )
           
@@ -123,7 +105,8 @@ export default {
            
         },
 
-        async getGroup() {
+        //NOTA: cambiar en el backend para que solo regrese del usuario id, username
+        async getUserGroup() {
             console.log(this.expense.idGroup);
             const res = await fetch(import.meta.env.VITE_APP_URL_API + `/group/${this.expense.idGroup}`, {
                 method: "GET",
@@ -135,7 +118,23 @@ export default {
             })
 
             const data = await res.json();
-            console.log(data);
+            this.infoGroup = data;
+
+            // agrego los usuarios a las fracciones 
+            this.infoGroup.users.forEach(user => {
+            let newUser = {
+                _id: user._id,
+                username: user.username,
+                amount :  Number.parseFloat(0).toFixed(2),
+                checked : true
+            }
+            this.expense.fractions.push(newUser)
+        })
+        },
+
+
+        async newExpense() {
+
         }
 
     },
