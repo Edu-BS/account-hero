@@ -1,7 +1,7 @@
 export default class GroupController {
 
     static async createGroup(endpoint, token, { name, description, users }) {
-
+        
         const res = await fetch(endpoint, {
             method: "POST",
             headers: {

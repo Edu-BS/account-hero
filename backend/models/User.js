@@ -33,6 +33,7 @@ const UserSchema = new Schema({
    groups: [{
       type: Schema.Types.ObjectId,
       ref: 'Group',
+      unique: true
    }]
 }) 
 

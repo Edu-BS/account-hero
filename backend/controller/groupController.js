@@ -3,19 +3,17 @@ const GroupService = require("../services/groupService");
 const UserModel = require("../models/User");
 const mongoose = require("mongoose");
 
-
 class GroupController {
 
    static async createGroup(req, res, next) {
-
-      allUsers = new Array(req.body.users)
-      allUsers.push(req.userId)
+      let allUsersId = req.body.users.map(user => user._id)
+      allUsersId.push(req.userId)
       
       let groupData = {
          admin: req.userId,
          name: req.body.name,
          description: req.body.description,
-         users: Array.from(new Set(allUsers)),
+         users: Array.from(new Set(allUsersId)),
       }
       
       if (!groupData.name)

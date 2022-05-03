@@ -14,12 +14,6 @@ class GroupService {
             .catch(err => {
                throw err;
             })
-
-         const user = await UserModel.findByIdAndUpdate(admin, {
-            $push: {
-               groups: group._id,
-            },
-         })
    
          users.forEach(async user => {
             await UserModel.findByIdAndUpdate(user, {

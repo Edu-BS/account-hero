@@ -6,7 +6,7 @@
       <div v-if="this.error !== null" class="alert alert-warning alert-dismissible fade show" role="alert">
         {{ this.error }}
       </div>
-    <form @submit="submit" class="form justify-content-center col-9 col-md-5 m-auto mt-5">
+    <form @submit.prevent="submit" class="form justify-content-center col-9 col-md-5 m-auto mt-5">
       <label for="name_input" class="form-label">Nombre</label>
       <input v-model="group.name" type="name" name="name" id="name_input" class="form-control" required>
 
@@ -14,7 +14,7 @@
       <textarea v-model="group.description" name="description" id="description_input" class="form-control" rows="4"></textarea>
 
       <label for="usuarios_input" class="form-label mt-3">Usuarios</label>
-      <input v-model="userToAdd" type="usuarios" name="usuarios" autocomplete="off" id="usuarios_input" class="form-control" required>
+      <input v-model="userToAdd" type="usuarios" name="usuarios" autocomplete="off" id="usuarios_input" class="form-control">
       <div v-if="usersResearch">
         <ul class="list-group" style="max-height: 200px;">
           <li v-for="user in usersResearch" :key="user._id" class="list-group-item">
@@ -34,7 +34,7 @@
       </div>
 
       <div class="d-flex">
-        <button @click="submit" ref="formButton" type="submit" class="d-lg-none btn btn-primary rounded-pill mx-auto mt-4">Crear</button>
+        <button ref="formButton" type="submit" class="d-lg-none btn btn-primary rounded-pill mx-auto mt-4">Crear</button>
       </div>
     </form>
 
@@ -42,8 +42,6 @@
       <button @click="$refs.formButton.click()" class="btn btn-primary rounded-pill">Crear</button>
     </footer>
   </div>
-  {{usersResearch}}
-  {{userToAdd}}
   </main>
 </template>
 <script>
@@ -64,9 +62,6 @@ export default {
       }
     };
   },
-  created() {
-    this.usersResearch = [];
-  },
   watch: {
     userToAdd(newUsername, oldName) {
       console.log(newUsername);
@@ -78,9 +73,11 @@ export default {
       this.deleteError()
       this.createGroup()
     },
-    createGroup: async function() {
-      let endpoint = this.apiEndpoint + '/groups';
-      const res = await GroupController.createGroup(this.apiEndpoint, this.$auth.token, this.group);
+    async createGroup() {
+      let endpoint = this.apiEndpoint + '/group';
+      
+      const res = await GroupController.createGroup(endpoint, this.$auth.token, this.group);
+      console.log(res);
       const resJson = await res.json() 
 
       if (res.ok && res.status === 201) {
