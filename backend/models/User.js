@@ -33,8 +33,12 @@ const UserSchema = new Schema({
    groups: [{
       type: Schema.Types.ObjectId,
       ref: 'Group',
-   }]
-}) 
+   }],
+   invitations: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Invitation',
+   }],
+})
 
 /**
  * @description Funcion para encriptar una contraseña
@@ -43,8 +47,8 @@ const UserSchema = new Schema({
  */
 UserSchema.statics.encryptPassword = async (password) => {
    const salt = await bcrypt.genSalt(10);
-   const hash = await bcrypt.hash(password,salt); 
-   return  hash;
+   const hash = await bcrypt.hash(password, salt);
+   return hash;
 }
 
 
@@ -55,8 +59,27 @@ UserSchema.statics.encryptPassword = async (password) => {
  * @returns {boolean} true si la contraseña es la misma, false si no es la misma
  */
 UserSchema.statics.comparePassword = async (password, recivedPassword) => {
-   return await bcrypt.compare(password,recivedPassword);
+   return await bcrypt.compare(password, recivedPassword);
 }
 
+// UserSchema.pre('populate', function () {
+//    // If a group is null when populating, remove it from user.groups
+//    let groups = this.populating('groups');
+   
+//    for (const groupId of this.groups) {
+//       if (!groups.includes(groupId)) {
+//          this.groups.pull(groupId);
+//       }
+//    }
+
+//    // If a invitation is null when populating, remove it from user.invitations
+//    let invitations = this.populating('invitations');
+
+//    for (const invitationId of this.invitations) {
+//       if (!invitations.includes(invitationId)) {
+//          this.invitations.pull(invitationId);
+//       }
+//    }
+// })
 
 module.exports = mongoose.model('User', UserSchema);

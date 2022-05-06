@@ -2,7 +2,7 @@ const GroupModel = require('../models/Group');
 
 class GroupMiddleware {
    static async userInGroup (req, res, next) {
-      const { groupId } = req.body;
+      const { groupId } = req.params;
       const userId = req.userId;
       const group = await GroupModel.findById(groupId)
          .then((group) => {
@@ -20,7 +20,7 @@ class GroupMiddleware {
    }
 
    static async userIsAdmin (req, res, next) {
-      const { groupId } = req.body;
+      const { groupId } = req.params;
       const user = req.userId;
       const group = await GroupModel.findById(groupId);
       

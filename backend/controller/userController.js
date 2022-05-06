@@ -20,17 +20,52 @@ class UserController {
             let token = helperToken.createToken(user)
             res.json({ token: token, username: user.username })
         } catch (error) {
-            handleError(res, error, 400,"user")
+            handleError(res, error, 400, "user")
         }
     }
 
     static async getGroups(req, res, next) {
-        await UserModel.findById(req.userId).populate('groups')
+        return await UserModel.findById(req.userId).populate('groups')
             .then(user => {
-                res.json(user.groups)
+                return res.json(user.groups)
             })
             .catch(err => {
                 console.log(err)
+                return res.status(500)
+            })
+    }
+
+    static async getByUsernameLike(req, res, next) {
+        await UserServices.getByUsernameLike(req.body.user.username)
+            .then(users => {
+                return res.json(users)
+            })
+            .catch(err => {
+                return res.status(500)
+            })
+    }
+
+    static async getInvitations(req, res, next) {
+        await UserServices.getInvitations(req.userId)
+            .then(invitations => {
+                return res.json(invitations)
+            })
+            .catch(err => {
+                console.log(err);
+                return res.status(500)
+            })
+    }
+
+    static async acceptInvitation(req, res, next) {
+        return UserServices.acceptInvitation(req.body.invitationId, req.userId)
+            .then(invitation => {
+                return res.json(invitation)
+            })
+            .catch(err => {
+                console.log(err);
+                // if (!err.message)
+                //     return res.status(500)
+                return res.status(403).json(err)
             })
     }
 

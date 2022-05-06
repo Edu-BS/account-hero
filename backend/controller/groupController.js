@@ -3,60 +3,42 @@ const GroupService = require("../services/groupService");
 const UserModel = require("../models/User");
 const mongoose = require("mongoose");
 
-
 class GroupController {
 
    static async createGroup(req, res, next) {
-      let groupData = {
-         admin: req.userId,
-         name: req.body.name,
-         description: req.body.description,
-         users: Array.from(new Set(req.body.users)),
-      }
+      try {
 
-      if (!groupData.name)
-         return res.status(400).json({ message: "Group name is required" })
+         let allUsersId = req.body.users.map(user => user._id)
+         allUsersId.push(req.userId)
 
-      for(let index = 0; index < groupData.users.length; index++) {
-         let user = groupData.users[index]
-         if (!mongoose.Types.ObjectId.isValid(user)) {
-            user = await UserModel.findOne({ 'username': user })
-               .then(res => {
-                  if (res)
-                     return res._id
-               })
-               .catch(err => {
-                  return null
-               })
-
-            if (!user) {
-               return res.status(400).json({ 'message': 'User not found' })
-            } else {
-               groupData.users[index] = user.toString()
-            }
+         let groupData = {
+            admin: req.userId,
+            name: req.body.name,
+            description: req.body.description,
+            users: Array.from(new Set(allUsersId)),
          }
+
+         if (!groupData.name)
+            return res.status(400).json({ message: "Group name is required" })
+
+         let validUsers = groupData.users.filter(user => mongoose.Types.ObjectId.isValid(user))
+
+         if (validUsers.length !== groupData.users.length)
+            return res.status(400).json({ message: "Invalid users" })
+
+         GroupService.createGroup(groupData)
+            .then(group => {
+               res.status(201).json({ group });
+            })
+            .catch(err => {
+               console.log("Controlled error", err);
+               res.status(500).json({
+                  errors: [{ message: "group error" }]
+               });
+            });
+      } catch (error) {
+         return res.status(500)
       }
-               
-
-      groupData.users.forEach(async (user, index) => {
-         if (!mongoose.Types.ObjectId.isValid(user)) {
-            res = await UserModel.findOne({ 'username': user }).then(res => res._id)
-            groupData.users[index] = res
-         }
-      });
-
-      GroupService.createGroup(groupData)
-         .then(group => {
-            res.status(201).json({
-               group
-            });
-         })
-         .catch(err => {
-            console.log("Controlled error", err);
-            res.status(500).json({
-               errors: [{ message: "group error" }]
-            });
-         });
    }
 
    static async getGroup(req, res, next) {
@@ -90,10 +72,6 @@ class GroupController {
             console.log(err);
             res.status(500);
          })
-   }
-
-   static async addUser(req, res, next) {
-
    }
 
 }
