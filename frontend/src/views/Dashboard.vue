@@ -30,9 +30,11 @@
           <router-link to="/group/create" class="btn btn-primary rounded-pill btn-circle align-middle fw-bold fs-1">+</router-link>
       </div>
 
+      <Invitations />
+
       <!-- Groups container -->
-      <div class="row justify-content-center mt-4 mx-auto">
-        <div
+      <div v-if="groups.length > 0" class="row justify-content-center mt-4 mx-auto">
+        <div 
           v-for="group in groups"
           :key="group._id"
           class="col-lg-4 col-xs col-md-6 col-sm-6 my-3"
@@ -52,39 +54,21 @@
 </template>
 <script>
 import GroupCard from "../components/GroupCard.vue";
+import Invitations from "../components/Invitations.vue";
 
 export default {
   components: {
     GroupCard,
+    Invitations
   },
   data() {
     return {
       username: "",
       groups: [
-        {
-          _id: "1",
-          admin: "1",
-          name: "grupooo",
-          description: "desc",
-          users: [
-            {
-              username: "edu",
-              _id: "2",
-            },
-            {
-              username : "santy",
-              _id: "1"
-            }
-          ],
-        },
+       
       ],
     };
   },
-
-  created() {
-    this.getGroups()
-  },
-
   methods: {
     async getGroups() {
       const res = await fetch(
@@ -109,6 +93,10 @@ export default {
      
     },
   },
+  async created(){
+    await this.getGroups();
+  },
+
 };
 </script>
 

@@ -34,13 +34,17 @@ routes.route('/users/nameLike')
     .post(UserController.getByUsernameLike)
     // .get(UserController.getByUsernameLike)
 
-routes.route('/users/invitation/accept')
+routes.route('/user/invitations')
     .all(AuthMiddleware.validateToken)
-    .post(UserController.acceptInvitation)
+    .get(UserController.getInvitations)
 
-routes.route('/users/invitation/reject')
+routes.route('/user/invitation/accept')
     .all(AuthMiddleware.validateToken)
-    .post(UserController.rejectInvitation)
+    .put(UserController.acceptInvitation)
+
+routes.route('/user/invitation/reject')
+    .all(AuthMiddleware.validateToken)
+    // .post(UserController.rejectInvitation)
 
 
 routes.route('/user/groups')

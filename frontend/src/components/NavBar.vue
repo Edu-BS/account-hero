@@ -30,7 +30,7 @@
                                 {{username}}
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><button @click="logout" class="dropdown-item">logout</button></li>
+                                <li><button @click="logout" type="button" class="dropdown-item">logout</button></li>
                             </ul>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                 </ul>
             </div>
             <div v-else class="offcanvas-body">
-                    <button class="btn btn-primary rounded-pill mt-2">Logout</button>
+                <button @click="logout" type="button" class="btn btn-primary rounded-pill mt-2">Logout</button>
             </div> 
         </div>
 </nav>
@@ -74,11 +74,11 @@ export default {
             username: this.$auth.userName,
         }
     },
-
     methods: {
         logout() {
+            console.log('logout');
             this.$auth.logout()
-             this.$router.push('login');
+            this.$router.push('login');
         }
     },
     

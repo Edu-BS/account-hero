@@ -91,14 +91,16 @@ export default {
     },
     async getByUsernameLike(username) {
       let endpoint = this.apiEndpoint + '/users/nameLike'
-      
-      const res = await UserController.getByUsernameLike(endpoint, this.$auth.token, username)
-      let resJson = await res.json()
+      if (username.length > 1) {
+        const res = await UserController.getByUsernameLike(endpoint, this.$auth.token, username)
+        let resJson = await res.json()
 
-      if (this.group.users.length > 0) 
-        resJson = resJson.filter(user => !this.group.users.find(userInGroup => userInGroup.username == user.username))
-      
-      this.usersResearch = resJson
+        if (this.group.users.length > 0) 
+          resJson = resJson.filter(user => !this.group.users.find(userInGroup => userInGroup.username == user.username))
+        resJson = resJson.filter(user => user.username != this.$auth.userName)
+
+        this.usersResearch = resJson
+      }
     },
     deleteError() {
       this.error = null;

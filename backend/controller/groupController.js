@@ -21,10 +21,10 @@ class GroupController {
          if (!groupData.name)
             return res.status(400).json({ message: "Group name is required" })
 
-         groupData.users.forEach(user => {
-            if (!mongoose.Types.ObjectId.isValid(user))
-               return res.status(400).json({ message: "Invalid user" })
-         })
+         let validUsers = groupData.users.filter(user => mongoose.Types.ObjectId.isValid(user))
+
+         if (validUsers.length !== groupData.users.length)
+            return res.status(400).json({ message: "Invalid users" })
 
          GroupService.createGroup(groupData)
             .then(group => {

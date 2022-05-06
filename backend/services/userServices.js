@@ -1,5 +1,6 @@
 const UserModel = require('../models/User')
 const InvitationService = require('../services/invitationService')
+const GroupService = require('./groupService')
 
 class UserServices {
 
@@ -78,9 +79,22 @@ class UserServices {
     }
 
     static async getInvitations(userId) {
-        await UserModel.findById(userId).populate('invitations').select('invitations')
+        return await InvitationService.getInvitations(userId)
+            .then(invitations => {
+                // return the invitations 
+                return invitations
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    static async addGroup(groupId, userId) {
+        return await UserModel.findByIdAndUpdate(userId, {
+            $push: { groups: groupId }
+        })
             .then(user => {
-                return user.invitations
+                return user
             })
             .catch(err => {
                 throw err
@@ -88,7 +102,7 @@ class UserServices {
     }
 
     static async addInvitation(userId, invitationId) {
-        await UserModel.findByIdAndUpdate(userId, { $push: { invitations: invitationId } })
+        return UserModel.findByIdAndUpdate(userId, { $push: { invitations: invitationId } })
             .then(user => {
                 return user
             })
@@ -98,23 +112,27 @@ class UserServices {
     }
 
     static async acceptInvitation(invitationId, userId) {
-        this.getInvitations(userId)
-            .then(invitations => {
-                if (invitations.find(invitation => invitation._id.toString() === invitationId))
-                    await InvitationService.acceptInvitation(invitationId, userId)
-                        .then(invitation => {
-                            return invitation
-                        })
-                        .catch(err => {
-                            throw err
-                        })
-                else
-                    throw 'invitation not found'
+        return await this.getUser(userId)
+            .then(async user => {
+                await InvitationService.acceptInvitation(invitationId, user)
+                    .then(async invitation => {
+                        if (invitation) {
+                            await GroupService.addUser(invitation.group._id, userId)
+                                .catch(err => {
+                                    console.log(err);
+                                    throw err
+                                })
+                        }
+                        return invitation
+                    })
+                    .catch(err => {
+                        throw err
+                    })
             })
             .catch(err => {
                 throw err
             })
-        }
+    }
 }
 
 

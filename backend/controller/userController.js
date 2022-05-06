@@ -25,12 +25,13 @@ class UserController {
     }
 
     static async getGroups(req, res, next) {
-        await UserModel.findById(req.userId).populate('groups')
+        return await UserModel.findById(req.userId).populate('groups')
             .then(user => {
-                res.json(user.groups)
+                return res.json(user.groups)
             })
             .catch(err => {
                 console.log(err)
+                return res.status(500)
             })
     }
 
@@ -56,13 +57,15 @@ class UserController {
     }
 
     static async acceptInvitation(req, res, next) {
-        await UserServices.acceptInvitation(req.body.invitationId, req.userId)
+        return UserServices.acceptInvitation(req.body.invitationId, req.userId)
             .then(invitation => {
                 return res.json(invitation)
             })
             .catch(err => {
                 console.log(err);
-                res.status(500)
+                // if (!err.message)
+                //     return res.status(500)
+                return res.status(403).json(err)
             })
     }
 
