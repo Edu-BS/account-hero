@@ -60,7 +60,14 @@ const router = createRouter({
         requiresAuth: true
       }
     },
-
+    {
+      path : '/expense/:id/pay',
+      name: 'expensePay',
+      component : ()=>import('../views/ExpensePay.vue'),
+      meta: {
+        requiresAuth: true
+      }
+    },
     {
       path : '/prueba',
       name: 'prueba',
