@@ -21,31 +21,41 @@
 
 <script>
 export default {
+  props: {
+    fractions: {
+      type: Array,
+      required: true,
+    },
+    payer: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
-      payer: {
-        username: "edbosu",
-      },
-      fractions: [
-        {
-          _id: "5e9f8f8f8f8f8f8f8f8f8f8",
-          username: "User1",
-          amount: "100",
-          status: "Pagado",
-        },
-        {
-          _id: "fds",
-          username: "User2",
-          amount: "80",
-          status: "Sin pagar",
-        },
-        {
-          _id: "5e9f8f8f8f8f8f8f8f8f8",
-          username: "User3",
-          amount: "100",
-          status: "Pendiente",
-        },
-      ],
+      // payer: {
+      //   username: "mrey",
+      // },
+      // fractions: [
+      //   {
+      //     _id: "5e9f8f8f8f8f8f8f8f8f8f8",
+      //     username: "User1",
+      //     amount: "100",
+      //     status: "Pagado",
+      //   },
+      //   {
+      //     _id: "fds",
+      //     username: "User2",
+      //     amount: "80",
+      //     status: "Sin pagar",
+      //   },
+      //   {
+      //     _id: "5e9f8f8f8f8f8f8f8f8f8",
+      //     username: "User3",
+      //     amount: "100",
+      //     status: "Pendiente",
+      //   },
+      // ],
     };
   },
   methods: {

@@ -39,7 +39,7 @@
 export default {
   data() {
     return {
-      expense: {
+      fraction: {
         name: "Cena bar",
         description: "Cena en el bar de la esquina",
         amount: 10,
