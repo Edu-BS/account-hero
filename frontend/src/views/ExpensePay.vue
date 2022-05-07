@@ -8,10 +8,10 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Gasto</h5>
-                            <h6 class="card-subtitle mb-4 text-muted">{{ expense.date }}</h6>
-                            <p class="card-text fw-bold">{{ expense.name }}</p>
-                            <p class="card-text">{{ expense.description }}</p>
-                            <p class="card-text">{{ expense.amount }}€</p>
+                            <h6 class="card-subtitle mb-4 text-muted">{{ fraction.date }}</h6>
+                            <p class="card-text fw-bold">{{ fraction.name }}</p>
+                            <p class="card-text">{{ fraction.description }}</p>
+                            <p class="card-text">{{ fraction.amount }}€</p>
                         </div>
                     </div>
                 </div>
@@ -19,8 +19,8 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Receptor del pago</h5>
-                            <p class="card-text">{{ expense.payer.name }}</p>
-                            <p class="card-text">{{ expense.payer.username }}</p>
+                            <p class="card-text">{{ fraction.payer.name }}</p>
+                            <p class="card-text">{{ fraction.payer.username }}</p>
                         </div>
                     </div>
                 </div>
