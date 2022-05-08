@@ -1,5 +1,6 @@
 <template>
-  <div class="card">
+<router-link :to="'/group/' + id" style="text-decoration: none; color: inherit;">
+   <div class="card">
     <h5 class="card-header">{{name}}</h5>
     <div class="card-body">
       <p class="card-text">{{description}}</p>
@@ -11,15 +12,20 @@
       </div>
     </div>
   </div>
+</router-link>
 </template>
 
 <script>
 export default {
     props: {
+        id: String,
         name: String,
         description: String,
-        users: Array
-    }
+        users: Array,
+    },
+    methods: {
+      
+    },
 };
 </script>
 

@@ -17,6 +17,11 @@ const GroupSchema = new Schema({
    users: [{
       type: Schema.Types.ObjectId,
       ref: 'User',
+   }],
+
+   expenses : [{
+         type: Schema.Types.ObjectId,
+         ref: 'Expense'
    }]
 })
 

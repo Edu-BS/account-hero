@@ -67,6 +67,16 @@ class GroupService {
          })
    }
 
+   static async addExpense(id, idExpense) {
+      const group = await GroupModel.findByIdAndUpdate(id, {
+         $push: {
+            expenses: idExpense,
+         }
+      })
+
+      return group;
+   }
+
 }
 
 module.exports = GroupService;

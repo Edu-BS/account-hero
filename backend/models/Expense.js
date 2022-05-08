@@ -39,3 +39,7 @@ const ExpenseSchema = new Schema({
 },{
    timestamps: true
 })
+
+
+
+module.exports = mongoose.model('Expense', ExpenseSchema);

@@ -47,7 +47,7 @@ const router = createRouter({
     {
       path: '/group/:id',
       name : 'group',
-      component : ()=>import('../views/ListGroup.vue'),
+      component : ()=>import('../views/ViewGroup.vue'),
       meta: {
         requiresAuth: true
       }
@@ -76,6 +76,15 @@ const router = createRouter({
         requiresAuth: true
       }
     },
+    {
+      path : '/group/:idGroup/expense/create',
+      name: 'create-expense',
+      component : ()=>import('../views/CreateExpense.vue'),
+      meta: {
+        requiresAuth: true
+      }
+    },
+
     {
       path : '/prueba',
       name: 'prueba',

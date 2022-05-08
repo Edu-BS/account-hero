@@ -55,7 +55,6 @@ export const authStore = defineStore({
         else if (data.errors.form === "undefined")
           this.error = data.errors.form[0].message
       }
-
       return data
     },
 

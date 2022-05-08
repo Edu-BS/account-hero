@@ -74,6 +74,7 @@ export default {
       );
 
       const data = await res.json();
+
       if (data.errors?.token) {
         this.$auth.logout();
         this.$router.push("login");
