@@ -28,6 +28,11 @@ routes.post('/login',
     AuthController.login
 )
 
+routes.route('/user')
+    .all(AuthMiddleware.validateToken)
+    .get(UserController.getUser)
+    .put(UserController.updateUser)
+
 routes.route('/users/nameLike')
     // .param('nameLike', UserController.getByUsernameLike)
     .all(AuthMiddleware.validateToken)

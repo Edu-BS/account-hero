@@ -37,6 +37,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/user',
+      name: 'user',
+      component: () => import('../views/User.vue'),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/group/:id',
       name : 'group',
       component : ()=>import('../views/ListGroup.vue'),
