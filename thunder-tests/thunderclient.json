@@ -8,12 +8,12 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2022-04-26T18:28:07.661Z",
-    "modified": "2022-05-05T17:06:52.710Z",
+    "modified": "2022-05-08T16:45:12.598Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"edu@gmail.com\",\n    \"password\": \"1\"\n}",
+      "raw": "{\n    \"email\": \"edbosu@gmail.com\",\n    \"password\": \"1\"\n}",
       "form": []
     },
     "tests": []
@@ -176,6 +176,39 @@
     "body": {
       "type": "json",
       "raw": "{\n    \"invitationId\": \"6275504b02a1c141cb075c96\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "aecf4e19-351b-4787-b05f-8182f2cb81bb",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Get user",
+    "url": "http://{{host}}:{{port}}/api/user",
+    "method": "GET",
+    "sortNum": 5000,
+    "created": "2022-05-08T16:44:38.301Z",
+    "modified": "2022-05-08T16:44:53.704Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "129cdfc6-7584-4872-8bee-92ce7cd1b6fe",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Update user",
+    "url": "http://{{host}}:{{port}}/api/user",
+    "method": "PUT",
+    "sortNum": 7500,
+    "created": "2022-05-08T17:06:12.077Z",
+    "modified": "2022-05-08T17:14:15.744Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"user\": {\n        \"name\": \"Eduar\"\n    }\n}",
       "form": []
     },
     "tests": []

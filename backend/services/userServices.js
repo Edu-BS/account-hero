@@ -69,8 +69,12 @@ class UserServices {
      * @returns {object} usuario de la base de datos 
      */
     static async getUser(_id) {
-        const user = UserModel.findById(_id)
+        const user = UserModel.findById(_id).select('-password')
         return user
+    }
+
+    static async updateUser(userId, user) {
+        return await UserModel.findByIdAndUpdate(userId, user, {new: true})
     }
 
     static async getByUsernameLike(username) {

@@ -12,7 +12,7 @@
             <p class="fw-bold fs-4">{{ this.$auth.userName }}</p>
           </div>
           <div class="col-1 col-md-1 ms-auto m-3">
-            <router-link to="">
+            <router-link to="/user" id="userSetting_router-link">
               <img class="img-fluid" src="gear.png" alt="" />
             </router-link>
           </div>
@@ -34,16 +34,8 @@
 
       <!-- Groups container -->
       <div v-if="groups.length > 0" class="row justify-content-center mt-4 mx-auto">
-        <div 
-          v-for="group in groups"
-          :key="group._id"
-          class="col-lg-4 col-xs col-md-6 col-sm-6 my-3"
-        >
-          <GroupCard
-            :name="group.name"
-            :description="group.description"
-            :users="group.users"
-          />
+        <div v-for="group in groups" :key="group._id" class="col-lg-4 col-xs col-md-6 col-sm-6 my-3">
+          <GroupCard :name="group.name" :description="group.description" :users="group.users" />
         </div>
       </div>
     </div>
@@ -59,14 +51,12 @@ import Invitations from "../components/Invitations.vue";
 export default {
   components: {
     GroupCard,
-    Invitations
+    Invitations,
   },
   data() {
     return {
       username: "",
-      groups: [
-       
-      ],
+      groups: [],
     };
   },
   methods: {
@@ -77,26 +67,24 @@ export default {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            'Accept': "application/json",
-            'Authorization': "Bearer " + this.$auth.token,
+            Accept: "application/json",
+            Authorization: "Bearer " + this.$auth.token,
           },
         }
       );
 
       const data = await res.json();
       if (data.errors?.token) {
-        this.$auth.logout()
-        this.$router.push('login');
+        this.$auth.logout();
+        this.$router.push("login");
       } else {
-         this.groups = data;
+        this.groups = data;
       }
-     
     },
   },
-  async created(){
+  async created() {
     await this.getGroups();
   },
-
 };
 </script>
 
@@ -109,4 +97,21 @@ export default {
   font-size: 24px;
   line-height: 1.33;
 }
+
+#userSetting_router-link img:hover {
+  cursor: pointer;
+  /* Filter to make the image more dark */
+  filter: invert(40%);
+  /* Spin the image until the cursor is hover */
+  animation: spin 1s infinite;
+
+}
+
+@keyframes spin { 
+    100% { 
+        -webkit-transform: rotate(360deg); 
+        transform:rotate(360deg); 
+    } 
+}
+
 </style>

@@ -8,6 +8,17 @@ const helperToken = require('../helpers/helperToken')
  */
 class UserController {
 
+    static async getUser(req, res, next) {
+        try {
+            await UserServices.getUser(req.userId)
+                .then(user => {
+                    return res.json(user)
+                })
+        } catch (error) {
+            return res.status(500)
+        }
+    }
+
     /**
      * @description Controller para crear nuevo usuario 
      * @param {*} req 
@@ -21,6 +32,17 @@ class UserController {
             res.json({ token: token, username: user.username })
         } catch (error) {
             handleError(res, error, 400, "user")
+        }
+    }
+
+    static async updateUser(req, res, next) {
+        try {
+            await UserServices.updateUser(req.userId, req.body.user)
+                .then(user => {
+                    return res.json(user)
+                })
+        } catch (error) {
+            handleError(res, '', 500, "user")
         }
     }
 
