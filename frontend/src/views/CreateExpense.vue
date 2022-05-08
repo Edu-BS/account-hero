@@ -3,7 +3,11 @@
         <NavComponent view="Dashboard" />
 
         <div class="container mb-5">
-
+            <div v-if="this.errors !== null" class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ this.errors }}
+                <button @click="deleteError" type="button" class="btn-close" data-bs-dismiss="alert"
+                aria-label="Close"></button>
+            </div>
             <form @submit.prevent="submit" class="form justify-content-center col-9 col-md-5 m-auto mt-5">
                 <label for="name_input" class="form-label">Nombre del gasto</label>
                 <input v-model="expense.name" type="name" name="name" id="name_input" class="form-control" required>
@@ -28,7 +32,7 @@
                     
                 </div>
                 <div class="d-flex">
-                    <button @click="submit" ref="formButton" type="submit"
+                    <button ref="formButton" type="submit"
                         class="btn btn-primary rounded-pill mx-auto mt-4">Crear</button>
                 </div>
             </form>
@@ -41,6 +45,7 @@
 export default {
     data() {
         return {
+            errors : null,
             infoGroup : null,
             expense: {
                 idGroup : '',
@@ -102,12 +107,10 @@ export default {
 
     methods: {
         submit() {
-           
+        this.newExpense();
         },
 
-        //NOTA: cambiar en el backend para que solo regrese del usuario id, username
         async getUserGroup() {
-            console.log(this.expense.idGroup);
             const res = await fetch(import.meta.env.VITE_APP_URL_API + `/group/${this.expense.idGroup}`, {
                 method: "GET",
                 headers: {
@@ -119,11 +122,10 @@ export default {
 
             const data = await res.json();
             this.infoGroup = data;
-
             // agrego los usuarios a las fracciones 
             this.infoGroup.users.forEach(user => {
             let newUser = {
-                _id: user._id,
+                userId: user._id,
                 username: user.username,
                 amount :  Number.parseFloat(0).toFixed(2),
                 checked : true
@@ -134,14 +136,31 @@ export default {
 
 
         async newExpense() {
+            const response = await fetch(`${import.meta.env.VITE_APP_URL_API}/newExpense`,{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + this.$auth.token,
+                },
+                body : JSON.stringify(this.expense)
+            })
 
+            const data = await response.json();
+            if (data.expense) {
+                let idGroup = this.infoGroup._id
+                this.$router.push({name: 'group',params: {id: idGroup }});
+            } else if (data.errors) {
+                this.errors = data.errors.expense.message;
+            }
+
+        },
+
+        deleteError() {
+            this.errors = null
         }
 
     },
-
-    computed : {
-
-    }
 };
 </script>
 

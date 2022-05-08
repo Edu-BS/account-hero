@@ -39,7 +39,7 @@ const router = createRouter({
     {
       path: '/group/:id',
       name : 'group',
-      component : ()=>import('../views/ListGroup.vue'),
+      component : ()=>import('../views/ViewGroup.vue'),
       meta: {
         requiresAuth: true
       }

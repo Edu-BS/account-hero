@@ -6,6 +6,7 @@ const GroupMiddleware = require('../middleware/groupMiddleware')
 const { loginValidator } = require('../validator/loginValidator');
 const { registerValidator } = require('../validator/registerValidator')
 const AuthMiddleware = require('../middleware/authMiddleware')
+const ExpenseController = require('../controller/expenseController')
 
 
 /**
@@ -43,6 +44,12 @@ routes.route("/group/:groupId")
     .put(GroupMiddleware.userIsAdmin, GroupController.updateGroup)
     .delete(GroupMiddleware.userIsAdmin, GroupController.deleteGroup)
 
+
+// ruta para crear nuevo gasto 
+routes.post("/newExpense",
+    AuthMiddleware.validateToken,
+    ExpenseController.createExpense
+)
 
 module.exports = routes;
 

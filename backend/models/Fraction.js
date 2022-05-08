@@ -13,6 +13,18 @@ const FractionSchema = new Schema({
    },
    state: {
       type: String
+   },
+   group : {
+      type: Schema.Types.ObjectId,
+      ref: 'Group',
+   },
+   expense : {
+      type: Schema.Types.ObjectId,
+      ref: 'expense'
+   },
+   state: {
+      type: String,
+      enum: ['pending', 'unpaid', 'payed']
    }
 })
 

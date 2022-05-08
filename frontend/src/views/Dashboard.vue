@@ -38,6 +38,7 @@
           class="col-lg-4 col-xs col-md-6 col-sm-6 my-3"
         >
           <GroupCard
+            :id="group._id"
             :name="group.name"
             :description="group.description"
             :users="group.users"
@@ -100,7 +101,7 @@ export default {
       );
 
       const data = await res.json();
-      console.log(data)
+
       if (data.errors?.token) {
         this.$auth.logout()
         this.$router.push('login');
