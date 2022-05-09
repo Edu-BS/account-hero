@@ -2,6 +2,8 @@ const GroupModel = require("../models/Group");
 const GroupService = require("../services/groupService");
 const UserModel = require("../models/User");
 const mongoose = require("mongoose");
+const { populate } = require("../models/User");
+const Payment = require("../models/Payment");
 
 
 class GroupController {
@@ -66,7 +68,16 @@ class GroupController {
    static async getGroup(req, res, next) {
       await GroupModel.findById(req.params.groupId)
          .populate({path:'users',select: '_id username'})
-         .populate('expenses')
+         .populate({
+            path: 'expenses',
+            populate: {
+               path: 'fractions',
+               populate : {
+                  path : 'user',
+                  select: 'username'
+               }
+            }
+         })
          .then(group => {
             res.json(group);
          })

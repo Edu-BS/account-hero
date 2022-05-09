@@ -11,9 +11,6 @@ const FractionSchema = new Schema({
       type: Number,
       required: true,
    },
-   state: {
-      type: String
-   },
    group : {
       type: Schema.Types.ObjectId,
       ref: 'Group',
