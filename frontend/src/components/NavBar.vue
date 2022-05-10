@@ -7,8 +7,7 @@
                     height="24" class="d-inline-block align-text-top">
                 Account-Hero
             </router-link>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <!-- Login -->
@@ -26,12 +25,12 @@
                     
                     <div class="col-2 ms-auto text-end">
                         <div class="dropdown">
-                            <button class="btn btn-outline-primary rounded-pill dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <router-link to="/user" class="btn btn-outline-primary rounded-pill " type="router-link" id="dropdownMenuButton1">
                                 {{username}}
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            </router-link>
+                            <!-- <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><button @click="logout" type="button" class="dropdown-item">logout</button></li>
-                            </ul>
+                            </ul> -->
                         </div>
                     </div>
                     <div class="col-1 ms-3 me-3 px-2">
@@ -45,22 +44,23 @@
     </div>
 
     <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
-            <div class="offcanvas-header">
-                <router-link to="/" class="text-decoration-none">
-                    <h5 id="offcanvasTopLabel">Account-Hero</h5>
-                </router-link>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div v-if="view == 'Login' || view == 'Register'" class="offcanvas-body">
-                <ul class="list-group">
-                    <router-link to="register" class="btn btn-outline-primary rounded-pill text-black">Registrarse</router-link>
-                    <router-link to="login"  class="btn btn-primary rounded-pill mt-2">Iniciar sessión</router-link>
-                </ul>
-            </div>
-            <div v-else class="offcanvas-body">
-                <button @click="logout" type="button" class="btn btn-primary rounded-pill mt-2">Logout</button>
-            </div> 
+        <div class="offcanvas-header">
+            <router-link to="/" class="text-decoration-none">
+                <h5 id="offcanvasTopLabel">Account-Hero</h5>
+            </router-link>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
+        <div v-if="view == 'Login' || view == 'Register'" class="offcanvas-body">
+            <ul class="list-group">
+                <router-link to="register" class="btn btn-outline-primary rounded-pill text-black">Registrarse</router-link>
+                <router-link to="login"  class="btn btn-primary rounded-pill mt-2">Iniciar sessión</router-link>
+            </ul>
+        </div>
+        <div v-else-if="view !== 'Dashboard' && view !== 'User'" class="offcanvas-body">
+            <router-link to="/user" class="btn btn-primary rounded-pill">Perfil</router-link>
+            <!-- <button @click="logout" id="logout_button" ref="logout_button" type="button" class="btn btn-primary rounded-pill mt-2">Logout</button> -->
+        </div> 
+    </div>
 </nav>
 </template>
 

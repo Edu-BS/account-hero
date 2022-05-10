@@ -2,17 +2,17 @@
 <div>
     <div v-for="fraction in fractions" :key="fraction._id" class="row mt-3">
         <div class="col-4">
-            {{ fraction.username }}
+            {{ fraction.user.username }}
         </div>
         <div class="col-4">
             {{ fraction.amount }}€
         </div>
-        <div class="col-4" :style="statusColor(fraction.status)">
-            <div v-if="fraction.status == 'Pendiente' && this.$auth.userName == payer.username">
+        <div class="col-4" :style="statusColor(fraction.state)">
+            <div v-if="fraction.state == 'Pendiente' && this.$auth.userName == payer.username">
                 <router-link to="" class="btn btn-outline-warning text-black rounded-pill btn-sm align-middle">Confirmar</router-link>
             </div>
             <div v-else>
-                {{ fraction.status }}
+                {{ fraction.state }}
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
 export default {
   props: {
     fractions: {
-      type: Array,
+      type: Object,
       required: true,
     },
     payer: {
@@ -32,32 +32,9 @@ export default {
     },
   },
   data() {
-    return {
-      // payer: {
-      //   username: "mrey",
-      // },
-      // fractions: [
-      //   {
-      //     _id: "5e9f8f8f8f8f8f8f8f8f8f8",
-      //     username: "User1",
-      //     amount: "100",
-      //     status: "Pagado",
-      //   },
-      //   {
-      //     _id: "fds",
-      //     username: "User2",
-      //     amount: "80",
-      //     status: "Sin pagar",
-      //   },
-      //   {
-      //     _id: "5e9f8f8f8f8f8f8f8f8f8",
-      //     username: "User3",
-      //     amount: "100",
-      //     status: "Pendiente",
-      //   },
-      // ],
-    };
+    return {};
   },
+  computed: {},
   methods: {
     statusColor(status) {
       switch (status) {
@@ -65,7 +42,7 @@ export default {
           return "color: green";
         case "Pendiente":
           return "color: orange";
-        case "Sin pagar":
+        case "Sín pagar":
           return "color: red";
         default:
           return "";

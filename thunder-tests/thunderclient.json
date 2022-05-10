@@ -8,12 +8,12 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2022-04-26T18:28:07.661Z",
-    "modified": "2022-05-05T17:06:52.710Z",
+    "modified": "2022-05-08T16:45:12.598Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"edu@gmail.com\",\n    \"password\": \"1\"\n}",
+      "raw": "{\n    \"email\": \"edbosu@gmail.com\",\n    \"password\": \"1\"\n}",
       "form": []
     },
     "tests": []
@@ -118,12 +118,12 @@
     "method": "POST",
     "sortNum": 90000,
     "created": "2022-04-27T15:07:51.269Z",
-    "modified": "2022-05-05T18:40:46.968Z",
+    "modified": "2022-05-09T12:17:53.114Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"name\": \"Group one\",\n    \"Description\": \"Description\",\n    \"users\": [\n        {\"_id\":\"6274156bdb42165489b358f5\"}\n    ]\n}",
+      "raw": "{\n    \"name\": \"Group two\",\n    \"Description\": \"Description\",\n    \"users\": [\n        {\"_id\":\"6275503302a1c141cb075c8b\"}\n    ]\n}",
       "form": []
     },
     "tests": []
@@ -178,6 +178,91 @@
       "raw": "{\n    \"invitationId\": \"6275504b02a1c141cb075c96\"\n}",
       "form": []
     },
+    "tests": []
+  },
+  {
+    "_id": "aecf4e19-351b-4787-b05f-8182f2cb81bb",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Get user",
+    "url": "http://{{host}}:{{port}}/api/user",
+    "method": "GET",
+    "sortNum": 5000,
+    "created": "2022-05-08T16:44:38.301Z",
+    "modified": "2022-05-08T16:44:53.704Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "129cdfc6-7584-4872-8bee-92ce7cd1b6fe",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Update user",
+    "url": "http://{{host}}:{{port}}/api/user",
+    "method": "PUT",
+    "sortNum": 7500,
+    "created": "2022-05-08T17:06:12.077Z",
+    "modified": "2022-05-08T17:14:15.744Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"user\": {\n        \"name\": \"Eduar\"\n    }\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "ba75d7dc-aa92-4f3c-80d4-c5d1aed550b8",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Get expenses",
+    "url": "http://{{host}}:{{port}}/api/group/{groupId}/expenses",
+    "method": "GET",
+    "sortNum": 130000,
+    "created": "2022-05-09T11:58:09.890Z",
+    "modified": "2022-05-10T15:55:06.625Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "groupId",
+        "value": "62794fd323f2608d5a42dfd7",
+        "isPath": true
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "6b3e9ab4-d1c6-4f3c-b008-19802bc77f5c",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Create expense",
+    "url": "",
+    "method": "GET",
+    "sortNum": 140000,
+    "created": "2022-05-09T12:14:32.463Z",
+    "modified": "2022-05-09T12:14:32.463Z",
+    "headers": []
+  },
+  {
+    "_id": "07c05b4a-a640-41fb-86b0-c96e41dacc1a",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Get expense",
+    "url": "http://{{host}}:{{port}}/api/expense/{expenseId}",
+    "method": "GET",
+    "sortNum": 150000,
+    "created": "2022-05-09T12:59:46.730Z",
+    "modified": "2022-05-10T17:02:01.771Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "expenseId",
+        "value": "6275503302a1c141cb075c8b",
+        "isPath": true
+      }
+    ],
     "tests": []
   }
 ]

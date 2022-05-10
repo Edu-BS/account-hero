@@ -23,7 +23,7 @@ class AuthController {
         try {
             // busco el usuario en la bd
             const {email, password} = req.body
-            const userFound = await UserModels.findOne({email : email})
+            const userFound = await UserModels.findOne({email : email}).select('+password')
  
             // si no existe lanzo una excepcion 
             if (!userFound) throw 'usuario no existe'
@@ -37,7 +37,7 @@ class AuthController {
             // creo el token 
             const token = helperToken.createToken(userFound) 
             
-            return res.json({token: token, username: userFound.username})
+            return res.json({token: token, username: userFound.username, _id: userFound._id})
 
         } catch (error) {
             console.log(error)

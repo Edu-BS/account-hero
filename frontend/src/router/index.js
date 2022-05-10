@@ -37,9 +37,17 @@ const router = createRouter({
       }
     },
     {
+      path: '/user',
+      name: 'user',
+      component: () => import('../views/User.vue'),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/group/:id',
       name : 'group',
-      component : ()=>import('../views/ListGroup.vue'),
+      component : ()=>import('../views/ViewGroup.vue'),
       meta: {
         requiresAuth: true
       }
@@ -69,6 +77,15 @@ const router = createRouter({
       }
     },
     {
+      path : '/group/:idGroup/expense/create',
+      name: 'create-expense',
+      component : ()=>import('../views/CreateExpense.vue'),
+      meta: {
+        requiresAuth: true
+      }
+    },
+
+    {
       path : '/prueba',
       name: 'prueba',
       component : ()=>import('../views/Prueba.vue'),
@@ -85,22 +102,22 @@ router.beforeEach((to, from, next) => {
     if (localStorage.getItem('auth')) {
       const auth = JSON.parse(localStorage.getItem('auth'))
       if (auth.token && auth.token !== null) {
-        next()
+        return next()
       }
     } else {
-      next('/login')
+      return next('/login')
     }
   // requiresAuth: false
   } else if (!to.matched.some(record => record.meta.requiresAuth)) {
     if (localStorage.getItem('auth')) {
       const auth = JSON.parse(localStorage.getItem('auth'))
       if (auth.token && auth.token !== null) {
-        next('/dashboard')
+        return next('/dashboard')
       }
     }
   }
   
-  next()
+  return next()
 })
 
 export default router

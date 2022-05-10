@@ -6,6 +6,7 @@ const GroupMiddleware = require('../middleware/groupMiddleware')
 const { loginValidator } = require('../validator/loginValidator');
 const { registerValidator } = require('../validator/registerValidator')
 const AuthMiddleware = require('../middleware/authMiddleware')
+const ExpenseController = require('../controller/expenseController')
 
 
 /**
@@ -27,6 +28,11 @@ routes.post('/login',
     // 2 logear a usuario  
     AuthController.login
 )
+
+routes.route('/user')
+    .all(AuthMiddleware.validateToken)
+    .get(UserController.getUser)
+    .put(UserController.updateUser)
 
 routes.route('/users/nameLike')
     // .param('nameLike', UserController.getByUsernameLike)
@@ -62,6 +68,20 @@ routes.route('/group/:groupId')
     .put(GroupMiddleware.userIsAdmin, GroupController.updateGroup)
     .delete(GroupMiddleware.userIsAdmin, GroupController.deleteGroup)
 
+routes.route('/group/:groupId/expenses')
+    .all(AuthMiddleware.validateToken)
+    .get(GroupMiddleware.userInGroup, GroupController.getExpenses)
+
+routes.route('/expense/:expenseId')
+    .all(AuthMiddleware.validateToken)
+    .get(ExpenseController.getExpense)
+
+
+// ruta para crear nuevo gasto 
+routes.post("/newExpense",
+    AuthMiddleware.validateToken,
+    ExpenseController.createExpense
+)
 
 module.exports = routes;
 
