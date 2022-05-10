@@ -23,7 +23,7 @@ class AuthController {
         try {
             // busco el usuario en la bd
             const {email, password} = req.body
-            const userFound = await UserModels.findOne({email : email})/* .select('+password') */
+            const userFound = await UserModels.findOne({email : email}).select('+password')
  
             // si no existe lanzo una excepcion 
             if (!userFound) throw 'usuario no existe'

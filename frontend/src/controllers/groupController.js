@@ -25,4 +25,15 @@ export default class GroupController {
         return res
     }
 
+    static async getExpenses(endpoint, token, { idGroup }) {
+        return await fetch(endpoint, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": "Bearer " + token,
+            },
+        })
+
+    }
 }

@@ -102,22 +102,22 @@ router.beforeEach((to, from, next) => {
     if (localStorage.getItem('auth')) {
       const auth = JSON.parse(localStorage.getItem('auth'))
       if (auth.token && auth.token !== null) {
-        next()
+        return next()
       }
     } else {
-      next('/login')
+      return next('/login')
     }
   // requiresAuth: false
   } else if (!to.matched.some(record => record.meta.requiresAuth)) {
     if (localStorage.getItem('auth')) {
       const auth = JSON.parse(localStorage.getItem('auth'))
       if (auth.token && auth.token !== null) {
-        next('/dashboard')
+        return next('/dashboard')
       }
     }
   }
   
-  next()
+  return next()
 })
 
 export default router

@@ -1,8 +1,8 @@
-<template>
+<template >
   <main>
     <NavComponent view="Expense" />
-    <div class="container text-center mt-4">
-      <h1>{{expense.title}}</h1>
+    <div v-if="!error" class="container text-center mt-4">
+      <h1>{{expense.name}}</h1>
       <h6 class="text-muted">{{expense.date}}</h6>
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum suscipit nam, consectetur repellendus quos eius quo aliquid error veritatis officiis tempora repudiandae ad tempore accusamus numquam quis voluptas magnam et.</p>
       <h3 class="">¿Quien a pagado?</h3>
@@ -21,6 +21,10 @@
         <ExpenseFractions :fractions="expense.fractions" :payer="expense.payer" />
       </div>
     </div>
+    <div v-else class="container text-center mt-4">
+      <h1>Error</h1>
+      <p>{{error}}</p>
+    </div>
     <footer v-if="this.$auth.userName !== expense.payer.username" class="footer fixed-bottom py-3 bg-light green text-center">
       <router-link :to="`/expense/${expense.id}/pay`" class="btn btn-primary rounded-pill">Pagar</router-link>
     </footer>
@@ -29,6 +33,7 @@
 
 <script>
 import ExpenseFractions from "../components/ExpenseFractions.vue";
+import ExpenseController from "../controllers/expenseController";
 
 export default {
   components: {
@@ -36,37 +41,47 @@ export default {
   },
   data() {
     return {
+      error: null,
+      endpoint: import.meta.env.VITE_APP_URL_API,
       expense: {
-        id: "1",
-        title: "Cena bar",
-        description: "Cena en el bar de la esquina",
-        date: new Date("2020-05-01").toDateString(),
+        name: "",
         payer: {
-          name: "Edu",
-          username: "mrey",
+          username: "",
         },
-        fractions: [
-          {
-            _id: "5e9f8f8f8f8f8f8f8f8f8f8",
-            username: "User1",
-            amount: "100",
-            status: "Pagado",
-          },
-          {
-            _id: "fds",
-            username: "User2",
-            amount: "80",
-            status: "Sin pagar",
-          },
-          {
-            _id: "5e9f8f8f8f8f8f8f8f8f8",
-            username: "User3",
-            amount: "100",
-            status: "Pendiente",
-          },
-        ],
       },
     };
+  },
+  created() {
+    this.getExpense();
+  },
+  methods: {
+    async getExpense() {
+      const expense = await ExpenseController.getExpense(
+        `${this.endpoint}/expense/${this.$route.params.id}`,
+        this.$auth.token
+      )
+        .then((response) => {
+          response.date = response.date.toDateString();
+          for (let index = 0; index < response.fractions.length; index++) {
+            // console.log(response.fractions[index].state);
+            switch (response.fractions[index].state) {
+              case "payed":
+                response.fractions[index].state = "Pagado";
+                break;
+              case "pending":
+                response.fractions[index].state = "Pendiente";
+                break;
+              case "unpaid":
+                response.fractions[index].state = "Sín pagar";
+                break;
+            }
+          }
+          this.expense = response;
+        })
+        .catch((error) => {
+          this.error = error.message;
+        });
+    },
   },
 };
 </script>

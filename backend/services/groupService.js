@@ -6,7 +6,7 @@ class GroupService {
 
    static async createGroup({ admin, name, description, users }) {
       try {
-         const groupData = { admin, name, description }
+         const groupData = { admin, name, description, 'users': admin }
 
          let members = users.filter(user => user !== admin);
 
@@ -77,6 +77,15 @@ class GroupService {
       return group;
    }
 
+   static async getExpenses(groupId) {
+      return await GroupModel.findById(groupId).populate('expenses')
+         .then(group => {
+            return group.expenses;
+         })
+         .catch(err => {
+            throw err;
+         })
+   }
 }
 
 module.exports = GroupService;

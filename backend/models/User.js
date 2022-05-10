@@ -29,7 +29,7 @@ const UserSchema = new Schema({
    password: {
       type: String,
       required: true,
-      // select: false
+      select: false
    },
    groups: [{
       type: Schema.Types.ObjectId,

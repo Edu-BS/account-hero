@@ -68,6 +68,14 @@ routes.route('/group/:groupId')
     .put(GroupMiddleware.userIsAdmin, GroupController.updateGroup)
     .delete(GroupMiddleware.userIsAdmin, GroupController.deleteGroup)
 
+routes.route('/group/:groupId/expenses')
+    .all(AuthMiddleware.validateToken)
+    .get(GroupMiddleware.userInGroup, GroupController.getExpenses)
+
+routes.route('/expense/:expenseId')
+    .all(AuthMiddleware.validateToken)
+    .get(ExpenseController.getExpense)
+
 
 // ruta para crear nuevo gasto 
 routes.post("/newExpense",

@@ -43,7 +43,7 @@ class GroupController {
 
    static async getGroup(req, res, next) {
       await GroupModel.findById(req.params.groupId)
-         .populate({path:'users',select: '_id username'})
+         .populate({ path: 'users', select: '_id username' })
          .populate('expenses')
          .then(group => {
             res.json(group);
@@ -75,6 +75,18 @@ class GroupController {
             res.status(500);
          })
    }
+
+   static async getExpenses(req, res, next) {
+      try {
+         GroupService.getExpenses(req.params.groupId)
+            .then(expenses => {
+               return res.json(expenses)
+            });
+      } catch (error) {
+         res.status(500)
+      }
+   }
+
 
 }
 

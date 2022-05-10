@@ -27,7 +27,17 @@ class ExpenseService {
         return updateExpense
     }
 
-
+    static async getExpense(id) {
+        return await ExpenseModel.findById(id).populate([{path: 'payer', select: 'username'},'group', { path: 'fractions', populate: { path: 'user', select: 'username'  }}])
+            .then(data => {
+                if (!data)
+                    throw new Error('Expense not found')
+                return data
+            })
+            .catch(err => {
+                throw err;
+            })
+    }
 
 }
 
