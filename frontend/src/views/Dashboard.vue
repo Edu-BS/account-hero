@@ -35,7 +35,7 @@
       <!-- Groups container -->
       <div v-if="groups.length > 0" class="row justify-content-center mt-4 mx-auto">
         <div v-for="group in groups" :key="group._id" class="col-lg-4 col-xs col-md-6 col-sm-6 my-3">
-          <GroupCard :name="group.name" :description="group.description" :users="group.users" />
+          <GroupCard :id="group._id" :name="group.name" :description="group.description" :users="group.users" />
         </div>
       </div>
     </div>
