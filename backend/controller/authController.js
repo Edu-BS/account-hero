@@ -37,7 +37,7 @@ class AuthController {
             // creo el token 
             const token = helperToken.createToken(userFound) 
             
-            return res.json({token: token, username: userFound.username})
+            return res.json({token: token, username: userFound.username, _id: userFound._id})
 
         } catch (error) {
             console.log(error)
