@@ -2,7 +2,7 @@
   <main>
     <NavComponent view="Register" />
     <div class="container ">
-        <div v-if="this.$auth.error !== null" class="alert alert-warning alert-dismissible fade show" role="alert">
+      <div v-if="this.$auth.error !== null" class="alert alert-warning alert-dismissible fade show" role="alert">
         {{ this.$auth.error }}
         <button @click="deleteError" type="button" class="btn-close" data-bs-dismiss="alert"
           aria-label="Close"></button>

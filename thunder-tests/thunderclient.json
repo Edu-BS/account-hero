@@ -222,12 +222,12 @@
     "method": "GET",
     "sortNum": 130000,
     "created": "2022-05-09T11:58:09.890Z",
-    "modified": "2022-05-10T15:55:06.625Z",
+    "modified": "2022-05-11T17:24:56.703Z",
     "headers": [],
     "params": [
       {
         "name": "groupId",
-        "value": "62794fd323f2608d5a42dfd7",
+        "value": "627bef48aee41083d5c1b4a2",
         "isPath": true
       }
     ],
@@ -260,6 +260,91 @@
       {
         "name": "expenseId",
         "value": "6275503302a1c141cb075c8b",
+        "isPath": true
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "bc6bcf3f-97a3-41a5-af6c-a49ca21384c2",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Get fraction",
+    "url": "http://{{host}}:{{port}}/api/fraction/{fractionId}",
+    "method": "GET",
+    "sortNum": 170000,
+    "created": "2022-05-10T17:57:26.333Z",
+    "modified": "2022-05-10T18:35:47.941Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "fractionId",
+        "value": "627aae9375947f5443629f66",
+        "isPath": true
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "ece888b5-9ac8-4165-ba36-7aab30424d75",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Get expense fraction",
+    "url": "http://{{host}}:{{port}}/api/expense/{expenseId}/fraction/{fractionId}",
+    "method": "GET",
+    "sortNum": 180000,
+    "created": "2022-05-10T18:50:48.480Z",
+    "modified": "2022-05-10T18:54:10.334Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "expenseId",
+        "value": "627aae9375947f5443629f6a",
+        "isPath": true
+      },
+      {
+        "name": "fractionId",
+        "value": "627aae9375947f5443629f66",
+        "isPath": true
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "32a50ba4-f835-4e1f-a12f-f30b5d6c816f",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Pay fraction",
+    "url": "http://{{host}}:{{port}}/api/fraction/{fractionId}/pay",
+    "method": "PUT",
+    "sortNum": 190000,
+    "created": "2022-05-11T16:03:32.379Z",
+    "modified": "2022-05-11T16:57:14.583Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "fractionId",
+        "value": "627aae9375947f5443629f68",
+        "isPath": true
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "ae0b5c5d-a9c4-4fbb-8ccc-14895de61d8a",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Confirm fraction",
+    "url": "http://{{host}}:{{port}}/api/fraction/{fractionId}/confirm",
+    "method": "PUT",
+    "sortNum": 200000,
+    "created": "2022-05-11T16:38:27.318Z",
+    "modified": "2022-05-11T17:01:16.061Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "fractionId",
+        "value": "627aae9375947f5443629f68",
         "isPath": true
       }
     ],

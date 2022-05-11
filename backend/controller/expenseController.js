@@ -67,10 +67,22 @@ class ExpenseController {
                 })
         } catch (error) {
             // console.log(error)
-            if (error.message === 'Expense not found') 
+            if (error.message === 'Expense not found')
                 return res.status(404).json({ error: 'Expense not found' })
-            return res.status(500).json({ error: 'Server error'})
+            return res.status(500).json({ error: 'Server error' })
         }
+    }
+
+    static async getFraction(req, res) {
+        await ExpenseService.getFraction(req.params.expenseId, req.params.fractionId)
+            .then(expense => {
+                // const fraction = expense.fractions.find(fraction => fraction._id == req.params.fractionId)
+                return res.json(expense);
+            })
+            .catch(err => {
+                console.log(err);
+                return res.status(500).json({ error: 'Server error' })
+            })
     }
 }
 

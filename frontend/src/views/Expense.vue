@@ -25,8 +25,8 @@
       <h1>Error</h1>
       <p>{{error}}</p>
     </div>
-    <footer v-if="this.$auth.userName !== expense.payer.username" class="footer fixed-bottom py-3 bg-light green text-center">
-      <router-link :to="`/expense/${expense.id}/pay`" class="btn btn-primary rounded-pill">Pagar</router-link>
+    <footer v-if="this.$auth.userName !== expense.payer.username && myFraction.state === 'Sín pagar'" class="footer fixed-bottom py-3 bg-light green text-center">
+      <router-link :to="`${this.$route.href}/fraction/${myFraction._id}/pay`" class="btn btn-primary rounded-pill">Pagar</router-link>
     </footer>
   </main>
 </template>
@@ -43,6 +43,9 @@ export default {
     return {
       error: null,
       endpoint: import.meta.env.VITE_APP_URL_API,
+      myFraction: {
+        _id: "",
+      },
       expense: {
         name: "",
         payer: {
@@ -52,6 +55,7 @@ export default {
     };
   },
   created() {
+    console.log(this.$route.href);
     this.getExpense();
   },
   methods: {
@@ -65,6 +69,9 @@ export default {
           for (let index = 0; index < response.fractions.length; index++) {
             // console.log(response.fractions[index].state);
             switch (response.fractions[index].state) {
+              case "paid":
+                response.fractions[index].state = "Pagado";
+                break;
               case "payed":
                 response.fractions[index].state = "Pagado";
                 break;
@@ -76,10 +83,11 @@ export default {
                 break;
             }
           }
+          this.myFraction = response.fractions.find(fraction => fraction.user.username === this.$auth.userName);
           this.expense = response;
         })
         .catch((error) => {
-          this.error = error.message;
+          this.error = error;
         });
     },
   },

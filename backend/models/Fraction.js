@@ -17,7 +17,7 @@ const FractionSchema = new Schema({
    },
    expense : {
       type: Schema.Types.ObjectId,
-      ref: 'expense'
+      ref: 'Expense'
    },
    state: {
       type: String,
