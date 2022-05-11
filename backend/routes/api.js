@@ -7,6 +7,7 @@ const { loginValidator } = require('../validator/loginValidator');
 const { registerValidator } = require('../validator/registerValidator')
 const AuthMiddleware = require('../middleware/authMiddleware')
 const ExpenseController = require('../controller/expenseController')
+const FractionController = require('../controller/fractionController')
 
 
 /**
@@ -38,7 +39,7 @@ routes.route('/users/nameLike')
     // .param('nameLike', UserController.getByUsernameLike)
     .all(AuthMiddleware.validateToken)
     .post(UserController.getByUsernameLike)
-    // .get(UserController.getByUsernameLike)
+// .get(UserController.getByUsernameLike)
 
 routes.route('/user/invitations')
     .all(AuthMiddleware.validateToken)
@@ -50,13 +51,13 @@ routes.route('/user/invitation/accept')
 
 routes.route('/user/invitation/reject')
     .all(AuthMiddleware.validateToken)
-    // .post(UserController.rejectInvitation)
+// .post(UserController.rejectInvitation)
 
 
 routes.route('/user/groups')
     .all(AuthMiddleware.validateToken)
     .get(UserController.getGroups)
-    
+
 
 routes.route('/group')
     .all(AuthMiddleware.validateToken)
@@ -75,6 +76,24 @@ routes.route('/group/:groupId/expenses')
 routes.route('/expense/:expenseId')
     .all(AuthMiddleware.validateToken)
     .get(ExpenseController.getExpense)
+
+routes.route('/expense/:expenseId/fraction/:fractionId')
+    .all(AuthMiddleware.validateToken)
+    .get(ExpenseController.getFraction)
+
+routes.route('/fraction/:fractionId')
+    .all(AuthMiddleware.validateToken)
+    .get(FractionController.getFraction)
+
+routes.route('/fraction/:fractionId/pay')
+    .all(AuthMiddleware.validateToken)
+    .put(FractionController.payFraction)
+
+
+routes.route('/fraction/:fractionId/confirm')
+    .all(AuthMiddleware.validateToken)
+    .put(FractionController.confirmFraction)
+
 
 
 // ruta para crear nuevo gasto 

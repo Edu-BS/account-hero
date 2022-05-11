@@ -1,5 +1,5 @@
 <template>
-<router-link :to="'/group/' + id" style="text-decoration: none; color: inherit;">
+<router-link :to="'/expense/' + id" style="text-decoration: none; color: inherit;">
    <div class="card">
     <h5 class="card-header">{{name}}</h5>
     <div class="card-body">

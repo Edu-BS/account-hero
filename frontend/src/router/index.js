@@ -69,9 +69,9 @@ const router = createRouter({
       }
     },
     {
-      path : '/expense/:id/pay',
-      name: 'expensePay',
-      component : ()=>import('../views/ExpensePay.vue'),
+      path : '/expense/:expenseId/fraction/:fractionId/pay',
+      name: 'fractionPay',
+      component : ()=>import('../views/FractionPay.vue'),
       meta: {
         requiresAuth: true
       }
