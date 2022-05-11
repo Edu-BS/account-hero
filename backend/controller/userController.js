@@ -91,6 +91,22 @@ class UserController {
             })
     }
 
+    static async rejectInvitation(req, res, next) {
+        try {
+            await UserServices.rejectInvitation(req.body.invitationId, req.userId)
+            .then(invitation => {
+                return res.json(invitation)
+            })
+            .catch(err => {
+                if (err == 'Only the guest can reject the invitation')
+                    return res.status(403).json(err)
+                throw err   
+            })
+        } catch (error) {
+            res.status(500).json({'error': 'Server error'})
+        }
+    }
+
 }
 
 

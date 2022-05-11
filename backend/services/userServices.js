@@ -137,6 +137,22 @@ class UserServices {
                 throw err
             })
     }
+
+    static async rejectInvitation(invitationId, userId) {
+        return await this.getUser(userId)
+            .then(async user => {
+               return await InvitationService.rejectInvitation(invitationId, user)
+                    .then(invitation => {
+                        return invitation
+                    })
+                    .catch(err => {
+                        throw err
+                    })
+            })
+            .catch(err => {
+                throw err
+            })
+    }
 }
 
 

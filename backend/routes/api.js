@@ -51,7 +51,7 @@ routes.route('/user/invitation/accept')
 
 routes.route('/user/invitation/reject')
     .all(AuthMiddleware.validateToken)
-// .post(UserController.rejectInvitation)
+    .put(UserController.rejectInvitation)
 
 
 routes.route('/user/groups')

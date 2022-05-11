@@ -64,7 +64,6 @@ export default {
   },
   watch: {
     userToAdd(newUsername, oldName) {
-      console.log(newUsername);
       this.getByUsernameLike(newUsername)
     }
   },
@@ -77,7 +76,6 @@ export default {
       let endpoint = this.apiEndpoint + '/group';
       
       const res = await GroupController.createGroup(endpoint, this.$auth.token, this.group);
-      console.log(res);
       const resJson = await res.json() 
 
       if (res.ok && res.status === 201) {
@@ -91,7 +89,7 @@ export default {
     },
     async getByUsernameLike(username) {
       let endpoint = this.apiEndpoint + '/users/nameLike'
-      if (username.length > 1) {
+      if (username && username.length > 1) {
         const res = await UserController.getByUsernameLike(endpoint, this.$auth.token, username)
         let resJson = await res.json()
 

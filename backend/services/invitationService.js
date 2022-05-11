@@ -54,11 +54,11 @@ class InvitationService {
    static async acceptInvitation(invitationId, guest) {
       return await InvitationModel.findById(invitationId).where('guest').equals(guest._id)
          .then(async invitation => {
-            if (invitation) {                  
+            if (invitation) {
                invitation.accepted = true;
                invitation.save();
             } else {
-               throw 'Only the guest can accept the invitation';
+               throw new Error('Only the guest can accept the invitation');
             }
             return invitation;
          })
@@ -67,10 +67,20 @@ class InvitationService {
          })
    }
 
-   static async rejectInvitation({ invitationId }) {
-      await InvitationModel.findByIdAndUpdate(invitationId, {
-         $set: { rejected: true }
-      })
+   static async rejectInvitation(invitationId, guest) {
+      return await InvitationModel.findById(invitationId).where('guest').equals(guest._id)
+         .then(async invitation => {
+            if (invitation) {
+               invitation.rejected = true;
+               invitation.save();
+               return invitation
+            } else {
+               throw 'Only the guest can reject the invitation';
+            }
+         })
+         .catch(err => {
+            throw err;
+         })
    }
 
 }

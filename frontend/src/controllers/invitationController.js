@@ -18,7 +18,7 @@ export default class InvitationController {
 
         console.log(invitations);
         invitations = invitations.filter(invitation => username !== invitation.host.username)
-        invitations = invitations.filter(invitation => invitation.accepted == false)
+        invitations = invitations.filter(invitation => invitation.accepted == false && invitation.rejected == false)
         return invitations
     }
 
@@ -47,6 +47,28 @@ export default class InvitationController {
         return res
     }
 
+    static async rejectInvitation(endpoint, token, invitationId) {
+        return await fetch(endpoint, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": "Bearer " + token,
+            },
+            body: JSON.stringify({
+                'invitationId': invitationId,
+            })
+        })
+            .then(async data => {
+                if (data.status === 200) {
+                    return await data.json()
+                }
+            })
+            .catch(error => {
+                return error
+            })
+
+    }
     
 
 
