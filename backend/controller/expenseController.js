@@ -46,9 +46,10 @@ class ExpenseController {
             // NOTA: cambiar esto y pasarlo al frontend
             let fractionPayed = fractions.find(fraction => fraction.user == userPayer)
 
-            PaymentService.createPayment(userPayer,fractionPayed.amount,fractionPayed._id)
-
+            // verifico si el usuario logeado es parte del pago 
             if (fractionPayed) {
+                PaymentService.createPayment(userPayer,fractionPayed.amount,fractionPayed._id)
+                
                 FraccionService.updateFraccionById(fractionPayed._id, { state: 'payed' })
             }
 

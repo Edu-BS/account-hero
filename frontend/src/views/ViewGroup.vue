@@ -94,7 +94,6 @@ export default {
     computed: {
         numUsers() {
             let numUsers = 0;
-            console.log(this.group)
             if (this.group) {
                 numUsers = this.group.users.length;
             }
@@ -113,7 +112,7 @@ export default {
                     while (i < expense.fractions.length && !existeUser) {
                         let fraction = expense.fractions[i];
                         // verifico si en este gasto tiene que pagar algo el usuario logeado 
-                        if (fraction.user === this.$auth.userId) {
+                        if (fraction.user._id === this.$auth.userId) {
                             gasto += expense.amount;
                             existeUser = true;
                         }
@@ -128,11 +127,13 @@ export default {
             if (this.group) {
                 let expenses = this.group.expenses;
                 // recorro los gastos 
+                console.log(this.group)
                 expenses.forEach(expense => {
                     let fractions = expense.fractions;
                     // recorro las fraciones 
                     fractions.forEach(fraction => {
-                        if (fraction.user === this.$auth.userId) {
+                     
+                        if (fraction.user._id === this.$auth.userId) {
                             deuda += fraction.amount;
                         }
                     });
