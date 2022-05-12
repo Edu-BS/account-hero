@@ -1,2 +1,4 @@
 .vscode/
 mongodb-data/
+node_modules/
+.env

@@ -8,6 +8,12 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/ether',
+      name: 'ether',
+      component: () => import('../views/Ether.vue'),
+      
+    },
+    {
       path: '/',
       name: 'home',
       redirect: '/login'
