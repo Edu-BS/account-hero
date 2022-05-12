@@ -29,9 +29,6 @@
                     </div>
                 </div>
             </div>
-            <div class="text-center mt-4">
-                <button @click="payFraction" class="btn btn-primary rounded-pill d-lg-none">Pagar el gasto</button>
-            </div>
         </div>
         <footer class="footer fixed-bottom py-3 bg-light d-none d-lg-block green text-center">
             <button @click="payFraction" type="button" class="btn btn-primary rounded-pill">Pagar el gasto</button>

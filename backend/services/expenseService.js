@@ -1,5 +1,6 @@
 const ExpenseModel = require('../models/Expense')
 const FractionService = require('../services/fraccionService')
+const GroupModel = require('../models/Group')
 
 
 class ExpenseService {
@@ -60,6 +61,17 @@ class ExpenseService {
                 throw err;
             })
     }
+
+
+    static async addNewPayment(expenseId, newPayment) {
+        const groupUpdate = await GroupModel.findByIdAndUpdate(expenseId,{
+           $push: {
+              payments : newPayment
+           }
+        });
+
+        return groupUpdate
+     }
 
 }
 

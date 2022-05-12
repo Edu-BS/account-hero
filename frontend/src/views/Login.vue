@@ -16,7 +16,7 @@
           required>
 
         <div class="d-flex">
-          <button v-on:click="submit" type="submit" class="btn btn-primary rounded-pill ms-auto mt-4">Verificar</button>
+          <button  type="submit" class="btn btn-primary rounded-pill ms-auto mt-4">Verificar</button>
         </div>
       </form>
 
@@ -55,7 +55,7 @@ export default {
         }
       }
     },
-
+ 
     deleteError() {
       this.$auth.error = null;
     }
