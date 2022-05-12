@@ -349,5 +349,24 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "28967b57-8bf6-4955-86e3-ac1533787bc8",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Invitation reject",
+    "url": "http://{{host}}:{{port}}/api/user/invitation/reject",
+    "method": "PUT",
+    "sortNum": 125000,
+    "created": "2022-05-11T18:20:36.305Z",
+    "modified": "2022-05-11T18:24:02.576Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"invitationId\": \"627bed85aee41083d5c1b32b\"\n}",
+      "form": []
+    },
+    "tests": []
   }
 ]

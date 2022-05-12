@@ -1,5 +1,11 @@
 <template>
   <div v-if="invitations.length > 0" class="container bg-red-100 ">
+    <!-- Display the error var -->
+    <div v-if="error" class="alert alert-danger">
+      {{ error }}
+      <button @click="deleteError" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    
     <a class="btn btn-secondary position-relative  d-lg-none" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
       Invitations
       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -45,6 +51,7 @@ import InvitationController from "../controllers/invitationController";
 export default {
   data() {
     return {
+      error: null,
       endpoint: import.meta.env.VITE_APP_URL_API,
       invitations: [],
     };
@@ -55,7 +62,7 @@ export default {
   methods: {
     async getInvitations() {
       const invitations = await InvitationController.getInvitations(
-        this.endpoint + '/user/invitations',
+        this.endpoint + "/user/invitations",
         this.$auth.userName,
         this.$auth.token
       );
@@ -64,18 +71,40 @@ export default {
     },
     async acceptInvitation(invitation) {
       const response = await InvitationController.acceptInvitation(
-        this.endpoint + '/user/invitation/accept',
+        this.endpoint + "/user/invitation/accept",
         this.$auth.token,
         invitation._id
       );
 
       // const data = await response.json();
-  
+
       if (response.status === 200) {
         this.getInvitations();
         this.$parent.getGroups();
       }
-
+    },
+    async rejectInvitation(invitation) {
+      await InvitationController.rejectInvitation(
+        `${this.endpoint}/user/invitation/reject`,
+        this.$auth.token,
+        invitation._id
+      )
+        .then((response) => {
+          console.log(invitation);
+          console.log(response);
+          // this.invitations.find(invitation => invitation._id === response._id) = null
+          let this_invitation = this.invitations.find(invitation => invitation._id === response._id)
+          this.invitations.splice(this.invitations.indexOf(this_invitation), 1);
+          // console.log("this_invitation", this_invitation);
+          // this_invitation = response
+          // console.log(this.invitations);
+        })
+        .catch((error) => {
+          this.error = error;
+        });
+    },
+    deleteError() {
+      this.error = null;
     },
   },
 };
