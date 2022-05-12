@@ -2,6 +2,7 @@ const ExpenseService = require('../services/expenseService')
 const FraccionService = require('../services/fraccionService')
 const { handleError } = require('../helpers/handleError');
 const GroupService = require('../services/groupService');
+const PaymentService = require('../services/paymentService');
 
 class ExpenseController {
 
@@ -41,10 +42,12 @@ class ExpenseController {
             // agrego al gasto las fracciones 
             ExpenseService.updateExpenseById(newExpense._id, { fractions: updateFractions })
 
-            // cambio el estado de pago del usuario que creo el gasto 
+            //creo el pago y cambio el estado de pago del usuario que creo el gasto 
             // NOTA: cambiar esto y pasarlo al frontend
             let fractionPayed = fractions.find(fraction => fraction.user == userPayer)
-            console.log(fractionPayed != 'undefined')
+
+            PaymentService.createPayment(userPayer,fractionPayed.amount,fractionPayed._id)
+
             if (fractionPayed) {
                 FraccionService.updateFraccionById(fractionPayed._id, { state: 'payed' })
             }
