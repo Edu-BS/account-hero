@@ -368,5 +368,24 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "b9ae7cf2-4981-43e4-ab43-453f083485dc",
+    "colId": "e7e1ff8e-5461-4d22-a2b4-ae4d3888cb09",
+    "containerId": "",
+    "name": "Add wallet address",
+    "url": "http://{{host}}:{{port}}/api/user/wallet",
+    "method": "POST",
+    "sortNum": 210000,
+    "created": "2022-05-13T17:37:14.255Z",
+    "modified": "2022-05-13T17:38:44.831Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"walletAddress\": \"0xD2AEf5675951df7D53DC595c7971b446a66394BF\"\n}",
+      "form": []
+    },
+    "tests": []
   }
 ]

@@ -2,6 +2,10 @@
     <main>
         <NavComponent view="User" />
         <div class="container">
+            <div v-if="this.error" class="alert alert-warning alert-dismissible fade show" role="alert">
+              {{ this.error }}
+              <button @click="deleteError" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             <div class="mt-3 mx-auto col-lg-6 ">
                 <div class="row text-center">
                     <img class="col-3 mx-auto img-fluid" :src="user.picture" alt="">
@@ -32,11 +36,23 @@
                             <p class="text-center mb-0 fs-4">{{ user.email }}</p>
                         </div> -->
                     </div>
+                    <div class="col-12 text-break">
+                        <EditableField :fieldValue="user.walletAddress" :originalValue="userOriginalData.walletAddress" @updateField="this.user.email = $event" />
+
+                      {{user.walletAddress}}
+                    </div>
                     <div v-if="userDataChanged" class="col-12 text-left">
                         <button @click="updateUser()" class="btn btn-outline-primary rounded-pill">Guardar cambios</button>
                     </div>
                     
-                    <div class="col-6 mt-5 text-left d-lg-none">
+                    <div v-if="!user.walletAddress" class="col-12 mt-5 text-left d-lg-none">
+                        <button @click="addWalletAddress" class="btn btn-primary rounded-pill align-middle">
+                          <p class="d-inline">Añadir cartera</p>
+                          <img src="/public/ether.png" class="img-fluid ms-2" width="20">
+                        </button>
+                    </div>
+
+                    <div class="col-12 mt-5 text-left d-lg-none">
                         <button @click="logout()" class="btn btn-outline-danger rounded-pill">Cerrar sesión</button>
                     </div>
                 </div>
@@ -51,7 +67,7 @@
 <script>
 import UserController from "../controllers/userController";
 import EditableField from "../components/EditableField.vue";
-
+import EthereumController from "../blockchain/ethereumController"
 export default {
   components: {
     EditableField,
@@ -61,6 +77,7 @@ export default {
   },
   data() {
     return {
+      error: null,
       endpoint: import.meta.env.VITE_APP_URL_API,
       userOriginalData: {},
       user: {
@@ -69,6 +86,7 @@ export default {
         surname: "Borrego",
         email: "edbosu@gmail.com",
         picture: "profile_icon.png",
+        walletAddress: "",
       },
       userDataChanged: false,
     };
@@ -109,9 +127,18 @@ export default {
       this.$auth.logout();
       this.$router.push("login");
     },
-    editField(event) {
-      // event.target = `<p></p>`;
-      console.log(event.target);
+    async addWalletAddress() {
+      await EthereumController.connectWallet()
+        .then(async walletAddres => {
+          if (walletAddres) {
+            this.user.walletAddress = walletAddres;
+            this.updateUser();
+            this.getUser();
+          }
+        })
+        .catch(error => {
+          this.error = "Error al conectar con la cartera";
+        });      
     },
   },
 };

@@ -11,7 +11,7 @@
         class="form-control text-center fs-4 border border-primary rounded py-1"
     >
     <div v-else @click="isEditMode = true" :class="this.fieldValue != this.originalValue ? 'border-success': 'border-dark'" class="border border-2 rounded py-1">
-        <p  class="text-center mb-0 fs-4">{{ fieldValue }}</p>
+        <p class="text-center mb-0 fs-4">{{ fieldValue }}</p>
     </div>
   </div>
 </template>

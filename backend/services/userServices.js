@@ -153,6 +153,16 @@ class UserServices {
                 throw err
             })
     }
+
+    static async addWalletAddress(userId, walletAddress) {
+        return await UserModel.findByIdAndUpdate(userId, {"walletAddress": walletAddress  }, { new: true })
+            .then(user => {
+                return user
+            })
+            .catch(err => {
+                throw err
+            })
+    }
 }
 
 

@@ -35,6 +35,11 @@ routes.route('/user')
     .get(UserController.getUser)
     .put(UserController.updateUser)
 
+routes.route('/user/wallet')
+    .all(AuthMiddleware.validateToken)
+    .post(UserController.addWalletAddress)
+
+
 routes.route('/users/nameLike')
     // .param('nameLike', UserController.getByUsernameLike)
     .all(AuthMiddleware.validateToken)

@@ -94,16 +94,30 @@ class UserController {
     static async rejectInvitation(req, res, next) {
         try {
             await UserServices.rejectInvitation(req.body.invitationId, req.userId)
-            .then(invitation => {
-                return res.json(invitation)
-            })
-            .catch(err => {
-                if (err == 'Only the guest can reject the invitation')
-                    return res.status(403).json(err)
-                throw err   
-            })
+                .then(invitation => {
+                    return res.json(invitation)
+                })
+                .catch(err => {
+                    if (err == 'Only the guest can reject the invitation')
+                        return res.status(403).json(err)
+                    throw err
+                })
         } catch (error) {
-            res.status(500).json({'error': 'Server error'})
+            res.status(500).json({ 'error': 'Server error' })
+        }
+    }
+
+    static async addWalletAddress(req, res, next) {
+        try {
+            await UserServices.addWalletAddress(req.userId, req.body.walletAddress)
+                .then(user => {
+                    return res.json(user)
+                })
+                .catch(err => {
+                    throw err
+                })
+        } catch (error) {
+            return res.status(500).json({ 'error': 'Server error' })
         }
     }
 
