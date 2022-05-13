@@ -39,8 +39,20 @@ export default class EtherController {
             to: address,
             value: ethers.utils.parseEther(amount),
          }
+
          const txHash = await wallet.sendTransaction(tx)
          console.log(txHash);
+      } catch (error) {
+         console.log(error);
+      }
+   }
+
+   static async getTransaction(txHash) {
+      try {
+         const provider = new ethers.providers.Web3Provider(window.ethereum)
+         const transaction = await provider.getTransaction(txHash)
+         console.log(ethers.utils.formatEther(transaction.value));
+         return transaction;
       } catch (error) {
          console.log(error);
       }

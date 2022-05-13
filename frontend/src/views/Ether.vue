@@ -5,6 +5,7 @@
       <button class="primaryButton" @click="connectWallet">Connect Wallet</button>
       <button class="primaryButton" @click="getBalance">Get balance</button>
       <button class="primaryButton" @click="payTo">Pay</button>
+      <button class="primaryButton" @click="getTransaction">Get transaction</button>
       <p>Balance: {{balance}}</p>
       <p>Your account is: {{currentAccount}}</p>
    </div>
@@ -40,6 +41,12 @@ export default {
       },
       async payTo() {
          await EtherController.payTo("0xC69c524E62E9A313530381D47CB3F892763f1E3C", "1")
+      },
+      async getTransaction() {
+         await EtherController.getTransaction("0x36c1163320387f5b7fe3da97b9d40377376990e97b39b90ad29fd027a12e1025")
+            .then((result) => {
+               console.log(result)
+            })
       },
    },
    //    checkIfWalletIsConnected: async function () {
