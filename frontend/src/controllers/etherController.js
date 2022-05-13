@@ -1,10 +1,4 @@
-import { ethers } from "ethers";
-
-declare global {
-   interface Window {
-      ethereum: any
-   }
-}
+import { ethers } from "ethers"
 
 export default class EtherController {
 
@@ -25,13 +19,30 @@ export default class EtherController {
       }
    }
 
-   static async getBalance(address: string) {
+   static async getBalance(address) {
       try {
          const provider = new ethers.providers.Web3Provider(window.ethereum)
+         console.log(provider);
          const balance = await provider.getBalance(address)
+         console.log(balance);
          return ethers.utils.formatEther(balance)
       } catch (error) {
+         console.log(error);
+      }
+   }
 
+   static async payTo(address, amount) {
+      try {
+         const provider = new ethers.providers.Web3Provider(window.ethereum)
+         const wallet = provider.getSigner()
+         const tx = {
+            to: address,
+            value: ethers.utils.parseEther(amount),
+         }
+         const txHash = await wallet.sendTransaction(tx)
+         console.log(txHash);
+      } catch (error) {
+         console.log(error);
       }
    }
 

@@ -1,66 +1,84 @@
 <template>
    <div class="home">
-      <img alt="Vue logo" src="../assets/logo.png" />
+      <!-- <img alt="Vue logo" src="../public/" /> -->
       <br/>
       <button class="primaryButton" @click="connectWallet">Connect Wallet</button>
+      <button class="primaryButton" @click="getBalance">Get balance</button>
+      <button class="primaryButton" @click="payTo">Pay</button>
+      <p>Balance: {{balance}}</p>
       <p>Your account is: {{currentAccount}}</p>
    </div>
 </template>
 
 <script>
+// import EtherController from '../../dist/etherController'
+import EtherController from '../controllers/etherController'
+
 export default {
    name: "Home",
    data() {
       return {
+         balance: 0,
          ether: {
             account: null,
          },
-         currentAccount: null,
+         currentAccount: "",
          contractAddress:
             "set this to your contract address, if you have more than one contract create more specific variables(greeterAddress or votingAddress)",
       };
    },
-   mounted() {
-      this.checkIfWalletIsConnected();
+   async mounted() {
+      // this.checkIfWalletIsConnected();
+      this.currentAccount = await EtherController.connectWallet()
    },
    methods: {
-      checkIfWalletIsConnected: async function () {
-         try {
-            const { ethereum } = window;
-            if (!ethereum) {
-               alert("Make sure you have metamask!");
-               return;
-            } else {
-               console.log("We have the ethereum object", ethereum);
-            }
-            const accounts = await ethereum.request({ method: "eth_accounts" });
-            if (accounts.length !== 0) {
-               const account = accounts[0];
-               console.log("Found an authorized account:", account);
-               this.currentAccount = account;
-            } else {
-               console.log("No authorized account found");
-            }
-         } catch (error) {
-            console.log(error);
-         }
+      async connectWallet() {
+         this.currentAccount = await EtherController.connectWallet()
       },
-      connectWallet: async function () {
-         try {
-            const { ethereum } = window;
-            if (!ethereum) {
-               alert("Get MetaMask!");
-               return;
-            }
-            const accounts = await ethereum.request({
-               method: "eth_requestAccounts",
-            });
-            console.log("Connected", accounts[0]);
-            this.currentAccount = accounts[0];
-         } catch (error) {
-            console.log(error);
-         }
+      async getBalance() {
+         this.balance = await EtherController.getBalance(this.currentAccount)
+      },
+      async payTo() {
+         await EtherController.payTo("0xC69c524E62E9A313530381D47CB3F892763f1E3C", "1")
       },
    },
+   //    checkIfWalletIsConnected: async function () {
+   //       try {
+   //          const { ethereum } = window;
+   //          if (!ethereum) {
+   //             alert("Make sure you have metamask!");
+   //             return;
+   //          } else {
+   //             console.log("We have the ethereum object", ethereum);
+   //          }
+   //          const accounts = await ethereum.request({ method: "eth_accounts" });
+   //          if (accounts.length !== 0) {
+   //             const account = accounts[0];
+   //             console.log("Found an authorized account:", account);
+   //             this.currentAccount = account;
+   //          } else {
+   //             console.log("No authorized account found");
+   //          }
+   //       } catch (error) {
+   //          console.log(error);
+   //       }
+   //    },
+   //    connectWallet: async function () {
+   //       try {
+   //          const { ethereum } = window;
+   //          if (!ethereum) {
+   //             alert("Get MetaMask!");
+   //             return;
+   //          }
+   //          const accounts = await ethereum.request({
+   //             method: "eth_requestAccounts",
+   //          });
+   //          console.log("Connected", accounts[0]);
+   //          this.currentAccount = accounts[0];
+   //       } catch (error) {
+   //          console.log(error);
+   //       }
+   //    },
+   // },
 };
 </script>

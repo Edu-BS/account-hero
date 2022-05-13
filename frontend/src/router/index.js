@@ -11,7 +11,9 @@ const router = createRouter({
       path: '/ether',
       name: 'ether',
       component: () => import('../views/Ether.vue'),
-      
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/',
