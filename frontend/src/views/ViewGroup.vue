@@ -17,7 +17,7 @@
             </router-link>
           </div>
         </div>
-        <div class="row justify-content-center fs-4">
+        <div class="row justify-content-center">
           <div class="col-3 text-center fw-bold">
             <p class="mb-0 text-secondary">{{numUsers}}</p>
             <p>Miembros</p>

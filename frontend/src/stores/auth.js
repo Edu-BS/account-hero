@@ -93,9 +93,9 @@ export const authStore = defineStore({
           userId : this.userId
         }));
       } else if (data.errors) {
-        if (data.errors.login === "undefined")
+        if (data.errors.login !== "undefined")
           this.error = data.errors.login.message
-        else if (data.errors.form === "undefined")
+        else if (data.errors.form !== "undefined")
           this.error = data.errors.form[0].message
       }
       return data
