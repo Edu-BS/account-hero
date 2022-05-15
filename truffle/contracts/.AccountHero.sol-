@@ -1,0 +1,86 @@
+// // SPDX-License-Identifier: MIT
+// pragma solidity  ^0.6.6;
+pragma solidity >=0.4.21 <0.6.0;
+
+contract Fraction {
+    address payable public owner;
+    address public debtor;
+    uint public debt;
+    bool public isPaid;
+
+    event fractionPaid(address indexed _owner, address indexed _debtor, uint _debt);
+
+
+    constructor(address _debtor, uint _debt) public {
+        owner = msg.sender;
+        debtor = _debtor;
+        debt = _debt;
+        isPaid = false;
+    }
+
+    function pay() public payable {
+        require(msg.sender == debtor);
+        require(msg.value >= debt);
+        require(!isPaid);
+        owner.transfer(msg.value);
+        isPaid = true;
+        emit fractionPaid(owner, debtor, debt);
+    }
+
+}
+
+// contract Expense {
+    
+// }
+
+contract AccountHero {
+    address public owner;
+
+    event newFraction(address indexed _owner, address indexed _debtor, uint _debt, bool _isPaid);
+    event fractionPaid(address indexed _owner, address indexed _debtor, uint _debt);
+
+    struct Fraction {
+        address payable owner;
+        address debtor;
+        uint debt;
+        bool isPaid;
+    }
+
+    Fraction[] public fractions;
+
+    constructor() public {
+        owner = msg.sender;
+    }
+
+    function addFraction(address _debtor, uint _debt) public {
+        Fraction memory fraction = Fraction(msg.sender, _debtor, _debt, false);
+        fractions.push(fraction);
+        emit newFraction(msg.sender, _debtor, _debt, false);
+    }
+
+    // function getFractions() public view returns (string[] memory) {
+    //     string[] memory walletFractions;
+
+    //     for (uint256 index = 0; index < fractions.length; index++) {
+    //         if (fractions[index].owner = msg.sender) {
+    //             walletFractions.push(fractions[index].toString());
+    //         }
+    //     }
+
+    //     return walletFractions;
+    // }
+
+    function payFraction(uint _index) public payable {
+        Fraction memory fraction = fractions[_index];
+
+        require(msg.sender == fraction.debtor);
+        require(msg.value >= fraction.debt);
+        require(!fraction.isPaid);
+        
+        
+        fraction.owner.transfer(msg.value);
+        fractions[_index].isPaid = true;
+        emit fractionPaid(msg.sender, fraction.debtor, fraction.debt);
+        // fraction.isPaid = true;
+    } 
+}
