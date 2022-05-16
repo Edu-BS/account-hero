@@ -88,7 +88,13 @@ export default {
                 },
             });
             const data = await res.json();
+              let expenses = data.expenses.sort(function(a,b){
+              let date1 =new Date(a.date);
+              let date2 = new Date(b.date);
+              return  date2 - date1
+            });
             this.group = data;
+            this.group.expenses = expenses
         }
     },
     computed: {

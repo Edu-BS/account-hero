@@ -5,12 +5,12 @@
     <div class="card-body">
       <p class="card-text">Descripcion: {{description}}</p>
       <p class="card-text">Fecha: {{data}}</p>
-      <p class="card-text">Monto: {{amount}}</p>
+      <p class="card-text">Monto: {{Number.parseFloat(amount).toFixed(2)}}</p>
       <ul class="list-group list-group-flush">
         <p class="card-text">usuarios:</p>
         <li v-for="fraction in fractions" :key="fraction._id" 
             class="list-group-item">
-            {{fraction.user.username}} <span :class="colorClass(fraction)">{{fraction.amount}}</span>
+            {{fraction.user.username}} <span :class="colorClass(fraction)">{{Number.parseFloat(fraction.amount).toFixed(2)}}</span>
         </li>
       </ul>
     </div>
