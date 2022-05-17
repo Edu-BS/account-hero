@@ -4,7 +4,7 @@
     <div v-if="!error" class="container text-center mt-4">
       <h1>{{expense.name}}</h1>
       <h6 class="text-muted">{{expense.date}}</h6>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum suscipit nam, consectetur repellendus quos eius quo aliquid error veritatis officiis tempora repudiandae ad tempore accusamus numquam quis voluptas magnam et.</p>
+      <p>{{expense.description}}</p>
       <h3 class="">¿Quien a pagado?</h3>
       <p class="fs-5">{{expense.payer.username}}</p>
       <div class="container mt-5">

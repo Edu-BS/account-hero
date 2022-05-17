@@ -91,4 +91,8 @@ export default {
     text-decoration: none !important;
     color: black !important;
 }
+
+.navbar {
+    background-color: rgb(67, 67, 99) !important;
+}
 </style>

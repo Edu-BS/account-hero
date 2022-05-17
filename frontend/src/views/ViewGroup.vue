@@ -32,6 +32,27 @@
           </div>
         </div>
       </div>
+      <div class="d-none d-lg-block container-fluid mt-5">
+        <div class="card">
+          <div class="card-body d-flex justify-content-evenly">
+          <div class="col-3 text-center fw-bold">
+            <p class="mb-0 text-secondary">{{numUsers}}</p>
+            <p>Miembros</p>
+          </div>
+          <div class="col-3 text-center fw-bold">
+            <p class="mb-0 text-secondary">{{totalGasto}}</p>
+            <p>Gastos</p>
+          </div>
+          <div class="col-3 text-center fw-bold">
+            <p class="mb-0 text-secondary">{{totalDeuda}}</p>
+            <p>Debes</p>
+          </div>
+          </div>
+        </div>
+
+      </div>
+
+      
 
       <!-- Add groups button -->
       <div class="text-center justify-content-center d-lg-none">
@@ -138,8 +159,8 @@ export default {
                     let fractions = expense.fractions;
                     // recorro las fraciones 
                     fractions.forEach(fraction => {
-                     
-                        if (fraction.user._id === this.$auth.userId) {
+                      console.log(fraction)
+                        if (fraction.user._id === this.$auth.userId && fraction.state === "unpaid") {
                             deuda += fraction.amount;
                         }
                     });
@@ -148,5 +169,6 @@ export default {
             return Number.parseFloat(deuda).toFixed(2);
         }
     },
+    
 }
 </script>
