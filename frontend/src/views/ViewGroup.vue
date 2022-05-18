@@ -52,8 +52,6 @@
 
       </div>
 
-      
-
       <!-- Add groups button -->
       <div class="text-center justify-content-center d-lg-none">
         
