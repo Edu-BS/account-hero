@@ -58,7 +58,7 @@ class UserController {
     }
 
     static async getByUsernameLike(req, res, next) {
-        await UserServices.getByUsernameLike(req.body.user.username)
+        return await UserServices.getByUsernameLike(req.body.user.username, req.body.user.isEther)
             .then(users => {
                 return res.json(users)
             })
@@ -94,16 +94,44 @@ class UserController {
     static async rejectInvitation(req, res, next) {
         try {
             await UserServices.rejectInvitation(req.body.invitationId, req.userId)
-            .then(invitation => {
-                return res.json(invitation)
-            })
-            .catch(err => {
-                if (err == 'Only the guest can reject the invitation')
-                    return res.status(403).json(err)
-                throw err   
-            })
+                .then(invitation => {
+                    return res.json(invitation)
+                })
+                .catch(err => {
+                    if (err == 'Only the guest can reject the invitation')
+                        return res.status(403).json(err)
+                    throw err
+                })
         } catch (error) {
-            res.status(500).json({'error': 'Server error'})
+            res.status(500).json({ 'error': 'Server error' })
+        }
+    }
+
+    static async addWalletAddress(req, res, next) {
+        try {
+            await UserServices.addWalletAddress(req.userId, req.body.walletAddress)
+                .then(user => {
+                    return res.json(user)
+                })
+                .catch(err => {
+                    throw err
+                })
+        } catch (error) {
+            return res.status(500).json({ 'error': 'Server error' })
+        }
+    }
+
+    static async getByWalletAddress(req, res, next) {
+        try {
+            await UserServices.getByWalletAddress(req.params.walletAddress)
+                .then(user => {
+                    return res.json(user)
+                })
+                .catch(err => {
+                    throw err
+                })
+        } catch (error) {
+            return res.status(500).json({ 'error': 'Server error' })
         }
     }
 

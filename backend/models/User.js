@@ -26,6 +26,10 @@ const UserSchema = new Schema({
       required: true,
       unique: true,
    },
+   walletAddress: {
+      type: String,
+      required: false,
+   },
    password: {
       type: String,
       required: true,

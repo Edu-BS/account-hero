@@ -26,7 +26,7 @@ export default class ExpenseController {
             .then(async data => {
                 console.log(data);
                 const expense = await data.json();
-
+                console.log(expense);
                 if (data.status !== 200)
                     throw new Error(expense.error);
 

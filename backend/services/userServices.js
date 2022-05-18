@@ -74,11 +74,22 @@ class UserServices {
     }
 
     static async updateUser(userId, user) {
-        return await UserModel.findByIdAndUpdate(userId, user, {new: true})
+        return await UserModel.findByIdAndUpdate(userId, user, { new: true })
     }
 
-    static async getByUsernameLike(username) {
-        const users = await UserModel.find({ 'username': { $regex: username, $options: 'i' } }).select('username name _id').limit(5)
+    static async getByUsernameLike(username, isEther) {
+        let users = await UserModel
+                .find({ 'username': { $regex: username, $options: 'i' } })
+                .select('username name _id walletAddress')
+                .limit(5)
+                
+        if (isEther) {
+            users = users.filter(user => { 
+                if (user.walletAddress)
+                    return true
+            })
+            // users = await UserModel.where("walletAddress").exists(tru).limit()
+        }
         return users
     }
 
@@ -141,13 +152,33 @@ class UserServices {
     static async rejectInvitation(invitationId, userId) {
         return await this.getUser(userId)
             .then(async user => {
-               return await InvitationService.rejectInvitation(invitationId, user)
+                return await InvitationService.rejectInvitation(invitationId, user)
                     .then(invitation => {
                         return invitation
                     })
                     .catch(err => {
                         throw err
                     })
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    static async addWalletAddress(userId, walletAddress) {
+        return await UserModel.findByIdAndUpdate(userId, { "walletAddress": walletAddress }, { new: true })
+            .then(user => {
+                return user
+            })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    static async getByWalletAddress(walletAddress) {
+        return await UserModel.findOne({ "walletAddress": walletAddress })
+            .then(user => {
+                return user
             })
             .catch(err => {
                 throw err

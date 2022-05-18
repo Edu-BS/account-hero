@@ -9,7 +9,7 @@
       "headers": [],
       "auth": {
         "type": "bearer",
-        "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2FhZTQ0NzU5NDdmNTQ0MzYyOWYxOSIsImlhdCI6MTY1MjI4NzIzMywiZXhwIjoxNjUyMzczNjMzfQ.iol6Z2x1HQOsVTtDwMDSawQQ3U9vcCbUfh8EnNwy_Fo"
+        "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2FhZTQ0NzU5NDdmNTQ0MzYyOWYxOSIsImlhdCI6MTY1MjcyNTk3MSwiZXhwIjoxNjUyODEyMzcxfQ.XPAbW9UsDfbid239gSTJdbh_S4Mu5KxBVAMikUqUMCI"
       },
       "tests": [],
       "envId": "985427ba-5af2-4ba4-bfeb-a4a35704bfec"
