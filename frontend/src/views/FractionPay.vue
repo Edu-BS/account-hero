@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <footer class="footer fixed-bottom py-3 bg-light d-none d-lg-block green text-center">
+        <footer class="footer fixed-bottom py-3 bg-light  green text-center">
             <button @click="payFraction" type="button" class="btn btn-primary rounded-pill">Pagar el gasto</button>
         </footer>
     </main>
