@@ -1,7 +1,6 @@
 <template >
   <main>
     <NavComponent view="Expense" />
-    {{expense}}
     <div v-if="!error" class="container text-center mt-4">
       <h1>{{expense.name}}</h1>
       <h6 class="text-muted">{{expense.date}}</h6>
@@ -35,7 +34,7 @@
 <script>
 import ExpenseFractions from "../components/ExpenseFractions.vue";
 import ExpenseController from "../controllers/expenseController";
-import EthereumController from "../blockchain/ethereumController"
+import EthereumController from "../blockchain/ethereumController";
 
 export default {
   components: {
@@ -44,6 +43,7 @@ export default {
   data() {
     return {
       error: null,
+      EthereumController: null,
       endpoint: import.meta.env.VITE_APP_URL_API,
       myFraction: {
         _id: "",
@@ -54,47 +54,65 @@ export default {
           username: "",
         },
       },
+      fractions: [],
     };
   },
-  created() {
-    console.log(this.$route.href);
-    this.getExpense();
+  async created() {
+    this.EthereumController = await EthereumController.getInstance();
+    await this.getExpense();
   },
   methods: {
     async getExpense() {
-      const expense = await ExpenseController.getExpense(
+      let expense = await ExpenseController.getExpense(
         `${this.endpoint}/etherExpense/${this.$route.params.id}`,
         this.$auth.token
       )
-        .then((response) => {
+        .then(async (response) => {
           response.date = response.date.toDateString();
-          for (let index = 0; index < response.fractions.length; index++) {
-            // console.log(response.fractions[index].state);
-            switch (response.fractions[index].state) {
-              case "paid":
-                response.fractions[index].state = "Pagado";
-                break;
-              case "payed":
-                response.fractions[index].state = "Pagado";
-                break;
-              case "pending":
-                response.fractions[index].state = "Pendiente";
-                break;
-              case "unpaid":
-                response.fractions[index].state = "Sín pagar";
-                break;
-            }
-          }
-          this.myFraction = response.fractions.find(fraction => fraction.user.username === this.$auth.userName);
-          this.expense = response;
+          // this.myFraction = response.fractions.find(fraction => fraction.user.username === this.$auth.userName);
+          return response;
+        })
+        .catch((error) => {
+          this.error = error;
+        });
+      await this.setFractionsInfo(expense.fractions);
+
+      this.expense = expense;
+      this.expense.fractions = this.fractions;
+    },
+    async setFractionsInfo(_fractionsAddress) {
+      for (const address of _fractionsAddress) {
+        let fractionInfo = await this.EthereumController.getFractionInfo(
+          address
+        );
+        // fractionInfo.amount = fractionInfo.debt
+        fractionInfo.user = await this.getUserByWalletAddress(
+          fractionInfo.debtor
+        );
+
+        if (fractionInfo.isPaid) {
+          fractionInfo.state = "Pagado";
+        } else {
+          fractionInfo.state = "Sín pagar";
+        }
+
+        this.fractions.push(fractionInfo);
+      }
+    },
+    async getUserByWalletAddress(walletAddress) {
+      return await fetch(`${this.endpoint}/user/wallet/${walletAddress}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.$auth.token}`,
+        },
+      })
+        .then(async (response) => {
+          return await response.json();
         })
         .catch((error) => {
           this.error = error;
         });
     },
-    async setFractionsInfo(fractionAddress) {
-
-    }
   },
 };
 </script>

@@ -174,6 +174,16 @@ class UserServices {
                 throw err
             })
     }
+
+    static async getByWalletAddress(walletAddress) {
+        return await UserModel.findOne({ "walletAddress": walletAddress })
+            .then(user => {
+                return user
+            })
+            .catch(err => {
+                throw err
+            })
+    }
 }
 
 

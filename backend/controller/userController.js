@@ -121,6 +121,20 @@ class UserController {
         }
     }
 
+    static async getByWalletAddress(req, res, next) {
+        try {
+            await UserServices.getByWalletAddress(req.params.walletAddress)
+                .then(user => {
+                    return res.json(user)
+                })
+                .catch(err => {
+                    throw err
+                })
+        } catch (error) {
+            return res.status(500).json({ 'error': 'Server error' })
+        }
+    }
+
 }
 
 

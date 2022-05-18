@@ -9,7 +9,8 @@
             {{ fraction.user.username }}
         </div>
         <div class="col-4">
-            {{ fraction.amount }}€
+            <p v-if="fraction.debt">{{ fraction.debt }} ETH</p>
+            <p v-else-if="fraction.amount">{{ fraction.amount }}€</p>
         </div>
         <div class="col-4" :style="statusColor(fraction.state)">
             <div v-if="fraction.state == 'Pendiente' && this.$auth.userName == payer.username">
@@ -58,7 +59,6 @@ export default {
     async confirmFraction(fractionId) {
       await FractionController.confirmFraction(`${this.$parent.endpoint}/fraction/${fractionId}/confirm`, this.$auth.token)
         .then((response) => {
-          console.log(response);
           if (response.state == 'paid') {
             this.fractions.find(fraction => fraction._id == fractionId).state = "Pagado";
           }

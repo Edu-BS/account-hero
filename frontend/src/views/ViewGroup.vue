@@ -44,8 +44,6 @@
 
 
       <!-- Groups container -->
-          {{isLoaded}}
-
       <div v-if="group != null" class="row justify-content-center mt-4 mx-auto">
         <div v-for="expense in group.expenses"  :key="expense._id"  class="col-lg-4 col-xs col-md-6 col-sm-6 my-3">
           <ExpenseCard v-if="isLoaded"
@@ -60,7 +58,6 @@
            
         </div>
       </div>
-     {{group}}
     </div>
         <footer class="footer d-none d-lg-block fixed-bottom py-3 bg-light text-center">
       <router-link :to="`/group/${this.$route.params.id}/expense/create`" class="btn btn-primary rounded-pill">Crear gasto</router-link>
@@ -104,12 +101,9 @@ export default {
         }
       );
       const data = await res.json();
-      console.log(data);
-      console.log(typeof data.expenses[0]);
       if (data.etherExpenses) {
         data.expenses = data.etherExpenses;
         this.group = await this.getFractionsInfo(data);
-        console.log("this.group -> ", this.group);
       }
     },
     async getFractionsInfo(group) {
@@ -120,15 +114,12 @@ export default {
           fraction = {
             address: fraction,
           };
-          console.log("fraction -> ", fraction);
           const debtorWalletAddress = await this.EthereumController.getFractionDebtor(
             fraction.address
           );
-          console.log("debtorWalletAddress -> ", debtorWalletAddress);
           fraction.user = group.users.find(
             (user) => user.walletAddress === debtorWalletAddress
           );
-          console.log("fraction.user -> ", fraction);
           expense.fractions[fractionIndex] = fraction;
         }        
       }
@@ -146,7 +137,6 @@ export default {
   computed: {
     numUsers() {
       let numUsers = 0;
-      console.log(this.group);
       if (this.group) {
         numUsers = this.group.users.length;
       }

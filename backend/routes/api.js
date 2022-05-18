@@ -40,6 +40,11 @@ routes.route('/user/wallet')
     .all(AuthMiddleware.validateToken)
     .post(UserController.addWalletAddress)
 
+routes.route('/user/wallet/:walletAddress')
+    .all(AuthMiddleware.validateToken)
+    .get(UserController.getByWalletAddress)
+
+
 
 routes.route('/users/nameLike')
     // .param('nameLike', UserController.getByUsernameLike)

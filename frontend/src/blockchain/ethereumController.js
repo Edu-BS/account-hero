@@ -237,15 +237,16 @@ export default class EtherController {
         accounts, signer, provider, accountHeroContractAddress, accountHeroContract, accountHeroContractSigned
       })
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
   constructor(async_params) {
+    // const accountHeroContractAddress = "0x1d493B807363803A1d37e9f18400f3dF4Aa3CBa4"
     if (typeof async_params === 'undefined') {
       throw new Error("EtherController: you need to initialize the controller with init()");
     }
-    this.accounts = async_params.accounts;
+    this.accounts = async_params.accounts
     this.provider = async_params.provider;
     this.address = this.accounts[0]
     this.signer = async_params.signer;
@@ -253,11 +254,11 @@ export default class EtherController {
     this.accountHeroContract = async_params.accountHeroContract;
     this.accountHeroContractSigned = async_params.accountHeroContractSigned;
 
-    console.log("accounts ->", this.accounts);
-    console.log("provider ->", this.provider);
-    console.log("signer ->", this.signer);
-    console.log("accountHeroContract ->", this.accountHeroContract);
-    console.log("accountHeroContractSigned ->", this.accountHeroContractSigned);
+    // console.log("accounts ->", this.accounts);
+    // console.log("provider ->", this.provider);
+    // console.log("signer ->", this.signer);
+    // console.log("accountHeroContract ->", this.accountHeroContract);
+    // console.log("accountHeroContractSigned ->", this.accountHeroContractSigned);
   }
 
   async getSigner() {
@@ -266,17 +267,20 @@ export default class EtherController {
     return signer
   }
 
-  async getAccountHeroContract() {
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const accountHeroContract = new ethers.Contract(this.accountHeroContractAddress, AccountHeroAbi, provider)
-    return accountHeroContract
+  getAccountHeroContract() {
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const accountHeroContract = new ethers.Contract(this.accountHeroContractAddress, AccountHeroAbi, provider)
+      return accountHeroContract
+    } catch (error) {
+      console.error("EtherController: getAccountHeroContract -> ", error);
+    }
   }
 
   async getAccountHeroContractSigned() {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner()
-    console.log(this.accountHeroContractAddress);
     const accountHeroContract = new ethers.Contract(this.accountHeroContractAddress, AccountHeroAbi, provider)
 
     const accountHeroContractSigned = accountHeroContract.connect(signer)
@@ -306,7 +310,7 @@ export default class EtherController {
       let balance = await this.provider.getBalance(address)
       return balance
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -317,10 +321,9 @@ export default class EtherController {
         value: ethers.utils.parseEther(amount),
       }
       const txHash = await this.wallet.sendTransaction(tx)
-      console.log(txHash);
       return txHash
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -328,7 +331,7 @@ export default class EtherController {
     try {
       const accountHeroContractSigned = await this.getAccountHeroContractSigned()
       const provider = new ethers.providers.Web3Provider(window.ethereum)
-      
+
       const txFraction = await accountHeroContractSigned.addFraction(debtor, ethers.utils.parseEther(debt.toString()))
       let txReceipt = await provider.getTransactionReceipt(txFraction.hash)
 
@@ -336,22 +339,52 @@ export default class EtherController {
 
       return fractionAddress
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw error
     }
   }
 
   async getFractionDebt(fractionAddress) {
-    const accountHeroContract = this.getAccountHeroContract()
-    const fractionDebt = await accountHeroContract.getFractionDebt(fractionAddress)
-    return ethers.utils.parseEther(fractionDebt)
+    const accountHeroContractSigned = await this.getAccountHeroContractSigned()
+    const fractionDebt = await accountHeroContractSigned.getFractionDebt(fractionAddress)
+    return ethers.utils.formatEther(fractionDebt.toString())
   }
 
   async getFractionDebtor(fractionAddress) {
-    const accountHeroContract = await this.getAccountHeroContract()
-    const debtor = await accountHeroContract.getFractionDebtor(fractionAddress)
-    console.log("fractionDebtor -> ", debtor);
-    return debtor
+    try {
+      const accountHeroContractSigned = await this.getAccountHeroContractSigned()
+      const debtor = await accountHeroContractSigned.getFractionDebtor(fractionAddress)
+      return debtor
+    } catch (error) {
+      console.error("EtherController: getFractionDebtor -> ", error);
+    }
+  }
+
+  async getFractionOwner(fractionAddress) {
+    const accountHeroContractSigned = await this.getAccountHeroContractSigned()
+    const owner = await accountHeroContractSigned.getFractionOwner(fractionAddress)
+    return owner
+  }
+
+  async getFractionIsPaid(fractionAddress) {
+    const accountHeroContractSigned = await this.getAccountHeroContractSigned()
+    const isPaid = await accountHeroContractSigned.getFractionIsPaid(fractionAddress)
+    return isPaid
+  }
+
+  async getFractionInfo(fractionAddress) {
+    const fraction = {}
+    try {
+
+      // fraction.owner = await this.getFractionOwner(fractionAddress)
+      fraction.debtor = await this.getFractionDebtor(fractionAddress)
+      fraction.debt = await this.getFractionDebt(fractionAddress)
+      fraction.isPaid = await this.getFractionIsPaid(fractionAddress)
+
+      return fraction
+    } catch (error) {
+      console.error("EthereumController Exeption -> ", error);
+    }
   }
 
 }
