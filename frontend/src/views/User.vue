@@ -117,7 +117,7 @@ export default {
         this.$auth.token,
         this.user
       );
-
+      this.$auth.userName = userUpdated.username;
       this.getUser();
     },
     logout() {
