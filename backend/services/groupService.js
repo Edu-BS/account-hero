@@ -4,9 +4,9 @@ const InvitationService = require('../services/invitationService');
 const mongoose = require('mongoose');
 class GroupService {
 
-   static async createGroup({ admin, name, description, users }) {
+   static async createGroup({ admin, name, description, users, isEtherGroup }) {
       try {
-         const groupData = { admin, name, description, 'users': admin }
+         const groupData = { admin, name, description, 'users': admin, isEtherGroup }
 
          let members = users.filter(user => user !== admin);
 

@@ -69,6 +69,14 @@ const router = createRouter({
       }
     },
     {
+      path : '/etherExpense/:id',
+      name: 'etherExpense',
+      component : ()=>import('../views/EtherExpense.vue'),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path : '/expense/:expenseId/fraction/:fractionId/pay',
       name: 'fractionPay',
       component : ()=>import('../views/FractionPay.vue'),

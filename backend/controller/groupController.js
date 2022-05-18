@@ -17,6 +17,7 @@ class GroupController {
             admin: req.userId,
             name: req.body.name,
             description: req.body.description,
+            isEtherGroup: req.body.isEtherGroup ? true : false,
             users: Array.from(new Set(allUsersId)),
          }
 
@@ -45,18 +46,25 @@ class GroupController {
 
    static async getGroup(req, res, next) {
       await GroupModel.findById(req.params.groupId)
-         .populate({path:'users',select: '_id username'})
-         .populate({
-            path: 'expenses',
-            populate: {
-               path: 'fractions',
-               populate : {
-                  path : 'user',
-                  select: 'username'
-               }
+         .then(async group => {
+            if (!group.isEtherGroup) {
+               group = await GroupModel.findById(req.params.groupId)
+                  .populate({ path: 'users', select: '_id username walletAddress' })
+                  .populate({
+                     path: 'expenses',
+                     populate: {
+                        path: 'fractions',
+                        populate: {
+                           path: 'user',
+                           select: 'username'
+                        }
+                     }
+                  })
+            } else {
+               group = await GroupModel.findById(req.params.groupId)
+                  .populate({ path: 'users', select: '_id username walletAddress' })
+                  .populate("etherExpenses")
             }
-         })
-         .then(group => {
             res.json(group);
          })
          .catch(err => {

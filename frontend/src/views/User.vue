@@ -38,8 +38,6 @@
                     </div>
                     <div class="col-12 text-break">
                         <EditableField :fieldValue="user.walletAddress" :originalValue="userOriginalData.walletAddress" @updateField="this.user.email = $event" />
-
-                      {{user.walletAddress}}
                     </div>
                     <div v-if="userDataChanged" class="col-12 text-left">
                         <button @click="updateUser()" class="btn btn-outline-primary rounded-pill">Guardar cambios</button>

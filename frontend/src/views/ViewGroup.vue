@@ -2,7 +2,7 @@
   <main>
     <NavComponent view="Dashboard" />
     
-    <div class="container mb-5">
+    <div v-if="group" class="container mb-5">
      <div class="border border-1 rounded-3 m-4 d-lg-none">
         <div class="d-flex">
           <div class="col-3 col-md-2 m-3 me-0">
@@ -35,111 +35,163 @@
 
       <!-- Add groups button -->
       <div class="text-center justify-content-center d-lg-none">
-          <router-link :to="'/group/' + this.$route.params.id + '/expense/create'" class="btn btn-primary rounded-pill btn-circle align-middle fw-bold fs-1">+</router-link>
+        
+          <router-link :to="`/group/${this.$route.params.id}/expense/create`" class="btn btn-primary rounded-pill btn-circle align-middle fw-bold fs-1">
+            <img v-if="group.isEtherGroup" class="mb-2" src="/ether.png" height="35" alt="">
+            <p v-else>+</p>
+          </router-link>
       </div>
 
 
+      <!-- Groups container -->
+          {{isLoaded}}
 
-          <!-- Groups container -->
       <div v-if="group != null" class="row justify-content-center mt-4 mx-auto">
         <div v-for="expense in group.expenses"  :key="expense._id"  class="col-lg-4 col-xs col-md-6 col-sm-6 my-3">
-          <ExpenseCard 
+          <ExpenseCard v-if="isLoaded"
           :name="expense.name"
           :id="expense._id"
           :description="expense.description"
           :data="new Date(expense.date).toDateString()"
           :amount="expense.amount"
           :fractions="expense.fractions"
+          :isEther="group.isEtherGroup"
           />
+           
         </div>
       </div>
-
+     {{group}}
     </div>
         <footer class="footer d-none d-lg-block fixed-bottom py-3 bg-light text-center">
-      <router-link :to="'/group/' + this.$route.params.id + '/expense/create'" class="btn btn-primary rounded-pill">Crear gasto</router-link>
+      <router-link :to="`/group/${this.$route.params.id}/expense/create`" class="btn btn-primary rounded-pill">Crear gasto</router-link>
     </footer>
   </main> 
 </template>
 <script>
 import ExpenseCard from "../components/ExpenseCard.vue";
-
-
+import EthereumController from "../blockchain/ethereumController";
+import { ref } from "vue";
 export default {
-
-  components : {
-    ExpenseCard
+  components: {
+    ExpenseCard,
   },
-    data() {
-        return {
-            group: null
-        };
-    },
-    created() {
-        this.getGroup();
-    },
-    methods: {
-        async getGroup() {
-            const res = await fetch(import.meta.env.VITE_APP_URL_API + "/group/" + this.$route.params.id, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "Authorization": "Bearer " + this.$auth.token,
-                },
-            });
-            const data = await res.json();
-            this.group = data;
+  data() {
+    return {
+      EthereumController: null,
+      isLoaded: false,
+      group: {
+        expenses: [],
+        isEtherGroup: false,
+        users: [],
+      },
+    };
+  },
+  async created() {
+    this.getGroup();
+    this.EthereumController = await EthereumController.getInstance();
+  },
+  methods: {
+    async getGroup() {
+      const res = await fetch(
+        import.meta.env.VITE_APP_URL_API + "/group/" + this.$route.params.id,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + this.$auth.token,
+          },
         }
+      );
+      const data = await res.json();
+      console.log(data);
+      console.log(typeof data.expenses[0]);
+      if (data.etherExpenses) {
+        data.expenses = data.etherExpenses;
+        this.group = await this.getFractionsInfo(data);
+        console.log("this.group -> ", this.group);
+      }
     },
-    computed: {
-        numUsers() {
-            let numUsers = 0;
-            console.log(this.group)
-            if (this.group) {
-                numUsers = this.group.users.length;
-            }
-            return numUsers;
-        },
-        totalGasto() {
-            let gasto = 0;
-            // verifico si cargo el grupo
-            if (this.group) {
-                let expenses = this.group.expenses;
-                // recorro todos los gastos del grupo 
-                expenses.forEach(expense => {
-                    let i = 0;
-                    let existeUser = false;
-                    // recorro las fracciones del grupo 
-                    while (i < expense.fractions.length && !existeUser) {
-                        let fraction = expense.fractions[i];
-                        // verifico si en este gasto tiene que pagar algo el usuario logeado 
-                        if (fraction.user === this.$auth.userId) {
-                            gasto += expense.amount;
-                            existeUser = true;
-                        }
-                        i++;
-                    }
-                });
-            }
-            return Number.parseFloat(gasto).toFixed(2);
-        },
-        totalDeuda() {
-            let deuda = 0;
-            if (this.group) {
-                let expenses = this.group.expenses;
-                // recorro los gastos 
-                expenses.forEach(expense => {
-                    let fractions = expense.fractions;
-                    // recorro las fraciones 
-                    fractions.forEach(fraction => {
-                        if (fraction.user === this.$auth.userId) {
-                            deuda += fraction.amount;
-                        }
-                    });
-                });
-            }
-            return Number.parseFloat(deuda).toFixed(2);
-        }
+    async getFractionsInfo(group) {
+      for (let expenseIndex = 0; expenseIndex < group.expenses.length; expenseIndex++) {
+        const expense = group.expenses[expenseIndex];
+        for (let fractionIndex = 0; fractionIndex < expense.fractions.length; fractionIndex++) {
+          let fraction = expense.fractions[fractionIndex];
+          fraction = {
+            address: fraction,
+          };
+          console.log("fraction -> ", fraction);
+          const debtorWalletAddress = await this.EthereumController.getFractionDebtor(
+            fraction.address
+          );
+          console.log("debtorWalletAddress -> ", debtorWalletAddress);
+          fraction.user = group.users.find(
+            (user) => user.walletAddress === debtorWalletAddress
+          );
+          console.log("fraction.user -> ", fraction);
+          expense.fractions[fractionIndex] = fraction;
+        }        
+      }
+      this.isLoaded = true;
+      return group;
     },
-}
+    async createExpense() {
+      if (this.group.isEtherGroup) {
+        this.$router.push(`/group/${this.$route.params.id}/expense/create`);
+      } else {
+        this.$router.push(`/group/${this.$route.params.id}/expense/create`);
+      }
+    },
+  },
+  computed: {
+    numUsers() {
+      let numUsers = 0;
+      console.log(this.group);
+      if (this.group) {
+        numUsers = this.group.users.length;
+      }
+      return numUsers;
+    },
+    totalGasto() {
+      let gasto = 0;
+      // verifico si cargo el grupo
+      if (this.group) {
+        let expenses = this.group.expenses;
+        // recorro todos los gastos del grupo
+        expenses.forEach((expense) => {
+          let i = 0;
+          let existeUser = false;
+          // recorro las fracciones del grupo
+          while (i < expense.fractions.length && !existeUser) {
+            let fraction = expense.fractions[i];
+            // verifico si en este gasto tiene que pagar algo el usuario logeado
+            if (fraction.user === this.$auth.userId) {
+              gasto += expense.amount;
+              existeUser = true;
+            }
+            i++;
+          }
+        });
+      }
+      return Number.parseFloat(gasto).toFixed(2);
+    },
+    totalDeuda() {
+      let deuda = 0;
+      if (this.group) {
+        let expenses = this.group.expenses;
+        // recorro los gastos
+        expenses.forEach((expense) => {
+          let fractions = expense.fractions;
+          // recorro las fraciones
+          fractions.forEach((fraction) => {
+            if (fraction.user === this.$auth.userId) {
+              deuda += fraction.amount;
+            }
+          });
+        });
+      }
+      return Number.parseFloat(deuda).toFixed(2);
+    },
+  },
+};
 </script>

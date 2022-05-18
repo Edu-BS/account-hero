@@ -25,6 +25,8 @@ contract Fraction {
 
 contract AccountHero {
     address public owner;
+    
+    event NewFraction(Fraction fractionAddress);
 
     mapping(address => Fraction[]) public creditors;
     mapping(address => Fraction[]) public debtors;
@@ -35,12 +37,14 @@ contract AccountHero {
 
     function addFraction(address _debtor, uint256 _debt)
         public
-        returns (Fraction newFraction)
+        returns (Fraction)
     {
         Fraction fraction = new Fraction(msg.sender, _debtor, _debt);
 
         creditors[msg.sender].push(fraction);
         debtors[_debtor].push(fraction);
+
+        emit NewFraction(fraction);
 
         return fraction;
     }
@@ -72,5 +76,10 @@ contract AccountHero {
     function getFractionIsPaid(address _fraction) public view returns (bool) {
         Fraction fraction = Fraction(_fraction);
         return fraction.isPaid();
+    }
+
+    function getFractionDebtor(address _fraction) public view returns (address) {
+        Fraction fraction = Fraction(_fraction);
+        return fraction.debtor();
     }
 }

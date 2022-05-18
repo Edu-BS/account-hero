@@ -1,5 +1,5 @@
 <template>
-<router-link :to="'/expense/' + id" style="text-decoration: none; color: inherit;">
+<a @click="goToExpense" style="text-decoration: none; color: inherit;">
    <div class="card">
     <h5 class="card-header">{{name}}</h5>
     <div class="card-body">
@@ -15,7 +15,7 @@
       </ul>
     </div>
   </div>
-</router-link>
+</a>
 </template>
 
 <script>
@@ -26,18 +26,18 @@ export default {
         description: String,
         data: String,
         fractions: Array,
-        amount: Number
+        amount: Number,
+        isEther: Boolean
     },
     methods: {
       
     },
 
     created() {
-      console.log(this.fractions)
+      console.log(this)
     },
 
     methods : {
-
       colorClass(fraction) {
         if (fraction.state === "unpaid") {
           return "text-danger"
@@ -45,6 +45,13 @@ export default {
           return "text-warning"
         } else  {
           return "text-success"
+        }
+      },
+      goToExpense() {
+        if (this.isEther) {
+          this.$router.push(`/etherExpense/${this.id}`);
+        } else {
+          this.$router.push(`/expense/${this.id}`);
         }
       }
     }

@@ -1,5 +1,5 @@
 export default class UserController {
-    static async getByUsernameLike(endpoint, token, username) {
+    static async getByUsernameLike(endpoint, token, username, isEther) {
         return await fetch(endpoint, {
             method: 'POST',
             headers: {
@@ -9,7 +9,8 @@ export default class UserController {
             },
             body: JSON.stringify({
                 "user": {
-                    "username": username
+                    "username": username,
+                    "isEther": isEther
                 }
             })
         })

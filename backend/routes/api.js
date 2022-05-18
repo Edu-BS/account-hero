@@ -8,6 +8,7 @@ const { registerValidator } = require('../validator/registerValidator')
 const AuthMiddleware = require('../middleware/authMiddleware')
 const ExpenseController = require('../controller/expenseController')
 const FractionController = require('../controller/fractionController')
+const EtherExpenseController = require('../controller/etherExpenseController')
 
 
 /**
@@ -106,6 +107,16 @@ routes.post("/newExpense",
     AuthMiddleware.validateToken,
     ExpenseController.createExpense
 )
+
+routes.route('/etherExpense/:expenseId')
+    .all(AuthMiddleware.validateToken)
+    .get(EtherExpenseController.getById)
+
+routes.route('/etherExpense')
+    .all(AuthMiddleware.validateToken)
+    .get(EtherExpenseController.list)
+    .post(EtherExpenseController.create)
+
 
 module.exports = routes;
 

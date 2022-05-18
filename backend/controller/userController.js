@@ -58,7 +58,7 @@ class UserController {
     }
 
     static async getByUsernameLike(req, res, next) {
-        await UserServices.getByUsernameLike(req.body.user.username)
+        return await UserServices.getByUsernameLike(req.body.user.username, req.body.user.isEther)
             .then(users => {
                 return res.json(users)
             })
