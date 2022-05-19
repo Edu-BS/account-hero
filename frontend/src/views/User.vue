@@ -46,7 +46,7 @@
                     <div v-if="!user.walletAddress" class="col-12 mt-5 text-left d-lg-none">
                         <button @click="addWalletAddress" class="btn btn-primary rounded-pill align-middle">
                           <p class="d-inline">Añadir cartera</p>
-                          <img src="/public/ether.png" class="img-fluid ms-2" width="20">
+                          <img src="/ether.png" class="img-fluid ms-2" width="20">
                         </button>
                     </div>
 

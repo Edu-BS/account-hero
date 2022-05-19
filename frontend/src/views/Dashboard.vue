@@ -20,7 +20,17 @@
         <div class="row justify-content-center fs-4">
           <div class="col-3 text-center fw-bold">
             <p class="mb-0 text-secondary">{{ this.groups.length }}</p>
-            <p>Groups</p>
+            <p>Grupos</p>
+          </div>
+        </div>
+      </div>
+      <div class="d-none d-lg-block container-fluid mt-5">
+        <div class="card">
+          <div class="card-body d-flex justify-content-evenly">
+             <div class="col-3 text-center fw-bold">
+              <p class="mb-0 text-secondary">{{ this.groups.length }}</p>
+              <p class="mb-0">Grupos</p>
+            </div>
           </div>
         </div>
       </div>
@@ -105,14 +115,12 @@ export default {
   filter: invert(40%);
   /* Spin the image until the cursor is hover */
   animation: spin 1s infinite;
-
 }
 
-@keyframes spin { 
-    100% { 
-        -webkit-transform: rotate(360deg); 
-        transform:rotate(360deg); 
-    } 
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
-
 </style>

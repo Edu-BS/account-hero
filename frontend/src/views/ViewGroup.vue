@@ -6,14 +6,14 @@
      <div class="border border-1 rounded-3 m-4 d-lg-none">
         <div class="d-flex">
           <div class="col-3 col-md-2 m-3 me-0">
-            <img class="img-fluid" src="../../public/profile_icon.png" alt="" />
+            <img class="img-fluid" src="/profile_icon.png" alt="" />
           </div>
           <div class="col-auto ms-3 m-3">
             <p class="fw-bold fs-4">{{ this.$auth.userName }}</p>
           </div>
           <div class="col-1 col-md-1 ms-auto m-3">
             <router-link to="">
-              <img class="img-fluid" src="../../public/gear.png" alt="" />
+              <img class="img-fluid" src="/gear.png" alt="" />
             </router-link>
           </div>
         </div>
@@ -49,7 +49,6 @@
           </div>
           </div>
         </div>
-
       </div>
 
       <!-- Add groups button -->
