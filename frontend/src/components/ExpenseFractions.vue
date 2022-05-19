@@ -1,10 +1,29 @@
 <template>
 <div>
     <div v-if="this.error" class="alert alert-warning alert-dismissible fade show" role="alert">
-    {{ this.error }}
-    <button @click="deleteError" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      {{ this.error }}
+      <button @click="deleteError" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    <div v-for="fraction in fractions" :key="fraction._id" class="row mt-3">
+   
+    <div class="row mt-3">
+      <div class="col-4 fw-bold">
+          {{ myFraction.user.username }}
+      </div>
+      <div class="col-4 fw-bold">
+          <p v-if="myFraction.debt">{{ myFraction.debt }} ETH</p>
+          <p v-else-if="myFraction.amount">{{ myFraction.amount }}€</p>
+      </div>
+      <div class="col-4 fw-bold" :style="statusColor(myFraction.state)">
+          <div v-if="myFraction.state == 'Pendiente' && this.$auth.userName == payer.username">
+              <button @click="confirmFraction(myFraction._id)" class="btn btn-outline-warning text-black rounded-pill btn-sm align-middle ">Confirmar</button>
+          </div>
+          <div v-else>
+              {{ myFraction.state }}
+          </div>
+      </div>
+    </div>
+   
+    <div v-for="fraction in fractions.filter(fraction => fraction.user.username !== this.$auth.userName)" :key="fraction._id" class="row mt-3">
         <div class="col-4">
             {{ fraction.user.username }}
         </div>
@@ -30,6 +49,9 @@ import FractionController from "../controllers/fractionController";
 export default {
   props: {
     error: null,
+    myFraction: {
+
+    },
     fractions: {
       type: Object,
       required: true,
@@ -42,7 +64,14 @@ export default {
   data() {
     return {};
   },
-  computed: {},
+  afterMounted() {
+    console.log(this.fractions);
+  },
+  computed: {
+    myFraction() {
+      return this.fractions.find(fraction => fraction.user.username === this.$auth.userName);
+    },
+  },
   methods: {
     statusColor(status) {
       switch (status) {
