@@ -237,7 +237,7 @@ export default class EtherController {
         accounts, signer, provider, accountHeroContractAddress, accountHeroContract, accountHeroContractSigned
       })
     } catch (error) {
-      console.error(error);
+      EtherController.exeptionHandler(error)
     }
   }
 
@@ -273,7 +273,7 @@ export default class EtherController {
       const accountHeroContract = new ethers.Contract(this.accountHeroContractAddress, AccountHeroAbi, provider)
       return accountHeroContract
     } catch (error) {
-      console.error("EtherController: getAccountHeroContract -> ", error);
+      EtherController.exeptionHandler(error)
     }
   }
 
@@ -310,6 +310,7 @@ export default class EtherController {
       let balance = await this.provider.getBalance(address)
       return balance
     } catch (error) {
+      EtherController.exeptionHandler(error)
       console.error(error);
     }
   }
@@ -323,6 +324,7 @@ export default class EtherController {
       const txHash = await this.wallet.sendTransaction(tx)
       return txHash
     } catch (error) {
+      EtherController.exeptionHandler(error)
       console.error(error);
     }
   }
@@ -339,6 +341,7 @@ export default class EtherController {
 
       return fractionAddress
     } catch (error) {
+      EtherController.exeptionHandler(error)
       console.error(error);
       throw error
     }
@@ -356,6 +359,7 @@ export default class EtherController {
       const debtor = await accountHeroContractSigned.getFractionDebtor(fractionAddress)
       return debtor
     } catch (error) {
+      EtherController.exeptionHandler(error)
       console.error("EtherController: getFractionDebtor -> ", error);
     }
   }
@@ -383,8 +387,15 @@ export default class EtherController {
 
       return fraction
     } catch (error) {
+      EtherController.exeptionHandler(error)
       console.error("EthereumController Exeption -> ", error);
     }
   }
 
+  static exeptionHandler(err) {
+    if(err.code === "NETWORK_ERROR") {
+      alert("No estás conectado a la red Ethereum");
+      return "No estás conectado a la red Ethereum"
+    }
+  }
 }

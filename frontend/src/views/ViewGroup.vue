@@ -1,33 +1,30 @@
 <template>
   <main>
     <NavComponent view="Dashboard" />
-    
     <div v-if="group" class="container mb-5">
      <div class="border border-1 rounded-3 m-4 d-lg-none">
         <div class="d-flex">
-          <div class="col-3 col-md-2 m-3 me-0">
-            <img class="img-fluid" src="../../public/profile_icon.png" alt="" />
+          
+          <div class="col-12 text-center m-3 my-4">
+            <p class="fw-bold fs-2 mb-4">{{ group.name }}</p>
           </div>
-          <div class="col-auto ms-3 m-3">
-            <p class="fw-bold fs-4">{{ this.$auth.userName }}</p>
-          </div>
-          <div class="col-1 col-md-1 ms-auto m-3">
+          <!-- <div class="col-1 col-md-1 ms-auto m-3">
             <router-link to="">
-              <img class="img-fluid" src="../../public/gear.png" alt="" />
+              <img class="img-fluid" src="/gear.png" alt="" />
             </router-link>
-          </div>
+          </div> -->
         </div>
         <div class="row justify-content-center">
           <div class="col-3 text-center fw-bold">
             <p class="mb-0 text-secondary">{{numUsers}}</p>
             <p>Miembros</p>
           </div>
-          <div class="col-3 text-center fw-bold">
+          <div v-if="!group.isEtherGroup" class="col-3 text-center fw-bold">
             <p class="mb-0 text-secondary">{{totalGasto}}</p>
             <p>Gastos</p>
           </div>
-          <div class="col-3 text-center fw-bold">
-            <p class="mb-0 text-secondary">{{totalDeuda}}</p>
+          <div v-if="!group.isEtherGroup" class="col-3 text-center fw-bold">
+            <p class="mb-0 text-secondary">{{totalDeuda}}€</p>
             <p>Debes</p>
           </div>
         </div>
@@ -35,21 +32,23 @@
       <div class="d-none d-lg-block container-fluid mt-5">
         <div class="card">
           <div class="card-body d-flex justify-content-evenly">
-          <div class="col-3 text-center fw-bold">
-            <p class="mb-0 text-secondary">{{numUsers}}</p>
-            <p>Miembros</p>
+            <h1 class="fs-2">{{group.name}}</h1>
           </div>
-          <div class="col-3 text-center fw-bold">
-            <p class="mb-0 text-secondary">{{totalGasto}}</p>
-            <p>Gastos</p>
-          </div>
-          <div class="col-3 text-center fw-bold">
-            <p class="mb-0 text-secondary">{{totalDeuda}}</p>
-            <p>Debes</p>
-          </div>
+          <div class="card-body d-flex justify-content-evenly">
+            <div class="col-3 text-center fw-bold">
+              <p class="mb-0 text-secondary">{{numUsers}}</p>
+              <p>Miembros</p>
+            </div>
+            <div class="col-3 text-center fw-bold">
+              <p class="mb-0 text-secondary">{{totalGasto}}</p>
+              <p>Gastos</p>
+            </div>
+            <div v-if="!group.isEtherGroup" class="col-3 text-center fw-bold">
+              <p class="mb-0 text-secondary">{{totalDeuda}}</p>
+              <p>Debes</p>
+            </div>
           </div>
         </div>
-
       </div>
 
       <!-- Add groups button -->
@@ -93,6 +92,7 @@ export default {
   },
   data() {
     return {
+      error: null,
       EthereumController: null,
       isLoaded: false,
       group: {
@@ -104,7 +104,7 @@ export default {
   },
   async created() {
     this.getGroup();
-    this.EthereumController = await EthereumController.getInstance();
+    this.EthereumController = await EthereumController.getInstance()
   },
   methods: {
     async getGroup() {
@@ -177,7 +177,8 @@ export default {
           while (i < expense.fractions.length && !existeUser) {
             let fraction = expense.fractions[i];
             // verifico si en este gasto tiene que pagar algo el usuario logeado
-            if (fraction.user === this.$auth.userId) {
+            if (fraction.user._id === this.$auth.userId) {
+              // gasto += fraction.amount;
               gasto += expense.amount;
               existeUser = true;
             }
@@ -196,7 +197,7 @@ export default {
           let fractions = expense.fractions;
           // recorro las fraciones
           fractions.forEach((fraction) => {
-            if (fraction.user === this.$auth.userId) {
+            if (fraction.user._id === this.$auth.userId) {
               deuda += fraction.amount;
             }
           });

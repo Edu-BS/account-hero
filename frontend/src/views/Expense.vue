@@ -45,6 +45,7 @@ export default {
       endpoint: import.meta.env.VITE_APP_URL_API,
       myFraction: {
         _id: "",
+        state: "",
       },
       expense: {
         name: "",
@@ -83,7 +84,9 @@ export default {
                 break;
             }
           }
-          this.myFraction = response.fractions.find(fraction => fraction.user.username === this.$auth.userName);
+          this.myFraction = response.fractions.find(
+            (fraction) => fraction.user.username === this.$auth.userName
+          );
           this.expense = response;
         })
         .catch((error) => {

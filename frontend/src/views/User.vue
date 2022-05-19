@@ -46,7 +46,7 @@
                     <div v-if="!user.walletAddress" class="col-12 mt-5 text-left d-lg-none">
                         <button @click="addWalletAddress" class="btn btn-primary rounded-pill align-middle">
                           <p class="d-inline">Añadir cartera</p>
-                          <img src="/public/ether.png" class="img-fluid ms-2" width="20">
+                          <img src="/ether.png" class="img-fluid ms-2" width="20">
                         </button>
                     </div>
 
@@ -118,6 +118,12 @@ export default {
         this.user
       );
       this.$auth.userName = userUpdated.username;
+      localStorage.setItem('auth', JSON.stringify({
+          token: this.$auth.token,
+          isAuthenticated: this.$auth.isAuthenticated,
+          userName: userUpdated.username,
+          userId : this.$auth.userId
+        }));
       this.getUser();
     },
     logout() {
