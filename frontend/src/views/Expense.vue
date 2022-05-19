@@ -84,7 +84,9 @@ export default {
                 break;
             }
           }
-          this.myFraction = response.fractions.find(fraction => fraction.user.username === this.$auth.userName);
+          this.myFraction = response.fractions.find(
+            (fraction) => fraction.user.username === this.$auth.userName
+          );
           this.expense = response;
         })
         .catch((error) => {
