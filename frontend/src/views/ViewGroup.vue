@@ -5,17 +5,15 @@
     <div v-if="group" class="container mb-5">
      <div class="border border-1 rounded-3 m-4 d-lg-none">
         <div class="d-flex">
-          <div class="col-3 col-md-2 m-3 me-0">
-            <img class="img-fluid" src="/profile_icon.png" alt="" />
+          
+          <div class="col-12 text-center m-3 my-4">
+            <p class="fw-bold fs-2 mb-4">{{ group.name }}</p>
           </div>
-          <div class="col-auto ms-3 m-3">
-            <p class="fw-bold fs-4">{{ this.$auth.userName }}</p>
-          </div>
-          <div class="col-1 col-md-1 ms-auto m-3">
+          <!-- <div class="col-1 col-md-1 ms-auto m-3">
             <router-link to="">
               <img class="img-fluid" src="/gear.png" alt="" />
             </router-link>
-          </div>
+          </div> -->
         </div>
         <div class="row justify-content-center">
           <div class="col-3 text-center fw-bold">
@@ -35,18 +33,26 @@
       <div class="d-none d-lg-block container-fluid mt-5">
         <div class="card">
           <div class="card-body d-flex justify-content-evenly">
-          <div class="col-3 text-center fw-bold">
-            <p class="mb-0 text-secondary">{{numUsers}}</p>
-            <p>Miembros</p>
+            <h1 class="fs-2">{{group.name}}</h1>
           </div>
-          <div class="col-3 text-center fw-bold">
-            <p class="mb-0 text-secondary">{{totalGasto}}</p>
-            <p>Gastos</p>
-          </div>
-          <div class="col-3 text-center fw-bold">
-            <p class="mb-0 text-secondary">{{totalDeuda}}</p>
-            <p>Debes</p>
-          </div>
+          <!-- <div class="position-absolute top-0 end-0 mt-2 me-2">
+            <router-link to="">
+              <img class="img-fluid" src="/gear.png" width="40" alt="" />
+            </router-link>
+          </div> -->
+          <div class="card-body d-flex justify-content-evenly">
+            <div class="col-3 text-center fw-bold">
+              <p class="mb-0 text-secondary">{{numUsers}}</p>
+              <p>Miembros</p>
+            </div>
+            <div class="col-3 text-center fw-bold">
+              <p class="mb-0 text-secondary">{{totalGasto}}</p>
+              <p>Gastos</p>
+            </div>
+            <div class="col-3 text-center fw-bold">
+              <p class="mb-0 text-secondary">{{totalDeuda}}</p>
+              <p>Debes</p>
+            </div>
           </div>
         </div>
       </div>
