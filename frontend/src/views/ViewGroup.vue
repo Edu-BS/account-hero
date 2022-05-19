@@ -177,7 +177,8 @@ export default {
           while (i < expense.fractions.length && !existeUser) {
             let fraction = expense.fractions[i];
             // verifico si en este gasto tiene que pagar algo el usuario logeado
-            if (fraction.user === this.$auth.userId) {
+            if (fraction.user._id === this.$auth.userId) {
+              // gasto += fraction.amount;
               gasto += expense.amount;
               existeUser = true;
             }
@@ -196,7 +197,7 @@ export default {
           let fractions = expense.fractions;
           // recorro las fraciones
           fractions.forEach((fraction) => {
-            if (fraction.user === this.$auth.userId) {
+            if (fraction.user._id === this.$auth.userId) {
               deuda += fraction.amount;
             }
           });

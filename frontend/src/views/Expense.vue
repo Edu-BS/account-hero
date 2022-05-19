@@ -45,6 +45,7 @@ export default {
       endpoint: import.meta.env.VITE_APP_URL_API,
       myFraction: {
         _id: "",
+        state: "",
       },
       expense: {
         name: "",

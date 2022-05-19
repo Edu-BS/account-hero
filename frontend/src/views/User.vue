@@ -118,6 +118,12 @@ export default {
         this.user
       );
       this.$auth.userName = userUpdated.username;
+      localStorage.setItem('auth', JSON.stringify({
+          token: this.$auth.token,
+          isAuthenticated: this.$auth.isAuthenticated,
+          userName: userUpdated.username,
+          userId : this.$auth.userId
+        }));
       this.getUser();
     },
     logout() {
