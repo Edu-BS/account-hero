@@ -62,7 +62,7 @@
 
 
       <!-- Groups container -->
-      <div v-if="group != null" class="row justify-content-center mt-4 mx-auto">
+      <div v-if="group != null && isLoaded"  class="row justify-content-center mt-4 mx-auto">
         <div v-for="expense in group.expenses"  :key="expense._id"  class="col-lg-4 col-xs col-md-6 col-sm-6 my-3">
           <ExpenseCard v-if="isLoaded"
           :name="expense.name"
@@ -72,6 +72,7 @@
           :amount="expense.amount"
           :fractions="expense.fractions"
           :isEther="group.isEtherGroup"
+          :payerId="expense.payer"
           />
            
         </div>
@@ -103,8 +104,9 @@ export default {
     };
   },
   async created() {
-    this.getGroup();
     this.EthereumController = await EthereumController.getInstance()
+    await this.getGroup();
+    console.log("this.group", this.group);
   },
   methods: {
     async getGroup() {

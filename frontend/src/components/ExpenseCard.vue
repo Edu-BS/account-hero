@@ -1,29 +1,31 @@
 <template>
-<a @click="goToExpense" v-if="EthereumController" style="text-decoration: none; color: inherit;">
-   <div class="card card-efect">
+<a @click="goToExpense" style="text-decoration: none; color: inherit;">
+   <div class="card card-efect" :class="{'border-2': this.$auth.userId == payerId}">
     <h5 class="card-header">{{name}}</h5>
     <div class="card-body">
       <p class="card-text">Descripcion: {{description}}</p>
       <p class="card-text">Fecha: {{data}}</p>
       <p class="card-text">Monto: {{Number.parseFloat(amount).toFixed(2)}}</p>
-      <ul class="list-group list-group-flush">
-        
+        <!-- {{etherFractions}} -->
+      <ul v-if="!isEther" class="list-group list-group-flush">
         <p class="card-text">Usuarios:</p>
-        <li class="list-group-item">
-          <span v-if="isEther">
-            <b>{{this.$auth.userName}}</b> <span class="text-success">{{myAmount()}} ETH</span>
-          </span>
-          <span v-else>
+        <li class="list-group-item" v-if="!isEther">
+          <span >
             <b>{{myFraction.user.username}}</b> <span :class="colorClass(myFraction)">{{Number.parseFloat(myFraction.amount).toFixed(2)}}</span>
           </span>
 
         </li>
-        <li v-for="fraction in fractions.filter(fraction => fraction.user.username !== this.$auth.userName)"  :key="fraction._id" class="list-group-item">
-          <span v-if="isEther">
-            {{fraction.user.username}} <span :class="colorClass(fraction)">{{getEtherFractionDebt(fraction.address)}} ETH</span>
-          </span>
-          <span v-else>
+        <li v-for="fraction in fractions.filter(fraction => fraction.user.username !== this.$auth.userName)" :key="fraction._id" class="list-group-item">
+          <span >
             {{fraction.user.username}} <span :class="colorClass(fraction)">{{Number.parseFloat(fraction.amount).toFixed(2)}}</span>
+          </span>
+        </li>
+      </ul>
+      <ul v-else-if="isEtherLoaded" class="list-group list-group-flush">
+        <li v-for="fraction in fractions" :key="fraction._id" class="list-group-item">
+          <span >
+            <!-- {{fraction}} -->
+            {{fraction.user.username}} <span :class="colorClass(fraction)">{{getEtherFractionDebt(fraction.address)}} ETH</span>
           </span>
         </li>
       </ul>
@@ -40,7 +42,9 @@ export default {
   data() {
     return {
       EthereumController: null,
-      etherFractions: []
+      etherFractions: [],
+      isLoaded: false,
+      isEtherLoaded: false,
     }
   },
   props: {
@@ -51,37 +55,58 @@ export default {
     fractions: Array,
     amount: Number,
     isEther: Boolean,
+    payerId: String,
   },
-  methods: {},
   async created() {
     if (this.isEther) {
       this.EthereumController = await EthereumController.getInstance();
       this.etherFractions =  await this.getEtherFractionsInfo()
     }
   },
+  watch:{
+    etherFractions: {
+      handler(newFractions) {
+        this.isEtherLoaded = true;
+      },
+      deep: true,
+    },
+  },
   computed: {
     myFraction() {
-      return this.fractions.find((fraction) => {
-        return fraction.user.username === this.$auth.userName;
-      });
+      if (!this.isEther) {
+        return this.fractions.find((fraction) =>  fraction.user.username === this.$auth.userName);
+      } else if (this.payerId == this.$auth.userId) {
+        return {
+          user: {
+            username: this.$auth.userName,
+          },
+          isPaid: true,
+          address: null,
+          amount: this.myAmount(),
+        }
+      } else {
+        return this.fractions.find((fraction) =>  fraction.user.username === this.$auth.userName);
+      }
     },
   },
   methods: {
     colorClass(fraction) {
      if (this.isEther) {
-       if (fraction.isPaid) {
+       let etherFraction = this.etherFractions.find(etherFraction => etherFraction.address === fraction.address)
+       console.log("etherFraction", etherFraction);
+       if (etherFraction.isPaid) {
          return 'text-success'
        } else {
          return 'text-danger'
        }
      } else {
         if (fraction.state === "unpaid") {
-        return "text-danger";
-      } else if (fraction.state === "pending") {
-        return "text-warning";
-      } else {
-        return "text-success";
-      }
+          return "text-danger";
+        } else if (fraction.state === "pending") {
+          return "text-warning";
+        } else {
+          return "text-success";
+        }
      }
     },
     goToExpense() {
@@ -102,18 +127,41 @@ export default {
         etherFraction.address = fraction.address
         etherFractions.push(etherFraction);
       }
+      this.isLoaded = true;
       return etherFractions;
     },
     getEtherFractionDebt(address) {
-      let fraction = this.etherFractions.find(fraction => fraction.address === address);
-      return fraction.debt
+      if (this.etherFractions.length > 0 && address) {
+        console.log(address, this.etherFractions);
+        let fraction = this.etherFractions.find(fraction => fraction.address === address);
+        return fraction.debt
+      } else {
+        return 0
+      }
+    },
+    myEtherFraction() {
+      let myFraction = this.fractions.find(fraction => fraction.user.username === this.$auth.userName)
+      let myEtherFraction = this.etherFractions.find(fraction => fraction.address === myFraction.address)
+      return myEtherFraction
     },
     myAmount() {
-      let otherDebts = 0
-      this.etherFractions.forEach(fraction => {
-        otherDebts += parseInt(fraction.debt)
-      })
-      return this.amount - otherDebts
+      let amount = 0
+      console.log(this.payerId == this.$auth.userId);
+      if (this.payerId === this.$auth.userId) {
+        let otherDebts = 0
+        this.etherFractions.forEach(fraction => {
+          otherDebts += parseInt(fraction.debt)
+        })
+        amount = this.amount - otherDebts
+      } else {
+          console.log("this.fraction", this.fractions);
+          let myFraction = this.fractions.find(fraction => fraction.user.username === this.$auth.userName)
+          console.log("myFraction", myFraction);
+          console.log("this.etherFractions", this.etherFractions);
+          let myEtherFraction = this.etherFractions.find(fraction => fraction.address === myFraction.address)
+          amount = myEtherFraction.debt 
+      }
+      return amount
     }
   },
 };

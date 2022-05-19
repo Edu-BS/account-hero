@@ -1,5 +1,5 @@
 <template>
-<div>
+<div v-if="isLoaded">
     <div v-if="this.error" class="alert alert-warning alert-dismissible fade show" role="alert">
       {{ this.error }}
       <button @click="deleteError" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -62,7 +62,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      isLoaded: false
+    };
   },
   afterMounted() {
     console.log(this.payer);
@@ -70,6 +72,14 @@ export default {
   computed: {
     myFraction() {
       return this.fractions.find(fraction => fraction.user.username === this.$auth.userName);
+    },
+  },
+  watch:{
+    fractions: {
+      handler(newFractions) {
+        this.isLoaded = true;
+      },
+      deep: true,
     },
   },
   methods: {

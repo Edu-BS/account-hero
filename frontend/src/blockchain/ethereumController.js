@@ -347,6 +347,18 @@ export default class EtherController {
     }
   }
 
+  async payFraction(fractionAddress, amount) {
+    try {
+      const accountHeroContractSigned = await this.getAccountHeroContractSigned()
+
+      const txFraction = await accountHeroContractSigned.payFraction(fractionAddress, {value: ethers.utils.parseEther(amount)})
+      return txFraction
+      
+    } catch (error) {
+      EtherController.exeptionHandler(error)
+    }
+  }
+
   async getFractionDebt(fractionAddress) {
     const accountHeroContractSigned = await this.getAccountHeroContractSigned()
     const fractionDebt = await accountHeroContractSigned.getFractionDebt(fractionAddress)

@@ -25,8 +25,8 @@
       <h1>Error</h1>
       <p>{{error}}</p>
     </div>
-    <footer v-if="this.$auth.userName !== expense.payer.username && myFraction.state === 'Sín pagar'" class="footer fixed-bottom py-3 bg-light green text-center">
-      <router-link :to="`${this.$route.href}/fraction/${myFraction._id}/pay`" class="btn btn-primary rounded-pill">Pagar</router-link>
+    <footer v-if="this.$auth.userName !== expense.payer.username && !myFraction.isPaid" class="footer fixed-bottom py-3 bg-light green text-center">
+      <button @click="payFraction" class="btn btn-primary rounded-pill">Pagar</button>
     </footer>
   </main>
 </template>
@@ -63,13 +63,14 @@ export default {
   },
   methods: {
     async getExpense() {
+      console.log("a");
       let expense = await ExpenseController.getExpense(
         `${this.endpoint}/etherExpense/${this.$route.params.id}`,
         this.$auth.token
       )
         .then(async (response) => {
           response.date = response.date.toDateString();
-          // this.myFraction = response.fractions.find(fraction => fraction.user.username === this.$auth.userName);
+          console.log(response.fractions);
           return response;
         })
         .catch((error) => {
@@ -89,6 +90,7 @@ export default {
         fractionInfo.user = await this.getUserByWalletAddress(
           fractionInfo.debtor
         );
+        fractionInfo.address = address;
 
         if (fractionInfo.isPaid) {
           fractionInfo.state = "Pagado";
@@ -97,7 +99,11 @@ export default {
         }
 
         this.fractions.push(fractionInfo);
+        
       }
+      console.log(this.fractions);
+      console.log(this.EthereumController.address);
+      // this.myFraction = this.fractions.find(fraction => fraction.debtor == this.EthereumController.address);
     },
     async getUserByWalletAddress(walletAddress) {
       return await fetch(`${this.endpoint}/user/wallet/${walletAddress}`, {
@@ -113,6 +119,12 @@ export default {
           this.error = error;
         });
     },
+    async payFraction() {
+      console.log(this.expense);
+      let myFraction = this.expense.fractions.find(fraction => fraction.user.username == this.$auth.userName);
+      this.EthereumController.payFraction(myFraction.address, myFraction.debt);
+      await this.getExpense()
+    }
   },
 };
 </script>
