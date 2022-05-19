@@ -103,7 +103,7 @@ export default {
       },
     };
   },
-  async created() {
+  async mounted() {
     this.EthereumController = await EthereumController.getInstance()
     await this.getGroup();
     console.log("this.group", this.group);

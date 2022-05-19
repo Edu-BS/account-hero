@@ -60,7 +60,7 @@ export default {
       },
     };
   },
-  created() {
+  mounted() {
     this.getFraction();
   },
   methods: {

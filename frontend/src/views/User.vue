@@ -37,13 +37,13 @@
                         </div> -->
                     </div>
                     <div class="col-12 text-break">
-                        <EditableField :fieldValue="user.walletAddress" :originalValue="userOriginalData.walletAddress" @updateField="this.user.email = $event" />
+                        <EditableField v-if="user.walletAddress" :fieldValue="user.walletAddress" :originalValue="userOriginalData.walletAddress" @updateField="this.user.walletAddress = $event" />
                     </div>
                     <div v-if="userDataChanged" class="col-12 text-left">
                         <button @click="updateUser()" class="btn btn-outline-primary rounded-pill">Guardar cambios</button>
                     </div>
                     
-                    <div v-if="!user.walletAddress" class="col-12 mt-5 text-left d-lg-none">
+                    <div v-if="!user.walletAddress" class="col-12 mt-5 text-left">
                         <button @click="addWalletAddress" class="btn btn-primary rounded-pill align-middle">
                           <p class="d-inline">Añadir cartera</p>
                           <img src="/ether.png" class="img-fluid ms-2" width="20">
@@ -70,7 +70,7 @@ export default {
   components: {
     EditableField,
   },
-  created() {
+  mounted() {
     this.getUser();
   },
   data() {
@@ -84,7 +84,7 @@ export default {
         surname: "Borrego",
         email: "edbosu@gmail.com",
         picture: "profile_icon.png",
-        walletAddress: "",
+        walletAddress: "Cartera",
       },
       userDataChanged: false,
     };
@@ -135,9 +135,9 @@ export default {
       await EthereumController.connectWallet()
         .then(async walletAddres => {
           if (walletAddres) {
-            this.user.walletAddress = walletAddres;
-            this.updateUser();
-            this.getUser();
+            this.user.walletAddress = walletAddres.toString();
+            // this.updateUser();
+            // this.getUser();
           }
         })
         .catch(error => {

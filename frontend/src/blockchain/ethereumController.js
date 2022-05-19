@@ -221,21 +221,24 @@ const AccountHeroAbi = [
     "type": "function"
   }
 ]
+import UserController from "../controllers/userController"
 export default class EtherController {
-
   static async getInstance() {
+    // const user = await UserController.getUser(this.$auth.userId)
     try {
-      const accounts = await this.connectWallet()
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner()
+      // if (user.walletAddress) {
+        const accounts = await this.connectWallet()
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+        const signer = provider.getSigner()
 
-      const accountHeroContractAddress = "0x1d493B807363803A1d37e9f18400f3dF4Aa3CBa4"
-      const accountHeroContract = new ethers.Contract(accountHeroContractAddress, AccountHeroAbi, this.provider)
-      const accountHeroContractSigned = accountHeroContract.connect(this.wallet)
+        const accountHeroContractAddress = "0x1d493B807363803A1d37e9f18400f3dF4Aa3CBa4"
+        const accountHeroContract = new ethers.Contract(accountHeroContractAddress, AccountHeroAbi, this.provider)
+        const accountHeroContractSigned = accountHeroContract.connect(this.wallet)
 
-      return new EtherController({
-        accounts, signer, provider, accountHeroContractAddress, accountHeroContract, accountHeroContractSigned
-      })
+        return new EtherController({
+          accounts, signer, provider, accountHeroContractAddress, accountHeroContract, accountHeroContractSigned
+        })
+      // }
     } catch (error) {
       EtherController.exeptionHandler(error)
     }
@@ -291,7 +294,7 @@ export default class EtherController {
     try {
       const { ethereum } = window;
       if (!ethereum) {
-        alert("Se necesita la aplicación MetaMask!");
+        // alert("Se necesita la aplicación MetaMask!");
         return;
       }
       let accounts = await ethereum.request({
@@ -300,7 +303,7 @@ export default class EtherController {
       return accounts;
     } catch (error) {
       if (error.code === 4001) {
-        alert("Es necesario que permitas vincules su wallet");
+        // alert("Es necesario que permitas vincules su wallet");
       }
     }
   }

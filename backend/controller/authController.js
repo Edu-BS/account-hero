@@ -32,7 +32,7 @@ class AuthController {
             const matchPassword = await UserModels.comparePassword(password,userFound.password)
 
             // si no es correcta lanzo una excepcion
-            if (!matchPassword) throw 'clave invalida'
+            if (!matchPassword) throw 'La contraseña y/o el correo son incorrectos'
             
             // creo el token 
             const token = helperToken.createToken(userFound) 

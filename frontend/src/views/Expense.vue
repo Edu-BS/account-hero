@@ -55,7 +55,7 @@ export default {
       },
     };
   },
-  created() {
+  mounted() {
     console.log(this.$route.href);
     this.getExpense();
   },

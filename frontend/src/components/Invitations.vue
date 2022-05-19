@@ -56,7 +56,7 @@ export default {
       invitations: [],
     };
   },
-  created() {
+  mounted() {
     this.getInvitations();
   },
   methods: {

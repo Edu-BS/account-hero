@@ -69,12 +69,12 @@ export default {
   data() {
     return {
       formData: {
-        name: 'Edu',
-        surname: 'Borrego',
-        username: 'edubs',
-        birthday: '1995-01-01',
-        email: 'edu@gmail.com',
-        password: '1',
+        name: '',
+        surname: '',
+        username: '',
+        birthday: '',
+        email: '',
+        password: '',
         passwordRepeat: '',
       },
       formFeedback: {

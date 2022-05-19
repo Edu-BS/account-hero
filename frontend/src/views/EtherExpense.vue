@@ -57,13 +57,12 @@ export default {
       fractions: [],
     };
   },
-  async created() {
+  async mounted() {
     this.EthereumController = await EthereumController.getInstance();
     await this.getExpense();
   },
   methods: {
     async getExpense() {
-      console.log("a");
       let expense = await ExpenseController.getExpense(
         `${this.endpoint}/etherExpense/${this.$route.params.id}`,
         this.$auth.token

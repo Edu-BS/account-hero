@@ -9,13 +9,13 @@
         <!-- {{etherFractions}} -->
       <ul v-if="!isEther" class="list-group list-group-flush">
         <p class="card-text">Usuarios:</p>
-        <li class="list-group-item" v-if="!isEther">
+        <li v-if="myFraction" class="list-group-item">
           <span >
             <b>{{myFraction.user.username}}</b> <span :class="colorClass(myFraction)">{{Number.parseFloat(myFraction.amount).toFixed(2)}}</span>
           </span>
-
         </li>
         <li v-for="fraction in fractions.filter(fraction => fraction.user.username !== this.$auth.userName)" :key="fraction._id" class="list-group-item">
+          
           <span >
             {{fraction.user.username}} <span :class="colorClass(fraction)">{{Number.parseFloat(fraction.amount).toFixed(2)}}</span>
           </span>
@@ -57,7 +57,7 @@ export default {
     isEther: Boolean,
     payerId: String,
   },
-  async created() {
+  async mounted() {
     if (this.isEther) {
       this.EthereumController = await EthereumController.getInstance();
       this.etherFractions =  await this.getEtherFractionsInfo()
@@ -74,8 +74,13 @@ export default {
   computed: {
     myFraction() {
       if (!this.isEther) {
-        return this.fractions.find((fraction) =>  fraction.user.username === this.$auth.userName);
+        console.log(this.fractions);
+        let myFraction = this.fractions.find((fraction) =>  fraction.user.username === this.$auth.userName);
+        console.log("myFraction", myFraction);
+        return myFraction
       } else if (this.payerId == this.$auth.userId) {
+        console.log(this.fractions);
+
         return {
           user: {
             username: this.$auth.userName,
@@ -85,6 +90,7 @@ export default {
           amount: this.myAmount(),
         }
       } else {
+        console.log(this.fractions);
         return this.fractions.find((fraction) =>  fraction.user.username === this.$auth.userName);
       }
     },

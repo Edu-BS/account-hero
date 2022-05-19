@@ -60,7 +60,7 @@ export default {
       },
       expense: {
         idGroup: "",
-        name: "Eth",
+        name: "",
         description: "",
         date: new Date().toISOString().slice(0, 10),
         amount: 0,
@@ -69,7 +69,7 @@ export default {
     };
   },
 
-  async created() {
+  async mounted() {
     this.EthereumController = await EthereumController.getInstance();
     // guardo el id del grupo donde se encuentra el gasto nuevo
     this.expense.idGroup = this.$route.params.idGroup;

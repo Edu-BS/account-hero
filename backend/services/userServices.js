@@ -23,13 +23,13 @@ class UserServices {
         if (userFound) {
             // verifico si existe el email
             userFound.find(user => {
-                if (user.email === email) throw 'correo ya existe'
+                if (user.email === email) throw 'El correo ya existe'
                 return user
             })
 
             // verifico si existe el username 
             userFound.find(user => {
-                if (user.username === username) throw 'username ya existe'
+                if (user.username === username) throw 'El nombre de usuario ya existe'
                 return user
             })
         }
