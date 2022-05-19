@@ -1,5 +1,5 @@
 <template>
-<a @click="goToExpense" style="text-decoration: none; color: inherit;">
+<a @click="goToExpense" v-if="EthereumController" style="text-decoration: none; color: inherit;">
    <div class="card card-efect">
     <h5 class="card-header">{{name}}</h5>
     <div class="card-body">
@@ -10,12 +10,21 @@
         
         <p class="card-text">Usuarios:</p>
         <li class="list-group-item">
-          <b>{{myFraction.user.username}}</b> <span :class="colorClass(myFraction)">{{Number.parseFloat(myFraction.amount).toFixed(2)}}</span>
+          <span v-if="isEther">
+            <b>{{this.$auth.userName}}</b> <span class="text-success">{{myAmount()}} ETH</span>
+          </span>
+          <span v-else>
+            <b>{{myFraction.user.username}}</b> <span :class="colorClass(myFraction)">{{Number.parseFloat(myFraction.amount).toFixed(2)}}</span>
+          </span>
+
         </li>
         <li v-for="fraction in fractions.filter(fraction => fraction.user.username !== this.$auth.userName)"  :key="fraction._id" class="list-group-item">
-          <!-- <div  !== this.$auth.userName"> -->
+          <span v-if="isEther">
+            {{fraction.user.username}} <span :class="colorClass(fraction)">{{getEtherFractionDebt(fraction.address)}} ETH</span>
+          </span>
+          <span v-else>
             {{fraction.user.username}} <span :class="colorClass(fraction)">{{Number.parseFloat(fraction.amount).toFixed(2)}}</span>
-          <!-- </div> -->
+          </span>
         </li>
       </ul>
     </div>
@@ -24,7 +33,16 @@
 </template>
 
 <script>
+import { onBeforeMount } from '@vue/runtime-core';
+import EthereumController from "../blockchain/ethereumController";
+
 export default {
+  data() {
+    return {
+      EthereumController: null,
+      etherFractions: []
+    }
+  },
   props: {
     id: String,
     name: String,
@@ -35,7 +53,12 @@ export default {
     isEther: Boolean,
   },
   methods: {},
-  created() {},
+  async created() {
+    if (this.isEther) {
+      this.EthereumController = await EthereumController.getInstance();
+      this.etherFractions =  await this.getEtherFractionsInfo()
+    }
+  },
   computed: {
     myFraction() {
       return this.fractions.find((fraction) => {
@@ -45,13 +68,21 @@ export default {
   },
   methods: {
     colorClass(fraction) {
-      if (fraction.state === "unpaid") {
+     if (this.isEther) {
+       if (fraction.isPaid) {
+         return 'text-success'
+       } else {
+         return 'text-danger'
+       }
+     } else {
+        if (fraction.state === "unpaid") {
         return "text-danger";
       } else if (fraction.state === "pending") {
         return "text-warning";
       } else {
         return "text-success";
       }
+     }
     },
     goToExpense() {
       if (this.isEther) {
@@ -60,6 +91,30 @@ export default {
         this.$router.push(`/expense/${this.id}`);
       }
     },
+    async getEtherDebt(address) {
+      const debt = await this.EthereumController.getFractionDebt(address)
+      return debt;
+    },
+    async getEtherFractionsInfo() {
+      const etherFractions = []
+      for (const fraction of this.fractions) {
+        let etherFraction = await this.EthereumController.getFractionInfo(fraction.address)
+        etherFraction.address = fraction.address
+        etherFractions.push(etherFraction);
+      }
+      return etherFractions;
+    },
+    getEtherFractionDebt(address) {
+      let fraction = this.etherFractions.find(fraction => fraction.address === address);
+      return fraction.debt
+    },
+    myAmount() {
+      let otherDebts = 0
+      this.etherFractions.forEach(fraction => {
+        otherDebts += parseInt(fraction.debt)
+      })
+      return this.amount - otherDebts
+    }
   },
 };
 </script>

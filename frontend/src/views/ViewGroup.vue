@@ -1,7 +1,6 @@
 <template>
   <main>
     <NavComponent view="Dashboard" />
-    
     <div v-if="group" class="container mb-5">
      <div class="border border-1 rounded-3 m-4 d-lg-none">
         <div class="d-flex">
@@ -20,12 +19,12 @@
             <p class="mb-0 text-secondary">{{numUsers}}</p>
             <p>Miembros</p>
           </div>
-          <div class="col-3 text-center fw-bold">
+          <div v-if="!group.isEtherGroup" class="col-3 text-center fw-bold">
             <p class="mb-0 text-secondary">{{totalGasto}}</p>
             <p>Gastos</p>
           </div>
-          <div class="col-3 text-center fw-bold">
-            <p class="mb-0 text-secondary">{{totalDeuda}}</p>
+          <div v-if="!group.isEtherGroup" class="col-3 text-center fw-bold">
+            <p class="mb-0 text-secondary">{{totalDeuda}}€</p>
             <p>Debes</p>
           </div>
         </div>
@@ -35,11 +34,6 @@
           <div class="card-body d-flex justify-content-evenly">
             <h1 class="fs-2">{{group.name}}</h1>
           </div>
-          <!-- <div class="position-absolute top-0 end-0 mt-2 me-2">
-            <router-link to="">
-              <img class="img-fluid" src="/gear.png" width="40" alt="" />
-            </router-link>
-          </div> -->
           <div class="card-body d-flex justify-content-evenly">
             <div class="col-3 text-center fw-bold">
               <p class="mb-0 text-secondary">{{numUsers}}</p>
@@ -49,7 +43,7 @@
               <p class="mb-0 text-secondary">{{totalGasto}}</p>
               <p>Gastos</p>
             </div>
-            <div class="col-3 text-center fw-bold">
+            <div v-if="!group.isEtherGroup" class="col-3 text-center fw-bold">
               <p class="mb-0 text-secondary">{{totalDeuda}}</p>
               <p>Debes</p>
             </div>
@@ -98,6 +92,7 @@ export default {
   },
   data() {
     return {
+      error: null,
       EthereumController: null,
       isLoaded: false,
       group: {
@@ -109,7 +104,7 @@ export default {
   },
   async created() {
     this.getGroup();
-    this.EthereumController = await EthereumController.getInstance();
+    this.EthereumController = await EthereumController.getInstance()
   },
   methods: {
     async getGroup() {

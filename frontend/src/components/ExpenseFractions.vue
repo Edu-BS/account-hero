@@ -5,7 +5,7 @@
       <button @click="deleteError" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
    
-    <div class="row mt-3">
+    <div v-if="payer.username !== this.$auth.userName" class="row mt-3">
       <div class="col-4 fw-bold">
           {{ myFraction.user.username }}
       </div>
@@ -65,7 +65,7 @@ export default {
     return {};
   },
   afterMounted() {
-    console.log(this.fractions);
+    console.log(this.payer);
   },
   computed: {
     myFraction() {

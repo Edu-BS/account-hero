@@ -204,15 +204,18 @@ export default {
       console.log("this.expense -> ", this.expense);  
       try {
         for (let index = 0; index < this.expense.fractions.length; index++) {
-          let fractionAddress = await this.EthereumController.createFraction(
-            fractions[index].walletAddress,
-            fractions[index].amount
-          ).catch((err) => {
-            throw err;
-          });
-          console.log("fractionAddress -> ", fractionAddress);
-          if (fractionAddress)
-            etherExpense.fractions.push(fractionAddress.toString());
+          console.log("this.expense.fractions[index] -> ", this.expense.fractions[index]);
+          if (this.expense.fractions[index].username !== this.$auth.userName) {
+            let fractionAddress = await this.EthereumController.createFraction(
+              fractions[index].walletAddress,
+              fractions[index].amount
+            ).catch((err) => {
+              throw err;
+            });
+            console.log("fractionAddress -> ", fractionAddress);
+            if (fractionAddress)
+              etherExpense.fractions.push(fractionAddress.toString());
+          }
         }
       } catch (error) {
         this.errors = error.message;
