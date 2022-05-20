@@ -58,7 +58,7 @@ export default {
     };
   },
   async mounted() {
-    this.EthereumController = await EthereumController.getInstance();
+    this.EthereumController = await EthereumController.getInstance(import.meta.env.VITE_ACCOUNT_HERO_CONTRACT_ADDRESS);
     await this.getExpense();
   },
   methods: {

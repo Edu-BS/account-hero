@@ -223,7 +223,7 @@ const AccountHeroAbi = [
 ]
 import UserController from "../controllers/userController"
 export default class EtherController {
-  static async getInstance() {
+  static async getInstance(_accountHeroContractAddress) {
     // const user = await UserController.getUser(this.$auth.userId)
     try {
       // if (user.walletAddress) {
@@ -231,7 +231,7 @@ export default class EtherController {
         const provider = new ethers.providers.Web3Provider(window.ethereum)
         const signer = provider.getSigner()
 
-        const accountHeroContractAddress = "0x1d493B807363803A1d37e9f18400f3dF4Aa3CBa4"
+        const accountHeroContractAddress = _accountHeroContractAddress
         const accountHeroContract = new ethers.Contract(accountHeroContractAddress, AccountHeroAbi, this.provider)
         const accountHeroContractSigned = accountHeroContract.connect(this.wallet)
 
