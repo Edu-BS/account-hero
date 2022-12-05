@@ -142,7 +142,7 @@ export default {
             fraction.address
           );
           fraction.user = group.users.find(
-            (user) => user.walletAddress === debtorWalletAddress
+            (user) => user.walletAddress.toLowerCase() === debtorWalletAddress.toLowerCase()
           );
           expense.fractions[fractionIndex] = fraction;
         }        
