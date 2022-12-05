@@ -6,7 +6,6 @@ import "../hardhat.config"
 const deployAccountHero: DeployFunction = async function ({ getNamedAccounts, deployments }) {
     const { deploy } = deployments
     const { deployer } = await getNamedAccounts()
-    // const accountHero: AccountHero = await ethers.getContract("AccountHero")
 
     const accountHero = await deploy("AccountHero", {
         from: deployer,
@@ -17,4 +16,3 @@ const deployAccountHero: DeployFunction = async function ({ getNamedAccounts, de
 
 export default deployAccountHero
 deployAccountHero.tags = ["all", "accountHero"]
-
