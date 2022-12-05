@@ -70,9 +70,9 @@ describe("AccountHero SmartContract tests", function () {
             ).to.be.revertedWith("Fraction already paid")
         })
 
-        it("change paid state to true when is paid",async () => {
+        it("change paid state to true when is paid", async () => {
             let fractionAddress
-            
+
             await accountHero.connect(deployer).addFraction(account1.address, PRICE)
             const addFractionTx = await accountHero
                 .connect(deployer)
@@ -86,9 +86,9 @@ describe("AccountHero SmartContract tests", function () {
                 console.log(error)
             }
             const fraction: Fraction = await ethers.getContractAt("Fraction", fractionAddress)
-            
+
             const isPaidBeforePay = await fraction.isPaid()
-            await accountHero.connect(account1).payFraction(fractionAddress, {value: PRICE})
+            await accountHero.connect(account1).payFraction(fractionAddress, { value: PRICE })
             const isPaidAfterPay = await fraction.isPaid()
 
             assert.isFalse(isPaidBeforePay)

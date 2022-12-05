@@ -10,7 +10,16 @@ import "solidity-coverage";
 import { HardhatUserConfig } from "hardhat/config";
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.9",
+  solidity: {
+    compilers: [
+      {
+        version: "0.8.9",
+      },
+      {
+        version: "0.6.9",
+      },
+    ],
+  },
 };
 
 export default config;
